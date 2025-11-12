@@ -9,7 +9,7 @@ const socialLinks = [
   },
   {
     name: "GitHub",
-    href: "https://github.com/ncrz25",
+    href: "https://github.com/ncrz1337",
   },
   {
     name: "YouTube",

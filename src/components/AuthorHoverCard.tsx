@@ -39,7 +39,7 @@ export default function AuthorHoverCard({ children }: { children: React.ReactNod
             </p>
             <div className="flex gap-3 justify-center">
               <a
-                href="https://github.com/ncrz25"
+                href="https://github.com/ncrz1337"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center justify-center rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 transition-all hover:border-gray-300 hover:bg-gray-50 hover:shadow-sm dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:border-gray-600 dark:hover:bg-gray-700"
