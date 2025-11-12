@@ -16,14 +16,11 @@ interface ContentPart {
 export default function CommentContent({ content }: CommentContentProps) {
   const parts = useMemo(() => {
     const result: ContentPart[] = [];
-    // Match code blocks with optional language: ```language or ```
-    // Handle both with and without newline after opening ```
     const codeBlockRegex = /```(\w+)?\n?([\s\S]*?)```/g;
     let lastIndex = 0;
     let match;
 
     while ((match = codeBlockRegex.exec(content)) !== null) {
-      // Add text before code block
       if (match.index > lastIndex) {
         const textContent = content.slice(lastIndex, match.index).trim();
         if (textContent) {
@@ -31,7 +28,6 @@ export default function CommentContent({ content }: CommentContentProps) {
         }
       }
 
-      // Add code block
       const language = match[1] || "text";
       const code = match[2].trim();
       if (code) {
@@ -41,7 +37,6 @@ export default function CommentContent({ content }: CommentContentProps) {
       lastIndex = match.index + match[0].length;
     }
 
-    // Add remaining text
     if (lastIndex < content.length) {
       const textContent = content.slice(lastIndex).trim();
       if (textContent) {
@@ -49,7 +44,6 @@ export default function CommentContent({ content }: CommentContentProps) {
       }
     }
 
-    // If no code blocks found, return entire content as text
     if (result.length === 0) {
       return [{ type: "text", content }];
     }
@@ -61,12 +55,12 @@ export default function CommentContent({ content }: CommentContentProps) {
     <div className="prose prose-sm max-w-none">
       {parts.map((part, index) => {
         if (part.type === "code") {
+          const codePart = part as ContentPart & { type: "code" };
           return (
-            <CodeBlock key={index} code={part.content} language={part.language || "text"} />
+            <CodeBlock key={index} code={codePart.content} language={codePart.language || "text"} />
           );
         }
 
-        // Render text with line breaks preserved
         return (
           <p
             key={index}
