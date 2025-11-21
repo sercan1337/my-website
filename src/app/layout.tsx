@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { Providers } from "@/components/Providers";
 import ScrollToTop from "@/components/ScrollToTop";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
+import CurvedLinesBackground from "@/components/CurvedLinesBackground";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,6 +34,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Providers>
+          <CurvedLinesBackground />
           <KeyboardShortcuts />
           <Header />
           <main>{children}</main>
