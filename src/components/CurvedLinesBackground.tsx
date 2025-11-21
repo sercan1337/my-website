@@ -48,10 +48,13 @@ export default function CurvedLinesBackground() {
       });
     });
 
-    // Normalize data to 0-1 range
-    const normalizedData = data.map(row => 
-      row.map(val => (val - minValue) / (maxValue - minValue))
-    );
+    // Normalize data to 0-1 range and flatten to 1D array (row-major order)
+    const normalizedData: number[] = [];
+    data.forEach(row => {
+      row.forEach(val => {
+        normalizedData.push((val - minValue) / (maxValue - minValue));
+      });
+    });
 
     // Create contour generator
     const numThresholds = 25;
