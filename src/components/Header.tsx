@@ -23,7 +23,7 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-sm transition-colors duration-600 dark:border-gray-800 dark:bg-gray-900/80">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto flex max-w-6xl items-center justify-center gap-8 px-4 py-4 sm:px-6 lg:px-8">
         <AuthorHoverCard>
           <Link
             href="/"
@@ -32,10 +32,8 @@ export default function Header() {
             Sercan Duran
           </Link>
         </AuthorHoverCard>
-        <div className="flex items-center gap-8">
-          <SiteNavigation recentPosts={recentPosts} allTags={allTags} />
-          <ThemeToggle />
-        </div>
+        <SiteNavigation recentPosts={recentPosts} allTags={allTags} />
+        <ThemeToggle />
       </nav>
     </header>
   );

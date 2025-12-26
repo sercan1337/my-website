@@ -63,7 +63,7 @@ export default function About() {
                 YouTube
               </a>
               <a
-                href="https://x.com/Nacr3z"
+                href="https://x.com/ncrz1337"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group inline-flex items-center gap-3 rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 transition-all duration-500 hover:bg-white hover:text-gray-900 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-white dark:hover:text-gray-900 post-card-hover x-hover"

@@ -91,8 +91,8 @@ function BlogNavigationContent({ recentPosts, allTags }: NavigationMenuContentPr
 
 export default function SiteNavigation({ recentPosts, allTags }: NavigationMenuContentProps) {
   return (
-    <NavigationMenu>
-      <NavigationMenuList>
+    <NavigationMenu className="w-full">
+      <NavigationMenuList className="w-full justify-center">
         <NavigationMenuItem>
           <NavigationMenuLink asChild>
             <Link href="/" className="text-sm font-medium text-gray-700 transition-colors duration-[600ms] hover:text-gray-900 dark:text-gray-300 dark:hover:text-white">
@@ -109,7 +109,7 @@ export default function SiteNavigation({ recentPosts, allTags }: NavigationMenuC
             >
               Blog
             </Link>
-            <NavigationMenuTrigger className="text-sm font-medium text-gray-700 transition-colors duration-[600ms] hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-0 h-auto w-auto ml-0 data-[state=open]:bg-transparent">
+            <NavigationMenuTrigger className="text-sm font-medium text-gray-700 transition-colors duration-[600ms] hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-0 h-auto w-auto ml-0 data-[state=open]:bg-transparent [&_svg]:hidden">
             </NavigationMenuTrigger>
           </div>
           <BlogNavigationContent recentPosts={recentPosts} allTags={allTags} />
@@ -123,7 +123,7 @@ export default function SiteNavigation({ recentPosts, allTags }: NavigationMenuC
             >
               About
             </Link>
-            <NavigationMenuTrigger className="text-sm font-medium text-gray-700 transition-colors duration-[600ms] hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-0 h-auto w-auto ml-0 data-[state=open]:bg-transparent">
+            <NavigationMenuTrigger className="text-sm font-medium text-gray-700 transition-colors duration-[600ms] hover:text-gray-900 dark:text-gray-300 dark:hover:text-white p-0 h-auto w-auto ml-0 data-[state=open]:bg-transparent [&_svg]:hidden">
             </NavigationMenuTrigger>
           </div>
           <NavigationMenuContent>
