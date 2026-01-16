@@ -1,26 +1,23 @@
-import { NextRequest, NextResponse } from "next/server";
-import { codeToHtml } from "shiki";
+import { NextResponse } from "next/server";
+import { createHighlighter  } from "shiki";
 
-export async function POST(request: NextRequest) {
+export async function POST(req: Request) {
   try {
-    const body = await request.json();
-    const { code, language = "text", theme = "github-dark" } = body;
+    const { code, language, theme } = await req.json();
 
-    if (!code || typeof code !== "string") {
-      return NextResponse.json(
-        { error: "Code is required" },
-        { status: 400 }
-      );
-    }
+    const highlighter = await createHighlighter ({
+      themes: ["github-dark", "github-light"],
+      langs: [language || "text"],
+    });
 
-    const html = await codeToHtml(code, {
-      lang: language,
-      theme: theme,
+    const html = highlighter.codeToHtml(code, {
+      lang: language || "text",
+      theme: theme === "github-light" ? "github-light" : "github-dark",
     });
 
     return NextResponse.json({ html });
   } catch (error) {
-    console.error("Error highlighting code:", error);
+    console.error("Shiki highlight error:", error);
     return NextResponse.json(
       { error: "Failed to highlight code" },
       { status: 500 }

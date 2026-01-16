@@ -639,3 +639,26 @@
   height: 100%;
   overflow: hidden;
 }
+.shiki {
+  counter-reset: line;
+  padding: 1.25rem;
+}
+
+.shiki code {
+  display: grid;
+}
+
+.shiki code > span {
+  counter-increment: line;
+  padding-left: 3.5rem;
+  position: relative;
+}
+
+.shiki code > span::before {
+  content: counter(line);
+  position: absolute;
+  left: 0;
+  width: 2.5rem;
+  text-align: right;
+  color: rgba(255, 255, 255, 0.3);
+}

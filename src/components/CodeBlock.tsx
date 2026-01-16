@@ -28,15 +28,13 @@ export default function CodeBlock({ code, language }: CodeBlockProps) {
     const highlightCode = async () => {
       setIsLoading(true);
       try {
-        // Determine theme - use resolvedTheme if available, fallback to theme
         const currentTheme = resolvedTheme || theme || "dark";
-        const shikiTheme = currentTheme === "dark" ? "github-dark" : "github-light";
+        const shikiTheme =
+          currentTheme === "dark" ? "github-dark" : "github-light";
 
         const response = await fetch("/api/highlight", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             code,
             language: language || "text",
@@ -52,8 +50,10 @@ export default function CodeBlock({ code, language }: CodeBlockProps) {
         setHighlightedHtml(data.html);
       } catch (error) {
         console.error("Error highlighting code:", error);
-        // Fallback to plain code
-        setHighlightedHtml(`<pre><code>${escapeHtml(code)}</code></pre>`);
+        // ✅ TEK ZORUNLU DÜZELTME
+        setHighlightedHtml(
+          `<pre><code>${escapeHtml(code)}</code></pre>`
+        );
       } finally {
         setIsLoading(false);
       }
@@ -89,7 +89,6 @@ export default function CodeBlock({ code, language }: CodeBlockProps) {
 
   return (
     <div className="my-4 overflow-hidden rounded-lg border border-gray-200 bg-gray-900 dark:border-gray-700">
-      {/* Code Block Header */}
       <div className="flex items-center justify-between border-b border-gray-700 bg-gray-800 px-4 py-2">
         <span className="text-xs font-medium text-gray-400">
           {language || "text"}
@@ -113,11 +112,9 @@ export default function CodeBlock({ code, language }: CodeBlockProps) {
         </button>
       </div>
 
-      {/* Highlighted Code */}
       <div
         className="overflow-x-auto [&_pre]:m-0 [&_pre]:bg-transparent [&_pre]:p-0 [&_pre]:text-sm [&_code]:block [&_code]:overflow-x-auto [&_code]:p-4 [&_code]:font-mono [&_code]:leading-relaxed"
         style={{
-          // Ensure Shiki styles are applied correctly
           color: isDark ? "#c9d1d9" : "#24292e",
         }}
         dangerouslySetInnerHTML={{ __html: highlightedHtml }}
@@ -136,4 +133,3 @@ function escapeHtml(text: string): string {
   };
   return text.replace(/[&<>"']/g, (m) => map[m]);
 }
-
