@@ -25,7 +25,7 @@ const createRedisClient = (): RedisClient | null => {
     token: process.env.UPSTASH_REDIS_REST_TOKEN,
   });
 };
-
+    
 const redisClient = createRedisClient();
 
 const mockRedis: RedisClient = {
