@@ -32,8 +32,9 @@ export async function GET(request: NextRequest) {
         }
         return b.averageReadingTime - a.averageReadingTime;
       })
-      .slice(0, limit);
-
+      .slice(0, limit)
+      .map(({ viewCount, averageReadingTime, ...post }) => post); // Remove stats before returning
+    
     return NextResponse.json({ posts: popularPosts });
   } catch (error) {
     console.error("Error fetching popular posts:", error);
