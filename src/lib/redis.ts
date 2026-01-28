@@ -4,6 +4,7 @@ type RedisClient = Pick<
   Redis,
   | "get"
   | "set"
+  | "del"
   | "incr"
   | "hgetall"
   | "hset"
@@ -31,6 +32,7 @@ const redisClient = createRedisClient();
 const mockRedis: RedisClient = {
   get: async <TData>() => null as TData | null,
   set: async <TData>() => "OK" as "OK" | TData | null,
+  del: async () => 0,
   incr: async () => 0,
   hgetall: async <TData extends Record<string, unknown>>() => null as TData | null,
   hset: async () => 0,

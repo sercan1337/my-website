@@ -95,47 +95,10 @@ export function getAllPostSlugs(): string[] {
   }
 }
 
-/**
- * Get related posts based on shared tags
- * Returns up to 3 related posts (excluding the current post)
- */
-export function getRelatedPosts(currentSlug: string, limit: number = 3): BlogPost[] {
-  const currentPost = getPostBySlug(currentSlug);
-  if (!currentPost || !currentPost.tags || currentPost.tags.length === 0) {
-    return [];
-  }
-
-  const allPosts = getAllPosts();
-  const relatedPosts = allPosts
-    .filter((post) => post.slug !== currentSlug)
-    .map((post) => {
-      const sharedTags = post.tags?.filter((tag) =>
-        currentPost.tags?.includes(tag)
-      ) || [];
-      return {
-        post,
-        score: sharedTags.length,
-      };
-    })
-    .filter((item) => item.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit)
-    .map((item) => item.post);
-
-  return relatedPosts;
-}
-
-/**
- * Calculate reading time in minutes based on content length
- * Re-exported from utils for convenience
- */
 export function calculateReadingTime(content: string): number {
   return calcReadingTime(content);
 }
 
-/**
- * Content statistics interface
- */
 export interface ContentStats {
   wordCount: number;
   characterCount: number;
@@ -145,9 +108,6 @@ export interface ContentStats {
   readingTime: number;
 }
 
-/**
- * Get detailed statistics about content
- */
 export function getContentStats(content: string): ContentStats {
   const text = content.replace(/<[^>]*>/g, ""); // Remove HTML tags if any
   const words = text.trim().split(/\s+/).filter(word => word.length > 0);
@@ -155,7 +115,6 @@ export function getContentStats(content: string): ContentStats {
   const charactersNoSpaces = text.replace(/\s+/g, "").length;
   const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
   
-  // Count headings (markdown headings)
   const headingRegex = /^#{1,6}\s+.+$/gm;
   const headings = content.match(headingRegex) || [];
   
@@ -169,18 +128,14 @@ export function getContentStats(content: string): ContentStats {
   };
 }
 
-/**
- * Heading interface for table of contents
- */
+
 export interface Heading {
   id: string;
   text: string;
   level: number;
 }
 
-/**
- * Extract headings from markdown content
- */
+
 export function extractHeadings(content: string): Heading[] {
   const headingRegex = /^(#{1,6})\s+(.+)$/gm;
   const headings: Heading[] = [];
@@ -200,9 +155,7 @@ export function extractHeadings(content: string): Heading[] {
   return headings;
 }
 
-/**
- * Get all unique tags from all posts
- */
+
 export function getAllTags(): string[] {
   const allPosts = getAllPosts();
   const tagsSet = new Set<string>();
@@ -216,9 +169,7 @@ export function getAllTags(): string[] {
   return Array.from(tagsSet).sort();
 }
 
-/**
- * Get posts filtered by tag
- */
+
 export function getPostsByTag(tag: string): BlogPost[] {
   const allPosts = getAllPosts();
   return allPosts.filter(
@@ -226,9 +177,7 @@ export function getPostsByTag(tag: string): BlogPost[] {
   );
 }
 
-/**
- * Get tag count (how many posts have each tag)
- */
+
 export function getTagCounts(): Record<string, number> {
   const allPosts = getAllPosts();
   const tagCounts: Record<string, number> = {};
@@ -244,9 +193,7 @@ export function getTagCounts(): Record<string, number> {
   return tagCounts;
 }
 
-/**
- * Search posts by query string (searches in title, excerpt, and content)
- */
+
 export function searchPosts(query: string): BlogPost[] {
   if (!query.trim()) {
     return getAllPosts();
@@ -267,9 +214,7 @@ export function searchPosts(query: string): BlogPost[] {
   });
 }
 
-/**
- * Generate excerpt from content if not provided
- */
+
 export function generateExcerpt(content: string, maxLength: number = 160): string {
   const text = content.replace(/<[^>]*>/g, "").replace(/[#*`]/g, "").trim();
   
@@ -277,7 +222,6 @@ export function generateExcerpt(content: string, maxLength: number = 160): strin
     return text;
   }
   
-  // Try to cut at a sentence boundary
   const truncated = text.substring(0, maxLength);
   const lastPeriod = truncated.lastIndexOf(".");
   const lastExclamation = truncated.lastIndexOf("!");
@@ -292,9 +236,7 @@ export function generateExcerpt(content: string, maxLength: number = 160): strin
   return truncated.trim() + "...";
 }
 
-/**
- * Format date string to a more readable format
- */
+
 export function formatDate(dateString: string, locale: string = "tr-TR"): string {
   try {
     const date = new Date(dateString);
@@ -311,9 +253,7 @@ export function formatDate(dateString: string, locale: string = "tr-TR"): string
   }
 }
 
-/**
- * Get posts by date range
- */
+
 export function getPostsByDateRange(
   startDate: Date,
   endDate: Date
@@ -330,17 +270,13 @@ export function getPostsByDateRange(
   });
 }
 
-/**
- * Get recent posts (last N posts)
- */
+
 export function getRecentPosts(limit: number = 5): BlogPost[] {
   const allPosts = getAllPosts();
   return allPosts.slice(0, limit);
 }
 
-/**
- * Get posts by year
- */
+
 export function getPostsByYear(year: number): BlogPost[] {
   const allPosts = getAllPosts();
   
@@ -354,9 +290,7 @@ export function getPostsByYear(year: number): BlogPost[] {
   });
 }
 
-/**
- * Get all available years from posts
- */
+
 export function getAllYears(): number[] {
   const allPosts = getAllPosts();
   const yearsSet = new Set<number>();
@@ -368,16 +302,13 @@ export function getAllYears(): number[] {
         yearsSet.add(postDate.getFullYear());
       }
     } catch (error) {
-      // Skip invalid dates
     }
   });
   
   return Array.from(yearsSet).sort((a, b) => b - a);
 }
 
-/**
- * Get content metadata summary
- */
+
 export interface ContentMetadata {
   stats: ContentStats;
   headings: Heading[];
@@ -386,20 +317,15 @@ export interface ContentMetadata {
   hasLinks: boolean;
 }
 
-/**
- * Get comprehensive content metadata
- */
+
 export function getContentMetadata(content: string): ContentMetadata {
   const stats = getContentStats(content);
   const headings = extractHeadings(content);
   
-  // Check for code blocks
   const hasCodeBlocks = /```[\s\S]*?```|`[^`]+`/.test(content);
   
-  // Check for images (markdown or HTML)
   const hasImages = /!\[.*?\]\(.*?\)|<img/i.test(content);
   
-  // Check for links (markdown or HTML)
   const hasLinks = /\[.*?\]\(.*?\)|<a\s/i.test(content);
   
   return {
