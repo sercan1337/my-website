@@ -1,231 +1,86 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import type { BlogPost } from "@/lib/posts";
-import { calculateReadingTime } from "@/lib/utils";
-import SearchBar from "@/components/SearchBar";
-import { Badge } from "@/components/ui/badge";
-import {
-  Pagination,
-  PaginationContent,
-  PaginationItem,
-  PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
-  PaginationEllipsis,
-} from "@/components/ui/pagination";
-import { Clock } from "lucide-react";
+const calculateReadingTime = (text: string): string => {
+  if (!text) return "3 min read";
+  const wordsPerMinute = 200;
+  const words = text.trim().split(/\s+/).length;
+  const time = Math.ceil(words / wordsPerMinute);
+  return `${time} min read`;
+};
 
-interface BlogPostsListProps {
-  initialPosts: BlogPost[];
+interface BlogListProps {
+  posts: BlogPost[];
 }
 
-const POSTS_PER_PAGE = 4;
-
-export default function BlogPostsList({ initialPosts }: BlogPostsListProps) {
-  const searchParams = useSearchParams();
-  const tagFromUrl = searchParams.get("tag");
-  const [filteredPosts, setFilteredPosts] = useState<BlogPost[]>(initialPosts);
-  const [currentPage, setCurrentPage] = useState(1);
-
-  // Pagination logic
-  const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
-  const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
-  const endIndex = startIndex + POSTS_PER_PAGE;
-  const currentPosts = filteredPosts.slice(startIndex, endIndex);
-
-  // Reset to page 1 when filtered posts change
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [filteredPosts.length]);
-
-  // Generate page numbers to display
-  const getPageNumbers = () => {
-    const pages: (number | "ellipsis")[] = [];
-    const maxVisible = 5;
-
-    if (totalPages <= maxVisible) {
-      // Show all pages if total is less than max visible
-      for (let i = 1; i <= totalPages; i++) {
-        pages.push(i);
-      }
-    } else {
-      // Always show first page
-      pages.push(1);
-
-      if (currentPage <= 3) {
-        // Show first few pages
-        for (let i = 2; i <= 4; i++) {
-          pages.push(i);
-        }
-        pages.push("ellipsis");
-        pages.push(totalPages);
-      } else if (currentPage >= totalPages - 2) {
-        // Show last few pages
-        pages.push("ellipsis");
-        for (let i = totalPages - 3; i <= totalPages; i++) {
-          pages.push(i);
-        }
-      } else {
-        // Show pages around current
-        pages.push("ellipsis");
-        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
-          pages.push(i);
-        }
-        pages.push("ellipsis");
-        pages.push(totalPages);
-      }
-    }
-
-    return pages;
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
+export default function BlogList({ posts }: BlogListProps) {
+  const sortedPosts = [...posts].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
   return (
-    <div>
-      <div className="mx-auto max-w-2xl">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-            Blog
-          </h1>
-          <p className="mt-6 text-lg text-gray-600 dark:text-gray-400">
-            Thoughts, tutorials, and insights on development and technology.
-          </p>
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes grid-move {
+          0% { background-position: 0 0; }
+          100% { background-position: 30px 30px; }
+        }
+        .animate-grid {
+          animation: grid-move 3s linear infinite;
+        }
+      `}} />
 
-          {/* Arama ve Filtreleme */}
-          <div className="mt-12">
-            <SearchBar 
-              posts={initialPosts} 
-              onFilterChange={setFilteredPosts}
-              initialTag={tagFromUrl || undefined}
-            />
+      <div className="min-h-screen w-full relative bg-white dark:bg-gray-950 transition-colors duration-500">
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 w-full h-full -top-10 -left-10 
+            bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
+            dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] 
+            animate-grid"
+            style={{ backgroundSize: '30px 30px' }}>
+          </div>
+          <div className="absolute inset-0 bg-white [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,transparent_20%,black)] dark:bg-gray-950"></div>
+        </div>
+
+        <main className="relative z-10 max-w-3xl mx-auto px-6 py-24 sm:px-8">
+          <div className="flex flex-col items-start mb-16 space-y-4">
+            <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white font-mono">
+              Blog
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl">
+              Writing on software, design, and what I&apos;m learning.
+            </p>
           </div>
 
-          {/* Blog Post Listesi */}
-          <div className="mt-12 space-y-8">
-            {currentPosts.length > 0 ? (
-              currentPosts.map((post) => (
-                <article
-                  key={post.slug}
-                  className="border-b border-gray-200 pb-8 dark:border-gray-800"
-                >
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    className="group block"
-                  >
-                    <h2 className="text-2xl font-semibold text-gray-900 transition-colors group-hover:text-gray-600 dark:text-white dark:group-hover:text-gray-300">
-                      {post.title}
-                    </h2>
-                    <p className="mt-3 text-gray-600 dark:text-gray-400">
+          <div className="flex flex-col space-y-8">
+            {sortedPosts.map((post) => {
+              const readingTime = calculateReadingTime(post.content || "");
+              return (
+              <Link key={post.slug} href={`/blog/${post.slug}`} className="block group">
+                <article className="flex flex-col space-y-3 py-4 border-b border-gray-200/30 dark:border-gray-800/30 transition-colors duration-300">
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
+                    {post.title}
+                  </h2>
+                  {post.excerpt && (
+                    <p className="text-base text-gray-600 dark:text-gray-400 line-clamp-2 leading-relaxed">
                       {post.excerpt}
                     </p>
-                    {post.tags && post.tags.length > 0 && (
-                      <div className="mt-3 flex flex-wrap gap-2">
-                        {post.tags.map((tag) => (
-                          <Badge
-                            key={tag}
-                            variant="secondary"
-                            className="text-xs"
-                          >
-                            {tag}
-                          </Badge>
-                        ))}
-                      </div>
-                    )}
-                    <div className="mt-4 flex items-center gap-4 text-sm text-gray-500 dark:text-gray-500">
-                      <span>{post.date}</span>
-                      <span className="flex items-center gap-1">
-                        <Clock className="h-3 w-3" />
-                        {calculateReadingTime(post.content)} min read
-                      </span>
-                    </div>
-                  </Link>
+                  )}
+                  <div className="flex items-center text-sm font-mono text-gray-400 dark:text-gray-500 space-x-2">
+                    <time dateTime={post.date}>
+                      {new Date(post.date).toLocaleDateString("en-US", {
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </time>
+                    <span>·</span>
+                    <span>{readingTime}</span>
+                  </div>
                 </article>
-              ))
-            ) : (
-              <div className="py-12 text-center">
-                <p className="text-lg text-gray-600 dark:text-gray-400">
-                  No posts found. Try adjusting your search or filters.
-                </p>
-              </div>
-            )}
+              </Link>
+            )})}
           </div>
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="mt-12">
-              <Pagination>
-                <PaginationContent>
-                  <PaginationItem>
-                    <PaginationPrevious
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage > 1) {
-                          handlePageChange(currentPage - 1);
-                        }
-                      }}
-                      className={
-                        currentPage === 1
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
-                      }
-                    />
-                  </PaginationItem>
-
-                  {getPageNumbers().map((page, index) => {
-                    if (page === "ellipsis") {
-                      return (
-                        <PaginationItem key={`ellipsis-${index}`}>
-                          <PaginationEllipsis />
-                        </PaginationItem>
-                      );
-                    }
-
-                    return (
-                      <PaginationItem key={page}>
-                        <PaginationLink
-                          href="#"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            handlePageChange(page);
-                          }}
-                          isActive={currentPage === page}
-                          className="cursor-pointer"
-                        >
-                          {page}
-                        </PaginationLink>
-                      </PaginationItem>
-                    );
-                  })}
-
-                  <PaginationItem>
-                    <PaginationNext
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        if (currentPage < totalPages) {
-                          handlePageChange(currentPage + 1);
-                        }
-                      }}
-                      className={
-                        currentPage === totalPages
-                          ? "pointer-events-none opacity-50"
-                          : "cursor-pointer"
-                      }
-                    />
-                  </PaginationItem>
-                </PaginationContent>
-              </Pagination>
-            </div>
-          )}
+        </main>
       </div>
-    </div>
+    </>
   );
 }
-
