@@ -19,11 +19,11 @@ export default function Home() {
       <div className="h-[calc(100vh-5rem)] w-full overflow-hidden relative flex flex-col items-center justify-center bg-white dark:bg-gray-950 transition-colors duration-500">
         
         <div className="absolute inset-0 h-full w-full">
-          <div className="absolute h-[200%] w-[200%] -top-10 -left-10 
+          <div className="absolute h-full w-full -top-10 -left-10 
             bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
             dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] 
-            bg-[size:30px_30px] 
-            animate-grid">
+            animate-grid"
+            style={{ backgroundSize: '30px 30px' }}>
           </div>
         </div>
 
@@ -77,8 +77,7 @@ export default function Home() {
                   <IconMail size={20} stroke={1.5} />
                 </a>
               </div>
-
-            </div>
+           </div>
           </div>
         </section>
       </div>

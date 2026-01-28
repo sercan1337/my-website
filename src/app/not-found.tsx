@@ -20,7 +20,7 @@ export default function NotFound() {
       <div className="min-h-screen w-full relative bg-white dark:bg-gray-950 transition-colors duration-500 flex items-center justify-center p-4 font-mono">
         
         <div className="fixed inset-0 z-0 pointer-events-none">
-          <div className="absolute inset-0 w-[200%] h-[200%] -top-10 -left-10 
+          <div className="absolute inset-0 w-full h-full -top-10 -left-10 
             bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
             dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] 
             animate-grid"

@@ -1,87 +1,109 @@
 "use client";
 
-import AuthorHoverCard from "@/components/AuthorHoverCard";
+import Link from "next/link";
+import { 
+  MapPin,
+  Github,
+  Twitter,
+  Mail,
+  GraduationCap
+} from "lucide-react";
 
 export default function About() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <section className="mx-auto max-w-4xl px-4 py-20 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 dark:text-white sm:text-5xl">
-            About Me
-          </h1>
-          <div className="mt-10 space-y-6 text-base leading-9 text-gray-600 dark:text-gray-400">
-            <p>
-            Hi, I&apos;m <AuthorHoverCard><span className="font-semibold text-gray-900 dark:text-white cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors bg-gray-100 dark:bg-gray-800 px-2 py-1 rounded">Sercan</span></AuthorHoverCard>. I&apos;m an eager, passionate developer who loves learning new things. Here, I share my thoughts, projects, and what I&apos;ve learned.
-            </p>
-            <p>
-            I&apos;m currently a student in Türkiye. I&apos;m interested in web development, machine learning, and artificial intelligence. I&apos;m also a big fan of Formula 1.
-            </p>
-            <h2 className="mt-12 text-2xl font-semibold text-gray-900 dark:text-white">
-              Get in Touch
-            </h2>
-            <p>
-              Feel free to reach out! You can find me on these platforms:
-            </p>
-            <div className="mt-6 flex flex-wrap justify-center gap-4">
-              <a
-                href="https://github.com/ncrz1337"  
-                target="_blank"   
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 transition-all duration-500 hover:bg-white hover:text-gray-900 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-white dark:hover:text-gray-900 post-card-hover github-hover"
-              >
-                <svg
-                  className="h-6 w-6 fill-gray-700 transition-colors duration-500 group-hover:fill-[#181717] dark:fill-gray-300 dark:group-hover:fill-[#181717]"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                GitHub
-              </a>
-              <a
-                href="https://www.youtube.com/@Nacrez"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 transition-all duration-500 hover:bg-white hover:text-gray-900 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-white dark:hover:text-gray-900 post-card-hover youtube-hover"
-              >
-                <svg
-                  className="h-6 w-6 fill-gray-700 transition-colors duration-500 group-hover:fill-[#FF0000] dark:fill-gray-300"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M19.812 5.418c.861.23 1.538.907 1.768 1.768C21.998 8.746 22 12 22 12s0 3.255-.418 4.814a2.504 2.504 0 0 1-1.768 1.768c-1.56.419-7.814.419-7.814.419s-6.255 0-7.814-.419a2.505 2.505 0 0 1-1.768-1.768C2 15.255 2 12 2 12s0-3.255.417-4.814a2.507 2.507 0 0 1 1.768-1.768C5.744 5 11.998 5 11.998 5s6.255 0 7.814.418ZM15.194 12 10 15V9l5.194 3Z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                YouTube
-              </a>
-              <a
-                href="https://x.com/ncrz1337"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group inline-flex items-center gap-3 rounded-lg border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 transition-all duration-500 hover:bg-white hover:text-gray-900 hover:shadow-md dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-white dark:hover:text-gray-900 post-card-hover x-hover"
-              >
-                <svg
-                  className="h-4 w-4 fill-gray-700 transition-colors duration-500 group-hover:fill-[#000000] dark:fill-gray-300 dark:group-hover:fill-[#000000]"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"  
-                >
-                  <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-                </svg>
-                X
-              </a>
-            </div>
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes grid-move {
+          0% { background-position: 0 0; }
+          100% { background-position: 30px 30px; }
+        }
+        .animate-grid {
+          animation: grid-move 3s linear infinite;
+        }
+      `}} />
+
+      <div className="min-h-full w-full relative bg-white dark:bg-gray-950 transition-colors duration-500 flex flex-col items-center justify-center p-4 py-24">
+        
+        <div className="fixed inset-0 z-0 pointer-events-none">
+          <div className="absolute inset-0 w-full h-full -top-10 -left-10 
+            bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
+            dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] 
+            animate-grid"
+            style={{ backgroundSize: '30px 30px' }}>
           </div>
+          <div className="absolute inset-0 bg-white [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,transparent_20%,black)] dark:bg-gray-950"></div>
         </div>
-      </section>
-    </div>
+
+        <main className="relative z-10 w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-4 auto-rows-[minmax(140px,auto)]">
+          
+          <div className="md:col-span-2 md:row-span-2 p-8 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md flex flex-col justify-between group hover:border-green-500/40 transition-all duration-300">
+             <div>
+                <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 font-mono tracking-tighter">
+                  Sercan Duran
+                </h1>
+                <p className="text-gray-500 dark:text-gray-400 font-mono text-sm mb-6">
+                  Student
+                </p>
+                <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed">
+                  I&apos;m a 9th-grade student with a passion for building software. 
+                  I combine modern web technologies with clean design to create exceptional user experiences. 
+                  Always learning, always shipping.
+                </p>
+             </div>
+             
+             <div className="mt-8 flex items-center gap-3">
+                <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900/30 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-xs font-mono font-medium">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  Available for projects
+                </div>
+             </div>
+          </div>
+
+          <div className="md:col-span-1 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md flex flex-col justify-between hover:border-gray-400 dark:hover:border-gray-600 transition-colors">
+             <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
+                <MapPin size={20} />
+                <span className="text-xs font-mono">LOCATION</span>
+             </div>
+             <div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">Turkey</h3>
+                <p className="text-sm text-gray-500">GMT+3</p>
+             </div>
+             <div className="w-full h-12 mt-2 opacity-20 bg-[repeating-linear-gradient(45deg,black,black_1px,transparent_1px,transparent_10px)] dark:bg-[repeating-linear-gradient(45deg,white,white_1px,transparent_1px,transparent_10px)]"></div>
+          </div>
+
+          <div className="md:col-span-1 p-6 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md flex flex-col justify-between hover:border-gray-400 dark:hover:border-gray-600 transition-colors">
+             <div className="flex items-center justify-between text-gray-500 dark:text-gray-400">
+                <GraduationCap size={20} />
+                <span className="text-xs font-mono">EDUCATION</span>
+             </div>
+             <div>
+                <h3 className="text-xl font-bold text-gray-900 dark:text-white">High School</h3>
+                <p className="text-sm text-gray-500">9th Grade Student</p>
+             </div>
+             <div className="w-full bg-gray-200 dark:bg-gray-800 h-1.5 mt-4 rounded-full overflow-hidden">
+                <div className="bg-gray-900 dark:bg-white h-full w-[25%] rounded-full"></div>
+             </div>
+          </div>
+
+          <div className="md:col-span-3 grid grid-cols-3 gap-4">
+             <Link href="https://github.com/ncrz1337" target="_blank" className="flex items-center justify-center p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group">
+                <Github className="text-gray-600 dark:text-gray-400 group-hover:text-black dark:group-hover:text-white transition-colors" />
+             </Link>
+             
+             <Link href="https://x.com/ncrz1337" target="_blank" className="flex items-center justify-center p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group">
+                <Twitter className="text-gray-600 dark:text-gray-400 group-hover:text-blue-400 transition-colors" />
+             </Link>
+             
+             <Link href="mailto:sercanking40@gmail.com" className="flex items-center justify-center p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-gray-900/50 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors group">
+                <Mail className="text-gray-600 dark:text-gray-400 group-hover:text-green-600 transition-colors" />
+             </Link>
+          </div>
+
+        </main>
+      </div>
+    </>
   );
 }
-
