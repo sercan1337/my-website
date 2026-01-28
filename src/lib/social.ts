@@ -365,10 +365,6 @@ export function calculateEngagementRate(
 export function generateSocialProof(stats: EngagementStats): string {
   const parts: string[] = [];
   
-  if (stats.views > 0) {
-    parts.push(`${formatEngagementNumber(stats.views)} views`);
-  }
-  
   if (stats.likes && stats.likes > 0) {
     parts.push(`${formatEngagementNumber(stats.likes)} likes`);
   }

@@ -4,44 +4,17 @@ import { useEffect, useRef } from "react";
 
 interface UseAnalyticsOptions {
   slug: string;
-  trackView?: boolean;
   trackReadingTime?: boolean;
   minReadingTime?: number; // Minimum seconds to count as a read
 }
 
 export function useAnalytics({
   slug,
-  trackView = true,
   trackReadingTime = true,
   minReadingTime = 30,
 }: UseAnalyticsOptions) {
   const startTimeRef = useRef<number | null>(null);
-  const hasTrackedViewRef = useRef(false);
   const readingTimeIntervalRef = useRef<NodeJS.Timeout | null>(null);
-
-  // Track view on mount
-  useEffect(() => {
-    if (!trackView) return;
-
-    const trackViewAsync = async () => {
-      try {
-        await fetch("/api/analytics/view", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ slug }),
-        });
-        hasTrackedViewRef.current = true;
-      } catch (error) {
-        console.error("Error tracking view:", error);
-      }
-    };
-
-    if (!hasTrackedViewRef.current) {
-      trackViewAsync();
-    }
-  }, [slug, trackView]);
 
   useEffect(() => {
     if (!trackReadingTime) return;

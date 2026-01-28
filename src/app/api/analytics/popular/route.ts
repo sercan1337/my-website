@@ -11,29 +11,22 @@ export async function GET(request: NextRequest) {
     
     const postsWithStats = await Promise.all(
       allPosts.map(async (post) => {
-        const [viewCount, avgReadingTime] = await Promise.all([
-          redis.get(`views:${post.slug}`),
-          redis.get(`avg-reading-time:${post.slug}`),
-        ]);
+        const avgReadingTime = await redis.get(`avg-reading-time:${post.slug}`);
         
         return {
           ...post,
-          viewCount: viewCount ? Number(viewCount) : 0,
           averageReadingTime: avgReadingTime ? Number(avgReadingTime) : 0,
         };
       })
     );
 
     const popularPosts = postsWithStats
-      .filter((post) => post.viewCount > 0)
+      .filter((post) => post.averageReadingTime > 0)
       .sort((a, b) => {
-        if (b.viewCount !== a.viewCount) {
-          return b.viewCount - a.viewCount;
-        }
         return b.averageReadingTime - a.averageReadingTime;
       })
       .slice(0, limit)
-      .map(({ viewCount, averageReadingTime, ...post }) => post); // Remove stats before returning
+      .map(({ averageReadingTime, ...post }) => post); // Remove stats before returning
     
     return NextResponse.json({ posts: popularPosts });
   } catch (error) {
