@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 import { redis } from "@/lib/redis";
 
 export interface Comment {
@@ -8,6 +10,7 @@ export interface Comment {
   content: string;
   createdAt: string;
   parentId?: string;
+  userId?: string;
 }
 
 export async function GET(request: NextRequest) {
@@ -58,23 +61,38 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { postSlug, author, content, parentId } = await request.json();
+    const session = await auth.api.getSession({
+      headers: await headers(),
+    });
 
-    if (!postSlug || !author || !content) {
+    if (!session?.user) {
       return NextResponse.json(
-        { error: "postSlug, author, and content are required" },
+        { error: "You must be logged in to comment" },
+        { status: 401 }
+      );
+    }
+
+    const { postSlug, content, parentId } = await request.json();
+
+    if (!postSlug || !content) {
+      return NextResponse.json(
+        { error: "postSlug and content are required" },
         { status: 400 }
       );
     }
+
+    const author =
+      session.user.name?.trim() || session.user.email || "Anonymous";
 
     const commentId = `comment:${Date.now()}:${Math.random().toString(36).substr(2, 9)}`;
 
     const comment: Comment = {
       id: commentId,
       postSlug,
-      author: author.trim(),
+      author,
       content: content.trim(),
       createdAt: new Date().toISOString(),
+      userId: session.user.id,
     };
     if (parentId) {
       comment.parentId = parentId;
@@ -86,6 +104,7 @@ export async function POST(request: NextRequest) {
       author: comment.author,
       content: comment.content,
       createdAt: comment.createdAt,
+      userId: comment.userId ?? "",
     };
     if (comment.parentId) {
       commentData.parentId = comment.parentId;

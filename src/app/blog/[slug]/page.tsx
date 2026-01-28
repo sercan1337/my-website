@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import {
   getPostBySlug,
   getAllPostSlugs,
-  getRelatedPosts,
 } from "@/lib/posts";
 import { calculateReadingTime } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
@@ -12,8 +11,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import TableOfContents from "@/components/TableOfContents";
 import Comments from "@/components/Comments";
-import RatingDrawer from "@/components/RatingDrawer";
-import RelatedPosts from "@/components/RelatedPosts";
 import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { Clock, ArrowLeft, Calendar } from "lucide-react";
 import MinimalDesignExample from "@/components/MinimalDesignExample";
@@ -71,7 +68,6 @@ export default async function BlogPost({
   }
 
   const readingTime = calculateReadingTime(post.content);
-  const relatedPosts = getRelatedPosts(resolvedParams.slug);
   const claps = await getClaps(resolvedParams.slug);
 
   return (
@@ -89,7 +85,7 @@ export default async function BlogPost({
       <div className="min-h-screen relative bg-white dark:bg-gray-950 transition-colors duration-500">
         
         <div className="absolute inset-0 h-full w-full">
-          <div className="absolute h-[200%] w-[200%] -top-10 -left-10 
+          <div className="absolute h-[100%] w-[100%] -top-10 -left-10 
             bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
             dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.1)_1px,transparent_1px)] 
             animate-grid"
@@ -198,10 +194,6 @@ export default async function BlogPost({
                 <div className="mb-10 flex justify-center md:justify-start">
                   <ClapButton slug={resolvedParams.slug} initialClaps={claps} />
                 </div>
-
-                {relatedPosts.length > 0 && (
-                  <RelatedPosts posts={relatedPosts} className="mb-12" />
-                )}
                 
                 <div className="mb-12">
                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 font-mono">
@@ -209,8 +201,6 @@ export default async function BlogPost({
                    </h3>
                    <Comments term={resolvedParams.slug} />
                 </div>
-
-                <RatingDrawer slug={resolvedParams.slug} title={post.title} />
               </div>
             </div>
 

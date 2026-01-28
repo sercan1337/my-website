@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { useAuth } from "@/contexts/AuthContext";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Send, Loader2, User, MessageSquare } from "lucide-react";
+import { Send, Loader2, MessageSquare } from "lucide-react";
 
 interface CommentFormProps {
   postSlug: string;
@@ -11,17 +12,19 @@ interface CommentFormProps {
 }
 
 export default function CommentForm({ postSlug, onCommentAdded }: CommentFormProps) {
-  const [author, setAuthor] = useState("");
+  const { session } = useAuth();
   const [content, setContent] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const author = session?.user?.name ?? session?.user?.email ?? "Anonymous";
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (!author.trim() || !content.trim()) {
-      setError("Please fill in all fields");
+    if (!content.trim()) {
+      setError("Please enter a comment");
       return;
     }
 
@@ -33,9 +36,9 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
         body: JSON.stringify({
           postSlug,
-          author: author.trim(),
           content: content.trim(),
         }),
       });
@@ -45,8 +48,6 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
         throw new Error(data.error || "Failed to submit comment");
       }
 
-      // Reset form
-      setAuthor("");
       setContent("");
       onCommentAdded();
     } catch (err) {
@@ -58,27 +59,9 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
-      <div className="grid gap-5 sm:grid-cols-2">
-        <div className="sm:col-span-1">
-          <label
-            htmlFor="author"
-            className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-          >
-            <User className="h-4 w-4" />
-            Name <span className="text-red-500">*</span>
-          </label>
-          <input
-            id="author"
-            type="text"
-            value={author}
-            onChange={(e) => setAuthor(e.target.value)}
-            placeholder="John Doe"
-            className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 transition-all duration-200 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-blue-400"
-            disabled={isSubmitting}
-            required
-          />
-        </div>
-      </div>
+      <p className="text-sm text-gray-600 dark:text-gray-400">
+        Commenting as <span className="font-medium text-gray-900 dark:text-white">{author}</span>
+      </p>
 
       <div>
         <label
@@ -118,11 +101,11 @@ export default function CommentForm({ postSlug, onCommentAdded }: CommentFormPro
       <div className="flex items-center justify-end gap-3 pt-2">
         <button
           type="submit"
-          disabled={isSubmitting || !author.trim() || !content.trim()}
+          disabled={isSubmitting || !content.trim()}
           className={cn(
             buttonVariants({ variant: "default", size: "default" }),
             "group inline-flex items-center gap-2 px-6 transition-all duration-200 hover:scale-105 active:scale-95",
-            (isSubmitting || !author.trim() || !content.trim()) &&
+            (isSubmitting || !content.trim()) &&
               "opacity-50 cursor-not-allowed hover:scale-100"
           )}
         >

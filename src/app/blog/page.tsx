@@ -1,17 +1,16 @@
-import { Suspense } from "react";
+import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/posts";
-import BlogPostsList from "@/components/BlogPostsList";
+import BlogList from "@/components/BlogPostsList";
 
-export default function Blog() {
-  const blogPosts = getAllPosts();
+export const metadata: Metadata = {
+  title: "Blog | Sercan Duran",
+  description: "Writing on software, design, and what I'm learning.",
+};
+
+export default function BlogPage() {
+  const allPosts = getAllPosts();
+
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
-      <div className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
-        <Suspense fallback={<div>Loading...</div>}>
-          <BlogPostsList initialPosts={blogPosts} />
-        </Suspense>
-      </div>
-    </div>
+    <BlogList posts={allPosts} />
   );
 }
-
