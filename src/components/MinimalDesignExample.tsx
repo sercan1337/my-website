@@ -21,7 +21,6 @@ export default function MinimalDesignExample() {
     href="https://gist.github.com/ncrz1337/b0df58f8658820321ef463806a36a6e2"
   />  const exampleCode = `
 
-  // New states for the animation effects
   const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
 
@@ -31,9 +30,7 @@ export default function MinimalDesignExample() {
     setExampleTheme(mainTheme as "light" | "dark");
   }, [resolvedTheme]);
 
-  // Updated toggle handler with ripple logic
   const handleThemeToggle = (e: React.MouseEvent<HTMLButtonElement>) => {
-    // 1. Create Ripple
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -42,10 +39,8 @@ export default function MinimalDesignExample() {
     setRipples((prev) => [...prev, newRipple]);
     setIsAnimating(true);
 
-    // 2. Toggle Theme
     setExampleTheme(prev => prev === "dark" ? "light" : "dark");
 
-    // 3. Cleanup animations
     setTimeout(() => setIsAnimating(false), 500);
     setTimeout(() => {
       setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
@@ -54,7 +49,6 @@ export default function MinimalDesignExample() {
 
   return (
     <div className="my-8">
-      {/* Main Toggle Button (Show/Hide Example) */}
       <button
         onClick={() => setShowExample(!showExample)}
         className="w-full flex items-center justify-between gap-3 px-6 py-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:from-blue-100 hover:to-purple-100 dark:hover:from-blue-900/30 dark:hover:to-purple-900/30 transition-all duration-300 shadow-sm hover:shadow-md group active:scale-[0.98]"
@@ -77,7 +71,6 @@ export default function MinimalDesignExample() {
         </div>
       </button>
 
-      {/* Example Content with Animation */}
       <div
         className={`overflow-hidden transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] ${
           showExample
@@ -273,7 +266,6 @@ export default function MinimalDesignExample() {
 
         <div className={`minimal-wrapper relative ${exampleTheme === 'dark' ? 'minimal-wrapper-dark' : ''}`}>
           
-          {/* --- UPDATED THEME TOGGLE BUTTON --- */}
           <div className="absolute top-4 right-4 z-10">
             <button
               onClick={handleThemeToggle}
@@ -284,7 +276,6 @@ export default function MinimalDesignExample() {
               }}
               aria-label="Toggle example theme"
             >
-              {/* Ripple effects */}
               {ripples.map((ripple) => (
                 <span
                   key={ripple.id}
@@ -296,7 +287,6 @@ export default function MinimalDesignExample() {
                 />
               ))}
               
-              {/* Icon with rotation animation */}
               <span
                 className={`inline-flex items-center justify-center transition-all duration-500 ${
                   isAnimating ? "icon-rotate-animation" : ""
@@ -351,7 +341,6 @@ export default function MinimalDesignExample() {
           </footer>
         </div>
 
-{/* Code Toggle Button */}
 <button
   onClick={() => setShowCode(!showCode)}
   className="mt-4 w-full flex items-center justify-between gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 text-sm font-medium text-gray-700 dark:text-gray-300 hover:shadow-sm"
@@ -365,7 +354,6 @@ export default function MinimalDesignExample() {
   </div>
 </button>
 
-{/* Code Block with Animation */}
 <div
   className={`overflow-hidden transition-all duration-300 ease-in-out ${
     showCode ? "max-h-[2000px] opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"

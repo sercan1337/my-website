@@ -50,7 +50,6 @@ export default function CodeBlock({ code, language }: CodeBlockProps) {
         setHighlightedHtml(data.html);
       } catch (error) {
         console.error("Error highlighting code:", error);
-        // ✅ TEK ZORUNLU DÜZELTME
         setHighlightedHtml(
           `<pre><code>${escapeHtml(code)}</code></pre>`
         );

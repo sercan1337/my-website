@@ -1,145 +1,76 @@
 "use client";
 
+import * as React from "react";
+import { Moon, Sun, Monitor, Check } from "lucide-react";
 import { useTheme } from "next-themes";
-import { Moon, Sun } from "lucide-react";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { cn } from "@/lib/utils";
 
 export function ThemeToggle() {
-  const { theme, setTheme, resolvedTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [ripples, setRipples] = useState<Array<{ id: number; x: number; y: number }>>([]);
-  const [currentTheme, setCurrentTheme] = useState<string>("light");
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const isClickTriggered = useRef(false);
+  const { setTheme, theme } = useTheme();
+  const [isOpen, setIsOpen] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
 
-  // Avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  // Trigger animations when theme changes externally (e.g., keyboard shortcut)
-  const triggerAnimations = useCallback((x?: number, y?: number) => {
-    setIsAnimating(true);
-    
-    // Create ripple effect - use provided coordinates or center of button
-    let rippleX = x;
-    let rippleY = y;
-    
-    if (rippleX === undefined || rippleY === undefined) {
-      // Use center of button if coordinates not provided (keyboard shortcut)
-      if (buttonRef.current) {
-        const rect = buttonRef.current.getBoundingClientRect();
-        rippleX = rect.width / 2;
-        rippleY = rect.height / 2;
-      } else {
-        rippleX = 18; // Fallback to approximate center (button is 36px = h-9 w-9)
-        rippleY = 18;
+  React.useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
       }
-    }
-    
-    const newRipple = {
-      id: Date.now(),
-      x: rippleX,
-      y: rippleY,
     };
-    
-    setRipples((prev) => [...prev, newRipple]);
-    
-    // Remove ripple after animation
-    setTimeout(() => {
-      setRipples((prev) => prev.filter((r) => r.id !== newRipple.id));
-    }, 600);
-    
-    // Reset animation state
-    setTimeout(() => {
-      setIsAnimating(false);
-    }, 600);
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const prevThemeRef = useRef<string>("light");
-
-  // Force update when resolvedTheme changes - this ensures React re-renders
-  useEffect(() => {
-    const newTheme = resolvedTheme || theme || "light";
-    if (newTheme !== prevThemeRef.current) {
-      prevThemeRef.current = newTheme;
-      
-      // Update state asynchronously to avoid synchronous setState in effect
-      setTimeout(() => {
-        setCurrentTheme(newTheme);
-        
-        // If theme changed but wasn't triggered by click, trigger animations
-        if (!isClickTriggered.current && mounted) {
-          triggerAnimations();
-        }
-        
-        // Reset the flag after a short delay to allow state updates
-        setTimeout(() => {
-          isClickTriggered.current = false;
-        }, 100);
-      }, 0);
-    }
-  }, [resolvedTheme, theme, mounted, triggerAnimations]);
-
-  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    isClickTriggered.current = true;
-    
-    // Create ripple effect at click position
-    const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    triggerAnimations(x, y);
-    
-    // Toggle theme
-    const actualTheme = resolvedTheme || theme || "light";
-    setTheme(actualTheme === "dark" ? "light" : "dark");
-  };
-
-  if (!mounted) {
-    return (
-      <button
-        className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-md border border-gray-200 bg-white transition-all duration-500 hover:bg-gray-100 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800"
-        aria-label="Toggle theme"
-      >
-        <Sun className="h-4 w-4 text-gray-700 transition-all duration-500 dark:text-gray-300" />
-      </button>
-    );
-  }
+  const MenuItem = ({ 
+    value, 
+    icon: Icon, 
+    label 
+  }: { 
+    value: string, 
+    icon: any, 
+    label: string 
+  }) => (
+    <button
+      onClick={() => {
+        setTheme(value);
+        setIsOpen(false);
+      }}
+      className={cn(
+        "flex w-full items-center justify-between px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
+        theme === value ? "text-green-600 dark:text-green-400 font-medium" : "text-gray-700 dark:text-gray-300"
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <Icon size={16} />
+        <span>{label}</span>
+      </div>
+      {theme === value && <Check size={14} />}
+    </button>
+  );
 
   return (
-    <button
-      ref={buttonRef}
-      onClick={handleClick}
-      className="relative inline-flex h-9 w-9 items-center justify-center overflow-hidden rounded-md border border-gray-200 bg-white transition-all duration-500 hover:bg-gray-100 active:scale-95 dark:border-gray-800 dark:bg-gray-900 dark:hover:bg-gray-800"
-      aria-label="Toggle theme"
-    >
-      {/* Ripple effects */}
-      {ripples.map((ripple) => (
-        <span
-          key={ripple.id}
-          className="theme-toggle-ripple"
-          style={{
-            left: ripple.x - 10,
-            top: ripple.y - 10,
-          }}
-        />
-      ))}
-      
-      {/* Icon with rotation animation */}
-      <span
-        className={`inline-flex items-center justify-center transition-all duration-500 ${
-          isAnimating ? "icon-rotate-animation" : ""
-        }`}
-        key={currentTheme} // Force re-render when theme changes
+    <div className="relative" ref={dropdownRef}>
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="flex items-center justify-center w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors border border-gray-200 dark:border-gray-700"
+        aria-label="Toggle theme"
       >
-        {currentTheme === "dark" ? (
-          <Sun className="h-4 w-4 text-gray-700 transition-all duration-500 dark:text-gray-300" />
-        ) : (
-          <Moon className="h-4 w-4 text-gray-700 transition-all duration-500 dark:text-gray-300" />
-        )}
-      </span>
-    </button>
+        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      </button>
+
+      {isOpen && (
+        <div className="absolute right-0 mt-2 w-40 origin-top-right rounded-lg border border-gray-200 bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:border-gray-800 dark:bg-gray-950 animate-in fade-in zoom-in-95 duration-200 z-50">
+          <div className="py-1">
+            <div className="px-3 py-2 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+              Theme
+            </div>
+            
+            <MenuItem value="light" icon={Sun} label="Light" />
+            <MenuItem value="dark" icon={Moon} label="Dark" />
+            <MenuItem value="system" icon={Monitor} label="System" />
+          </div>
+        </div>
+      )}
+    </div>
   );
 }

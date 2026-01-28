@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { BlogPost } from "@/lib/posts";
-import { Eye, Clock } from "lucide-react";
+import { Clock } from "lucide-react";
 import { calculateReadingTime } from "@/lib/utils";
 import { PopularPostsSkeleton } from "@/components/Skeleton";
 
@@ -12,16 +12,11 @@ interface PopularPostsProps {
   className?: string;
 }
 
-interface PopularPost extends BlogPost {
-  viewCount: number;
-  averageReadingTime: number;
-}
-
 export default function PopularPosts({
   limit = 5,
   className = "",
 }: PopularPostsProps) {
-  const [posts, setPosts] = useState<PopularPost[]>([]);
+  const [posts, setPosts] = useState<BlogPost[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -87,10 +82,6 @@ export default function PopularPosts({
                   </p>
                 )}
                 <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-500">
-                  <span className="flex items-center gap-1">
-                    <Eye className="h-3 w-3" />
-                    {post.viewCount.toLocaleString()} views
-                  </span>
                   <span className="flex items-center gap-1">
                     <Clock className="h-3 w-3" />
                     {calculateReadingTime(post.content)} min read

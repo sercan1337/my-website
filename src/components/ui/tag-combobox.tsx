@@ -75,7 +75,6 @@ export function TagCombobox({
               open && "popover-slide-in"
             )}
           >
-            {/* Search Input */}
             <div className="flex items-center border-b border-border px-3 py-2">
               <svg
                 className="mr-2 h-4 w-4 shrink-0 text-muted-foreground"
@@ -100,7 +99,6 @@ export function TagCombobox({
               />
             </div>
 
-            {/* Tag List */}
             <div className="max-h-[300px] overflow-y-auto p-2">
               {filteredTags.length === 0 ? (
                 <div className="py-8 text-center text-sm text-muted-foreground">
