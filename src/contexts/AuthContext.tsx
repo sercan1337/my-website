@@ -49,7 +49,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       email,
       password,
       name: nickname,
-      nickname: nickname,
     }, {
       onError: (ctx) => {
         throw new Error(ctx.error.message);
