@@ -35,8 +35,6 @@ Here's a minimal design example that demonstrates the principles we've discussed
 
 <MinimalDesignExample />
 
-For those who want to see the code, you can expand the code section below the example. The example above shows the working version embedded directly in this article.
-
 This example showcases how minimalism can be both beautiful and functional. Notice how it uses CSS variables for easy theming, includes subtle animations that enhance rather than distract, and maintains excellent readability across devices. The design demonstrates that minimalism doesn't mean boring—it means intentional.
 
 The trick is balance. It is necessary to be intentional about simplicity. Every item on the page must have a reason for existing.

@@ -1,36 +1,78 @@
 "use client";
 
-import { createContext, useContext, type ReactNode } from "react";
-import { authClient, useSession } from "@/lib/auth-client";
+import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { authClient } from "@/lib/auth-client";
 
-type Session = Awaited<ReturnType<typeof authClient.getSession>>["data"];
+interface User {
+  id: string;
+  email: string;
+  nickname?: string;
+}
 
-type AuthContextValue = {
-  session: Session;
+interface AuthContextType {
+  user: User | null;
+  login: (email: string, password: string) => Promise<void>;
+  register: (nickname: string, email: string, password: string) => Promise<void>;
+  logout: () => Promise<void>;
   isPending: boolean;
-  refetch: () => Promise<void>;
-};
+  session: any; // Session verisi
+}
 
-const AuthContext = createContext<AuthContextValue | null>(null);
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const { data: session, isPending, refetch } = useSession();
+  const { data: sessionData, isPending, error } = authClient.useSession();
+  const [user, setUser] = useState<User | null>(null);
 
-  const value: AuthContextValue = {
-    session: session ?? null,
-    isPending,
-    refetch: async () => {
-      await refetch();
-    },
+  useEffect(() => {
+    if (sessionData?.user) {
+      setUser(sessionData.user as User);
+    } else {
+      setUser(null);
+    }
+  }, [sessionData]);
+
+  const login = async (email: string, password: string) => {
+    await authClient.signIn.email({
+      email,
+      password,
+      callbackURL: "/",
+    }, {
+      onError: (ctx) => {
+        throw new Error(ctx.error.message);
+      }
+    });
   };
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  const register = async (nickname: string, email: string, password: string) => {
+    await authClient.signUp.email({
+      email,
+      password,
+      name: nickname,
+      nickname: nickname,
+    }, {
+      onError: (ctx) => {
+        throw new Error(ctx.error.message);
+      }
+    });
+  };
+
+  const logout = async () => {
+    await authClient.signOut();
+    setUser(null);
+  };
+
+  return (
+    <AuthContext.Provider value={{ user, login, register, logout, isPending, session: sessionData }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
+  if (context === undefined) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 }
