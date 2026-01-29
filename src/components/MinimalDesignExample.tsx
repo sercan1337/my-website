@@ -2,24 +2,17 @@
 
 import { Inter } from "next/font/google";
 import { useState, useEffect } from "react";
-import { ChevronDown, ChevronUp, Code2, Eye, EyeOff, Moon, Sun } from "lucide-react";
+import { ChevronDown, Eye, EyeOff, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import Script from "next/script";
-import CodeBlock from "@/components/CodeBlock"; 
-
-
+import { IconBrandGithub } from "@tabler/icons-react";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function MinimalDesignExample() {
   const [showExample, setShowExample] = useState(false);
-  const [showCode, setShowCode] = useState(false);
   const { resolvedTheme } = useTheme();
   const [exampleTheme, setExampleTheme] = useState<"light" | "dark">("light");
   const [mounted, setMounted] = useState(false);
-  const exampleCode = `
-    href="https://gist.github.com/ncrz1337/b0df58f8658820321ef463806a36a6e2"
-  />  const exampleCode = `
 
   const [ripples, setRipples] = useState<{ x: number; y: number; id: number }[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
@@ -86,7 +79,7 @@ export default function MinimalDesignExample() {
           }`}
         >
           
-        <style jsx>{`
+        <style>{`
           .minimal-wrapper {
             max-width: 100%;
             margin: 0;
@@ -341,33 +334,27 @@ export default function MinimalDesignExample() {
           </footer>
         </div>
 
-<button
-  onClick={() => setShowCode(!showCode)}
-  className="mt-4 w-full flex items-center justify-between gap-2 px-4 py-3 bg-gray-100 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-200 text-sm font-medium text-gray-700 dark:text-gray-300 hover:shadow-sm"
->
-  <span className="flex items-center gap-2">
-    <Code2 className="h-4 w-4" />
-    {showCode ? "Hide" : "Show"} Code
-  </span>
-  <div className={`transition-transform duration-200 ${showCode ? "rotate-180" : ""}`}>
-    <ChevronDown className="h-4 w-4" />
-  </div>
-</button>
+        <a
+          href="https://gist.github.com/ncrz1337/b0df58f8658820321ef463806a36a6e2"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="
+            mt-4 w-full flex items-center justify-center gap-x-2 px-4 py-3 rounded-lg
+            text-sm font-medium
+            border border-gray-200 bg-gray-50 text-gray-700
+            hover:bg-gray-100 hover:text-gray-900 hover:border-gray-300
+            dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300
+            dark:hover:bg-gray-700 dark:hover:text-white dark:hover:border-gray-600
+            transition-colors duration-200
+            focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
+          "
+        >
+          <IconBrandGithub className="w-5 h-5" stroke={1.5} />
+          <span>View Code on GitHub Gist</span>
+        </a>
 
-<div
-  className={`overflow-hidden transition-all duration-300 ease-in-out ${
-    showCode ? "max-h-[2000px] opacity-100 mt-4" : "max-h-0 opacity-0 mt-0"
-  }`}
->
-{showCode && (
-  <CodeBlock code={exampleCode} language="tsx" />
-)}
-
-</div>
-</div>
+        </div>
       </div>
     </div>
   );
 }
-
-

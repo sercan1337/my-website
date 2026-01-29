@@ -20,7 +20,7 @@ type CommentsProps = {
 };
 
 export default function Comments({ term }: CommentsProps) {
-  const { session, isPending, LogOut } = useAuth();
+  const { session, isPending, logout } = useAuth();
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
   const [loginOpen, setLoginOpen] = useState(false);
