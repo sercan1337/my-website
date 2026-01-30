@@ -1,4 +1,6 @@
 import { ImageResponse } from 'next/og';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 
 // Resim boyutları (Standart OG boyutları)
 export const size = {
@@ -15,6 +17,11 @@ export default async function Image({ params }: { params: { slug: string } }) {
 
   // Tarih simülasyonu (Gerçek projede veritabanından alınır)
   const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+
+  const iconSvg = await readFile(
+    join(process.cwd(), 'src', 'app', 'icon.svg'),
+    'utf-8'
+  );
 
   return new ImageResponse(
     (
@@ -71,7 +78,13 @@ export default async function Image({ params }: { params: { slug: string } }) {
             {/* Üst Kısım: Dosya Yolu ve Başlık */}
             <div style={{ display: 'flex', flexDirection: 'column' }}>
                 {/* Dosya Yolu Ekmek Kırıntısı */}
-                <div style={{ color: '#6b7280', fontSize: '24px', marginBottom: '30px', display: 'flex', alignItems: 'center' }}>
+                <div style={{ color: '#6b7280', fontSize: '24px', marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <img
+                        src={`data:image/svg+xml,${encodeURIComponent(iconSvg.replace('currentColor', '#10b981'))}`}
+                        width="24"
+                        height="24"
+                        style={{ display: 'flex' }}
+                    />
                     <span style={{ color: '#10b981', marginRight: '10px' }}>~/sercan/blog/</span>
                     <span style={{ color: '#9ca3af' }}>{slug.slice(0, 20)}{slug.length > 20 ? '...' : ''}.md</span>
                 </div>

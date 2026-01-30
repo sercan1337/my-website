@@ -19,6 +19,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Home | Sercan Duran",
   description: "Personal blog and portfolio website",
+  icons: {
+    icon: '/icon.svg',
+  },
 };
 
 export default function RootLayout({

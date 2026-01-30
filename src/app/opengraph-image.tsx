@@ -1,4 +1,6 @@
 import { ImageResponse } from 'next/og';
+import { readFile } from 'fs/promises';
+import { join } from 'path';
 
 export const size = {
   width: 1200,
@@ -8,6 +10,11 @@ export const size = {
 export const contentType = 'image/png';
 
 export default async function Image() {
+  const iconSvg = await readFile(
+    join(process.cwd(), 'src', 'app', 'icon.svg'),
+    'utf-8'
+  );
+
   return new ImageResponse(
     <div
         style={{
@@ -60,7 +67,15 @@ export default async function Image() {
                 <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#ef4444' }}></div>
                 <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#eab308' }}></div>
                 <div style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#22c55e' }}></div>
-                <div style={{ color: '#6b7280', fontSize: '20px', marginLeft: 'auto', fontFamily: 'system-ui, -apple-system, sans-serif' }}>~/sercan</div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginLeft: 'auto' }}>
+                    <img
+                        src={`data:image/svg+xml,${encodeURIComponent(iconSvg.replace('currentColor', '#10b981'))}`}
+                        width="24"
+                        height="24"
+                        style={{ display: 'flex' }}
+                    />
+                    <div style={{ color: '#6b7280', fontSize: '20px', fontFamily: 'system-ui, -apple-system, sans-serif' }}>~/sercan</div>
+                </div>
             </div>
 
             {/* Büyük Başlık */}
