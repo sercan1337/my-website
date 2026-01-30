@@ -63,7 +63,7 @@ export default function AboutPage() {
             </div>
             
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-mono tracking-tight">
-              <span className="text-gray-400 dark:text-gray-600">const</span> dev <span className="text-gray-400 dark:text-gray-600">=</span> <span className="text-green-600 dark:text-green-500">"Sercan"</span>;
+              <span className="text-white-400 dark:text-white-400">~/sercan/</span><span className="text-green-500 dark:text-green-500">readme.md</span>
             </h1>
             
             <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
