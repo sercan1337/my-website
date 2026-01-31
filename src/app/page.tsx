@@ -32,12 +32,14 @@ export default function Home() {
 
         <section className="relative z-20 mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 w-full flex flex-col items-center">
           <div className="mx-auto max-w-3xl text-center">
-            
-            <h1 className="text-6xl font-semibold tracking-tight text-gray-900 transition-colors duration-500 dark:text-white sm:text-7xl" style={{ fontFamily: "'Stack Sans Notch', sans-serif", fontWeight: 600 }}>
+            <h1 
+                className="text-4xl sm:text-6xl lg:text-7xl font-semibold tracking-tight text-gray-900 transition-colors duration-500 dark:text-white" 
+                style={{ fontFamily: "'Stack Sans Notch', sans-serif", fontWeight: 600 }}
+            >
               Welcome to My Blog!
             </h1>
             
-            <p className="mt-6 text-lg leading-8 text-gray-600 transition-colors duration-500 dark:text-gray-400">
+            <p className="mt-6 text-base sm:text-lg leading-8 text-gray-600 transition-colors duration-500 dark:text-gray-400 px-2 sm:px-0">
               I write about coding, machine learning, and life experiences. Explore
               my thoughts and learnings about coding.
             </p>
