@@ -1,11 +1,15 @@
-# 🚀 My Website
+<p align="center">
+  <img src="public/bolt.png" width="64" alt="Bolt Icon" />
+</p>
+
+# My Website
 Welcome! This is my personal portfolio and blog project, 
 built with a focus on modern web standards, performance, and clean design.
 
-## ✨ Key Features
+## Key Features
 - **Typography:** Automatically optimized with **Geist**, Vercel's modern font family.
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework:** [Next.js](https://nextjs.org/) (App Router)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
