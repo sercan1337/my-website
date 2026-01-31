@@ -1,19 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🚀 My Website
+Welcome! This is my personal portfolio and blog project, 
+built with a focus on modern web standards, performance, and clean design.
 
-## Tech Stack
+## ✨ Key Features
+- **Typography:** Automatically optimized with **Geist**, Vercel's modern font family.
 
-Framework: [Next.js](https://nextjs.org)
+## 🛠️ Tech Stack
 
-Icons: [Lucide React](https://lucide.dev)
-
-Styling: [Tailwind CSS](https://tailwindcss.com) & [shadcn/ui](https://ui.shadcn.com)
-
-Syntax Highlight: [Shiki](https://shiki.matsu.io)
-
-Database: [Upstash Redis](https://upstash.com)
-
-Deployment: [Vercel](https://vercel.com)
-
+- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Language:** [TypeScript](https://www.typescriptlang.org/)
+- **Styling:** [Tailwind CSS](https://tailwindcss.com/) & [shadcn/ui](https://ui.shadcn.com/)
+- **Database:** [Upstash Redis](https://upstash.com/)
+- **Icons:** [Lucide React](https://lucide.dev/)
+- **Syntax Highlighter:** [Shiki](https://shiki.style/)
+- **Deployment:** [Vercel](https://vercel.com/)
+- **Typography:** [Geist](https://fonts.google.com/specimen/Geist)
 ## Getting Started
 
 First, run the development server:
