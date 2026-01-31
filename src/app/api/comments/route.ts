@@ -1,122 +1,66 @@
-import { NextRequest, NextResponse } from "next/server";
-import { headers } from "next/headers";
-import { auth } from "@/lib/auth";
-import { redis } from "@/lib/redis";
+import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth"; // Better Auth ayarları
+import { Redis } from "@upstash/redis"; // Veritabanı
 
-export interface Comment {
-  id: string;
-  postSlug: string;
-  author: string;
-  content: string;
-  createdAt: string;
-  parentId?: string;
-  userId?: string;
-}
+// Redis Bağlantısı
+const redis = new Redis({
+  url: process.env.UPSTASH_REDIS_REST_URL!,
+  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+});
 
-export async function GET(request: NextRequest) {
+// --- YORUM EKLEME (POST) ---
+export async function POST(req: Request) {
   try {
-    const { searchParams } = new URL(request.url);
-    const postSlug = searchParams.get("postSlug");
-
-    if (!postSlug) {
-      return NextResponse.json({ error: "postSlug is required" }, { status: 400 });
-    }
-
-    const commentIds = await redis.lrange(`comments:${postSlug}`, 0, -1);
-
-    if (!commentIds || commentIds.length === 0) {
-      return NextResponse.json([]);
-    }
-
-    const comments = await Promise.all(
-      commentIds.map(async (id: string) => {
-        const commentData = await redis.hgetall(id);
-        if (!commentData || Object.keys(commentData).length === 0) {
-          return null;
-        }
-        const comment: Comment = {
-          id: commentData.id as string,
-          postSlug: commentData.postSlug as string,
-          author: commentData.author as string,
-          content: commentData.content as string,
-          createdAt: commentData.createdAt as string,
-        };
-        if (commentData.parentId) {
-          comment.parentId = commentData.parentId as string;
-        }
-        return comment;
-      })
-    );
-
-    const validComments = comments
-      .filter((c): c is Comment => c !== null)
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-
-    return NextResponse.json(validComments);
-  } catch (error) {
-    console.error("Error fetching comments:", error);
-    return NextResponse.json({ error: "Failed to fetch comments" }, { status: 500 });
-  }
-}
-
-export async function POST(request: NextRequest) {
-  try {
+    // 1. Oturum Kontrolü (Giriş yapmamışsa yorum atamaz)
     const session = await auth.api.getSession({
-      headers: await headers(),
+      headers: req.headers,
     });
 
-    if (!session?.user) {
-      return NextResponse.json(
-        { error: "You must be logged in to comment" },
-        { status: 401 }
-      );
+    if (!session) {
+      return NextResponse.json({ error: "Oturum açmanız gerekiyor." }, { status: 401 });
     }
 
-    const { postSlug, content, parentId } = await request.json();
+    // 2. Veriyi Al
+    const { text } = await req.json();
 
-    if (!postSlug || !content) {
-      return NextResponse.json(
-        { error: "postSlug and content are required" },
-        { status: 400 }
-      );
+    if (!text || typeof text !== "string" || text.trim().length === 0) {
+      return NextResponse.json({ error: "Yorum boş olamaz." }, { status: 400 });
     }
 
-    const author =
-      session.user.name?.trim() || session.user.email || "Anonymous";
-
-    const commentId = `comment:${Date.now()}:${Math.random().toString(36).substr(2, 9)}`;
-
-    const comment: Comment = {
-      id: commentId,
-      postSlug,
-      author,
-      content: content.trim(),
-      createdAt: new Date().toISOString(),
+    // 3. Yorum Objesini Oluştur
+    const newComment = {
+      id: crypto.randomUUID(),
+      text: text.trim(),
       userId: session.user.id,
+      userName: session.user.name,
+      userImage: session.user.image, // Avatar varsa
+      createdAt: new Date().toISOString(),
     };
-    if (parentId) {
-      comment.parentId = parentId;
-    }
 
-    const commentData: Record<string, string> = {
-      id: comment.id,
-      postSlug: comment.postSlug,
-      author: comment.author,
-      content: comment.content,
-      createdAt: comment.createdAt,
-      userId: comment.userId ?? "",
-    };
-    if (comment.parentId) {
-      commentData.parentId = comment.parentId;
-    }
+    // 4. Redis'e Kaydet (Listeye ekle: En başa ekler)
+    // "site_comments" anahtarlı bir listeye ekliyoruz.
+    await redis.lpush("site_comments", JSON.stringify(newComment));
 
-    await redis.hset(commentId, commentData);
-    await redis.lpush(`comments:${postSlug}`, commentId);
+    return NextResponse.json({ success: true, comment: newComment });
 
-    return NextResponse.json(comment, { status: 201 });
   } catch (error) {
-    console.error("Error adding comment:", error);
-    return NextResponse.json({ error: "Failed to add comment" }, { status: 500 });
+    console.error("Yorum hatası:", error);
+    return NextResponse.json({ error: "Sunucu hatası." }, { status: 500 });
   }
 }
 
+// --- YORUMLARI GETİRME (GET) ---
+// Yorumları sayfada listelemek için buna da ihtiyacın olacak
+export async function GET() {
+  try {
+    // Redis listesinden hepsini çek (0'dan -1'e kadar yani hepsi)
+    const commentsData = await redis.lrange("site_comments", 0, -1);
+
+    // Redis string olarak tuttuğu için JSON'a çeviriyoruz
+    const comments = commentsData.map((item: string) => JSON.parse(item));
+
+    return NextResponse.json(comments);
+  } catch (error) {
+    return NextResponse.json({ error: "Yorumlar yüklenemedi" }, { status: 500 });
+  }
+}

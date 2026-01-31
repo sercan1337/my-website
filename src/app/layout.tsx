@@ -5,6 +5,7 @@ import Header from "@/components/Header";
 import { Providers } from "@/components/Providers";
 import ScrollToTop from "@/components/ScrollToTop";
 import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
+import { Toaster } from "@/components/ui/sonner"; // Import zaten var
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -39,6 +40,10 @@ export default function RootLayout({
           <Header />
           <main>{children}</main>
           <ScrollToTop />
+          
+          {/* BURAYA EKLENDİ: Bildirimler artık çalışacak */}
+          <Toaster position="top-center" richColors />
+          
         </Providers>
       </body>
     </html>

@@ -1,128 +1,105 @@
 "use client";
 
 import { useState } from "react";
-import { useAuth } from "@/contexts/AuthContext";
-import { buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
-import { Send, Loader2, MessageSquare } from "lucide-react";
+import { Send, LogOut, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 interface CommentFormProps {
-  postSlug: string;
-  onCommentAdded: () => void;
+  user: {
+    name?: string | null;
+    email?: string | null;
+    image?: string | null;
+  };
 }
 
-export default function CommentForm({ postSlug, onCommentAdded }: CommentFormProps) {
-  const { session } = useAuth();
-  const [content, setContent] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-
-  const author = session?.user?.name ?? session?.user?.email ?? "Anonymous";
+export default function CommentForm({ user }: CommentFormProps) {
+  const [comment, setComment] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError(null);
+    if (!comment.trim()) return;
 
-    if (!content.trim()) {
-      setError("Please enter a comment");
-      return;
-    }
-
-    setIsSubmitting(true);
+    setIsLoading(true);
 
     try {
-      const response = await fetch("/api/comments", {
+      // Backend'e yorumu gönder
+      const res = await fetch("/api/comments", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          postSlug,
-          content: content.trim(),
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ text: comment }),
       });
 
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Failed to submit comment");
-      }
+      if (!res.ok) throw new Error("Gönderilemedi");
 
-      setContent("");
-      onCommentAdded();
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Failed to submit comment");
+      setComment(""); // Kutuyu temizle
+      toast.success("COMMENT POSTED", { description: "Your entry has been added to the stream." });
+      router.refresh(); // Yorumları yenilemek için sayfayı tazele
+
+    } catch (error) {
+      toast.error("ERROR", { description: "Failed to write to database." });
     } finally {
-      setIsSubmitting(false);
+      setIsLoading(false);
     }
   };
 
+  const handleLogout = async () => {
+      await authClient.signOut();
+      router.refresh();
+  };
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-5">
-      <p className="text-sm text-gray-600 dark:text-gray-400">
-        Commenting as <span className="font-medium text-gray-900 dark:text-white">{author}</span>
-      </p>
-
-      <div>
-        <label
-          htmlFor="content"
-          className="mb-2 flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300"
-        >
-          <MessageSquare className="h-4 w-4" />
-          Comment <span className="text-red-500">*</span>
-        </label>
-        <textarea
-          id="content"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-          placeholder="Share your thoughts..."
-          rows={6}
-          className="w-full resize-none rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 transition-all duration-200 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder:text-gray-500 dark:focus:border-blue-400"
-          disabled={isSubmitting}
-          required
-        />
-        <div className="mt-2 flex items-center justify-between">
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            {content.length} characters
-          </p>
-          <p className="text-xs text-gray-500 dark:text-gray-400">
-            Use <code className="rounded bg-gray-200 px-1.5 py-0.5 text-xs dark:bg-gray-700">```language</code> for code blocks
-          </p>
+    <div className="bg-gray-50/50 dark:bg-gray-900/30 border border-gray-200 dark:border-gray-800 rounded-xl p-4 backdrop-blur-sm">
+      
+      {/* Üst Kısım: Kullanıcı Bilgisi ve Çıkış */}
+      <div className="flex justify-between items-center mb-4">
+        <div className="flex items-center gap-3">
+          {/* Avatar (Yoksa baş harf) */}
+          <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-green-400 to-blue-500 flex items-center justify-center text-xs font-bold text-white shadow-lg">
+            {user.name?.charAt(0).toUpperCase() || "U"}
+          </div>
+          <div className="flex flex-col">
+            <span className="text-sm font-bold font-mono text-gray-900 dark:text-gray-100">
+              {user.name || "Anonymous"}
+            </span>
+            <span className="text-[10px] text-gray-500 dark:text-gray-400 font-mono">
+              Authenticated Session
+            </span>
+          </div>
         </div>
-      </div>
 
-      {error && (
-        <div className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800 dark:border-red-900/50 dark:bg-red-900/20 dark:text-red-400">
-          <p className="font-medium">Error</p>
-          <p className="mt-1">{error}</p>
-        </div>
-      )}
-
-      <div className="flex items-center justify-end gap-3 pt-2">
-        <button
-          type="submit"
-          disabled={isSubmitting || !content.trim()}
-          className={cn(
-            buttonVariants({ variant: "default", size: "default" }),
-            "group inline-flex items-center gap-2 px-6 transition-all duration-200 hover:scale-105 active:scale-95",
-            (isSubmitting || !content.trim()) &&
-              "opacity-50 cursor-not-allowed hover:scale-100"
-          )}
+        <button 
+          onClick={handleLogout}
+          className="text-xs flex items-center gap-1 text-red-500 hover:text-red-600 transition-colors font-mono"
         >
-          {isSubmitting ? (
-            <>
-              <Loader2 className="h-4 w-4 animate-spin" />
-              Posting...
-            </>
-          ) : (
-            <>
-              <Send className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" />
-              Post Comment
-            </>
-          )}
+          <LogOut size={12} /> EXIT
         </button>
       </div>
-    </form>
+
+      {/* Yorum Alanı */}
+      <form onSubmit={handleSubmit} className="relative">
+        <textarea
+          value={comment}
+          onChange={(e) => setComment(e.target.value)}
+          placeholder="Execute write command..."
+          className="w-full min-h-[100px] bg-white dark:bg-black/50 border border-gray-200 dark:border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-1 focus:ring-green-500/50 resize-none font-mono"
+        />
+        
+        <div className="flex justify-end mt-2">
+          <button
+            type="submit"
+            disabled={isLoading || !comment.trim()}
+            className="flex items-center gap-2 px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-black rounded-lg text-xs font-bold font-mono hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+          >
+            {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
+            POST_ENTRY
+          </button>
+        </div>
+      </form>
+
+    </div>
   );
 }
-

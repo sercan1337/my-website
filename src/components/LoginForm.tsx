@@ -59,15 +59,15 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         {mode === "REGISTER" && (
           <div className="group relative">
             <label className="block text-[10px] uppercase tracking-widest text-gray-500 font-mono mb-1 group-focus-within:text-green-500 transition-colors">
-              {/* NICKNAME */}
             </label>
             <div className="flex items-center border-b border-gray-700 group-focus-within:border-green-500 transition-colors py-2">
               <span className="text-gray-500 mr-2 font-mono">{">"}</span>
               <input
                 type="text"
+                name="name"
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder="your_nickname"
+                placeholder="your_name"
                 className="w-full bg-transparent border-none outline-none text-sm font-mono text-white placeholder:text-gray-700 focus:ring-0 p-0"
                 required
               />
