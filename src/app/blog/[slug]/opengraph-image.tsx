@@ -1,8 +1,5 @@
 import { ImageResponse } from 'next/og';
-import { readFile } from 'fs/promises';
-import { join } from 'path';
 
-// Resim boyutları (Standart OG boyutları)
 export const size = {
   width: 1200,
   height: 630,
@@ -10,18 +7,13 @@ export const size = {
 
 export const contentType = 'image/png';
 
+const boltIconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3l0 7l6 0l-8 11l0 -7l-6 0l8 -11" /></svg>';
+
 export default async function Image({ params }: { params: { slug: string } }) {
-  // Yazının slug'ını al ve başlık formatına çevir
   const slug = (await params).slug;
   const title = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-
-  // Tarih simülasyonu (Gerçek projede veritabanından alınır)
   const date = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-
-  const iconSvg = await readFile(
-    join(process.cwd(), 'src', 'app', 'icon.svg'),
-    'utf-8'
-  );
+  const iconSvg = boltIconSvg;
 
   return new ImageResponse(
     (

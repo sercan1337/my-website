@@ -11,7 +11,6 @@ import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import TableOfContents from "@/components/TableOfContents";
 import Comments from "@/components/Comments";
-import AnalyticsTracker from "@/components/AnalyticsTracker";
 import { Clock, ArrowLeft, Calendar } from "lucide-react";
 import MinimalDesignExample from "@/components/MinimalDesignExample";
 import ClapButton from "@/components/ClapButton";
@@ -93,8 +92,6 @@ export default async function BlogPost({
           </div>
           <div className="absolute inset-0 bg-white [mask-image:radial-gradient(ellipse_80%_80%_at_50%_0%,transparent_20%,black)] dark:bg-gray-950"></div>
         </div>
-
-        <AnalyticsTracker slug={resolvedParams.slug} />
 
         <article className="relative z-10 mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_250px]">
@@ -199,7 +196,7 @@ export default async function BlogPost({
                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 font-mono">
                       Comments
                    </h3>
-                   <Comments />
+                   <Comments slug={resolvedParams.slug} />
                 </div>
               </div>
             </div>
