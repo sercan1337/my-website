@@ -1,37 +1,31 @@
-import { betterAuth } from "better-auth";
-import { redis } from "@/lib/redis"; 
+import { betterAuth } from "better-auth"
+import { drizzleAdapter } from "better-auth/adapters/drizzle"
+import { db } from "@/lib/db"
+import * as schema from "@/lib/schema"
 
 export const auth = betterAuth({
+  database: drizzleAdapter(db, {
+    provider: "pg",
+    schema: {
+      user: schema.user,
+      session: schema.session,
+      account: schema.account,
+      verification: schema.verification,
+    },
+  }),
   emailAndPassword: {
     enabled: true,
-    // BU KISIM ŞART: Bu fonksiyon yoksa client'ta forgetPassword metodu gözükmez.
     sendResetPassword: async ({ user, url }) => {
-      // E-posta gönderim mantığı buraya gelecek (Resend, Nodemailer vb.)
-      console.log(`Şifre sıfırlama bağlantısı (${user.email}): ${url}`);
+      console.log(`Password reset link (${user.email}): ${url}`)
     },
   },
-  secondaryStorage: {
-    get: async (key: string) => {
-      return await redis.get(key);
-    },
-    set: async (key: string, value: string, ttl?: number) => {
-      if (ttl) {
-        await redis.set(key, value, { ex: ttl });
-      } else {
-        await redis.set(key, value);
-      }
-    },
-    delete: async (key: string) => {
-      await redis.del(key);
+  session: {
+    cookieCache: {
+      enabled: true,
+      maxAge: 5 * 60,
     },
   },
-  user: {
-    additionalFields: {
-      name: {
-        type: "string",
-        required: true,
-        input: true,
-      },
-    },
+  advanced: {
+    cookiePrefix: "ba",
   },
-});
+})
