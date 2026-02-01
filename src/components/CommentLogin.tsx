@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ShieldAlert, Terminal, LogIn, Mail, Lock, User, 
@@ -8,17 +8,21 @@ import {
 } from "lucide-react";
 import { toast } from "sonner"; 
 import { authClient } from "@/lib/auth-client";
+import { useRouter } from "next/navigation";
 
 interface CommentLoginProps {
-  onLoginSuccess?: (user: any) => void;
+  onLoginSuccess?: () => void;
 }
 
 type AuthView = "INTRO" | "LOGIN" | "REGISTER" | "FORGOT_EMAIL";
 
+const emptySubscribe = () => () => {};
+
 export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
   const [view, setView] = useState<AuthView>("INTRO");
   const [isLoading, setIsLoading] = useState(false);
-  const [mounted, setMounted] = useState(false);
+  const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
+  const router = useRouter();
 
   const [formData, setFormData] = useState({
     email: "",
@@ -26,15 +30,10 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     name: "",
   });
 
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // 1. GİRİŞ YAPMA
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
@@ -42,14 +41,14 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     const promise = authClient.signIn.email({
         email: formData.email,
         password: formData.password,
-        callbackURL: "/", 
     });
 
     toast.promise(promise, {
       loading: 'Verifying credentials...',
-      success: (ctx) => {
+      success: () => {
         setIsLoading(false);
-        if (onLoginSuccess) onLoginSuccess(ctx); 
+        onLoginSuccess?.();
+        router.refresh();
         return "ACCESS GRANTED: Session initialized.";
       },
       error: (err) => {
@@ -59,12 +58,10 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     });
   };
 
-  // 2. KAYIT OLMA
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    
-console.log(formData);
+
     const promise = authClient.signUp.email({
         email: formData.email,
         password: formData.password,
@@ -85,12 +82,10 @@ console.log(formData);
     });
   };
 
-  // 3. ŞİFRE SIFIRLAMA (FORGOT PASSWORD)
   const handleForgotEmail = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // DÜZELTME: auth.ts'deki değişiklikten sonra bu metot artık hata vermeyecektir.
     const promise = authClient.requestPasswordReset({
         email: formData.email,
         redirectTo: "/reset-password", 
@@ -197,7 +192,11 @@ console.log(formData);
 }
 
 // --- HELPERS ---
-const InputGroup = ({ icon, ...props }: any) => (
+interface InputGroupProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  icon: React.ReactNode;
+}
+
+const InputGroup = ({ icon, ...props }: InputGroupProps) => (
   <div className="relative group">
     <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-green-500 transition-colors">
       <div className="w-4 h-4">{icon}</div>
@@ -206,21 +205,28 @@ const InputGroup = ({ icon, ...props }: any) => (
   </div>
 );
 
-const SubmitButton = ({ isLoading, children }: { isLoading: boolean, children: React.ReactNode }) => (
+const SubmitButton = ({ isLoading, children }: { isLoading: boolean; children: React.ReactNode }) => (
   <button type="submit" disabled={isLoading} className="w-full bg-gray-900 dark:bg-white text-white dark:text-black font-bold py-2.5 rounded-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 text-sm font-mono tracking-wide">
     {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : children}
     {!isLoading && <ArrowRight className="w-4 h-4" />}
   </button>
 );
 
-const HeaderTitle = ({ title, subtitle }: { title: string, subtitle: string }) => (
+const HeaderTitle = ({ title, subtitle }: { title: string; subtitle: string }) => (
   <div className="mb-6 text-center">
     <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 font-mono">{title}</h3>
     <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{subtitle}</p>
   </div>
 );
 
-const FooterNav = ({ text, actionText, onClick, onBack }: any) => (
+interface FooterNavProps {
+  text?: string;
+  actionText?: string;
+  onClick?: () => void;
+  onBack?: () => void;
+}
+
+const FooterNav = ({ text, actionText, onClick, onBack }: FooterNavProps) => (
   <div className="mt-6 flex flex-col items-center gap-3">
     {text && (
       <div className="text-xs text-gray-500 font-mono">
