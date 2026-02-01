@@ -134,7 +134,7 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
                   <Terminal size={24} />
                 </div>
                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Authentication Required</h3>
-                <p className="text-sm text-gray-500 max-w-sm mb-8">System uses Better Auth for secure identity storage.</p>
+                <p className="text-sm text-gray-500 max-w-sm mb-8">Share Your Thoughts</p>
                 <button
                   onClick={() => setView("LOGIN")}
                   className="group w-full max-w-xs flex items-center justify-center gap-3 px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-black hover:border-green-500/50 transition-all active:scale-95"
