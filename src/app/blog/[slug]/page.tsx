@@ -199,7 +199,7 @@ export default async function BlogPost({
                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 font-mono">
                       Comments
                    </h3>
-                   <Comments term={resolvedParams.slug} />
+                   <Comments />
                 </div>
               </div>
             </div>
