@@ -1,66 +1,117 @@
-import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth"; // Better Auth ayarları
-import { Redis } from "@upstash/redis"; // Veritabanı
+import { NextResponse } from "next/server"
+import { auth } from "@/lib/auth"
+import { db } from "@/lib/db"
+import { comment } from "@/lib/schema"
+import { redis } from "@/lib/redis"
+import { eq, desc } from "drizzle-orm"
 
-// Redis Bağlantısı
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
+const CACHE_TTL = 300
 
-// --- YORUM EKLEME (POST) ---
+interface CommentData {
+  id: string
+  text: string
+  slug: string
+  userId: string
+  userName: string
+  createdAt: string
+}
+
+async function getCommentsFromDb(slug: string): Promise<CommentData[]> {
+  const comments = await db
+    .select()
+    .from(comment)
+    .where(eq(comment.slug, slug))
+    .orderBy(desc(comment.createdAt))
+
+  return comments.map((c) => ({
+    id: c.id,
+    text: c.text,
+    slug: c.slug,
+    userId: c.userId,
+    userName: c.userName,
+    createdAt: c.createdAt.toISOString(),
+  }))
+}
+
+async function getCachedComments(slug: string): Promise<CommentData[] | null> {
+  const cached = await redis.get<CommentData[]>(`comments:${slug}`)
+  if (!cached) return null
+  return cached
+}
+
+async function cacheComments(slug: string, comments: CommentData[]): Promise<void> {
+  await redis.set(`comments:${slug}`, comments, { ex: CACHE_TTL })
+}
+
+async function invalidateCache(slug: string): Promise<void> {
+  await redis.del(`comments:${slug}`)
+}
+
 export async function POST(req: Request) {
   try {
-    // 1. Oturum Kontrolü (Giriş yapmamışsa yorum atamaz)
     const session = await auth.api.getSession({
       headers: req.headers,
-    });
+    })
 
     if (!session) {
-      return NextResponse.json({ error: "Oturum açmanız gerekiyor." }, { status: 401 });
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 })
     }
 
-    // 2. Veriyi Al
-    const { text } = await req.json();
+    const { text, slug } = await req.json()
 
     if (!text || typeof text !== "string" || text.trim().length === 0) {
-      return NextResponse.json({ error: "Yorum boş olamaz." }, { status: 400 });
+      return NextResponse.json({ error: "Comment cannot be empty" }, { status: 400 })
     }
 
-    // 3. Yorum Objesini Oluştur
+    if (!slug || typeof slug !== "string") {
+      return NextResponse.json({ error: "Slug is required" }, { status: 400 })
+    }
+
     const newComment = {
       id: crypto.randomUUID(),
       text: text.trim(),
+      slug: slug,
       userId: session.user.id,
       userName: session.user.name,
-      userImage: session.user.image, // Avatar varsa
-      createdAt: new Date().toISOString(),
-    };
+      createdAt: new Date(),
+    }
 
-    // 4. Redis'e Kaydet (Listeye ekle: En başa ekler)
-    // "site_comments" anahtarlı bir listeye ekliyoruz.
-    await redis.lpush("site_comments", JSON.stringify(newComment));
+    await db.insert(comment).values(newComment)
+    await invalidateCache(slug)
 
-    return NextResponse.json({ success: true, comment: newComment });
-
+    return NextResponse.json({
+      success: true,
+      comment: {
+        ...newComment,
+        createdAt: newComment.createdAt.toISOString(),
+      },
+    })
   } catch (error) {
-    console.error("Yorum hatası:", error);
-    return NextResponse.json({ error: "Sunucu hatası." }, { status: 500 });
+    console.error("Comment error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }
 
-// --- YORUMLARI GETİRME (GET) ---
-// Yorumları sayfada listelemek için buna da ihtiyacın olacak
-export async function GET() {
+export async function GET(req: Request) {
   try {
-    // Redis listesinden hepsini çek (0'dan -1'e kadar yani hepsi)
-    const commentsData = await redis.lrange("site_comments", 0, -1);
+    const { searchParams } = new URL(req.url)
+    const slug = searchParams.get("slug")
 
-    // Redis string olarak tuttuğu için JSON'a çeviriyoruz
-    const comments = commentsData.map((item: string) => JSON.parse(item));
+    if (!slug) {
+      return NextResponse.json({ error: "Slug is required" }, { status: 400 })
+    }
 
-    return NextResponse.json(comments);
+    const cached = await getCachedComments(slug)
+    if (cached) {
+      return NextResponse.json(cached)
+    }
+
+    const comments = await getCommentsFromDb(slug)
+    await cacheComments(slug, comments)
+
+    return NextResponse.json(comments)
   } catch (error) {
-    return NextResponse.json({ error: "Yorumlar yüklenemedi" }, { status: 500 });
+    console.error("Fetch comments error:", error)
+    return NextResponse.json({ error: "Failed to load comments" }, { status: 500 })
   }
 }
