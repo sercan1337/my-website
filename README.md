@@ -6,9 +6,6 @@
 Welcome! This is my personal portfolio and blog project, 
 built with a focus on modern web standards, performance, and clean design.
 
-## Key Features
-- **Typography:** Automatically optimized with **Geist**, Vercel's modern font family.
-
 ## Tech Stack
 
 - **Framework:** [Next.js](https://nextjs.org/) (App Router)
