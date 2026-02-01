@@ -6,13 +6,13 @@ import { authClient } from "@/lib/auth-client";
 interface User {
   id: string;
   email: string;
-  nickname?: string;
+  name?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
-  register: (nickname: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isPending: boolean;
   session: any; // Session verisi
@@ -44,11 +44,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
-  const register = async (nickname: string, email: string, password: string) => {
+  const register = async (name: string, email: string, password: string) => {
     await authClient.signUp.email({
       email,
       password,
-      name: nickname,
+      name: name,
     }, {
       onError: (ctx) => {
         throw new Error(ctx.error.message);

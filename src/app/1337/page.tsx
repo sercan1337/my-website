@@ -77,10 +77,10 @@ export default function Leet1337() {
             </div>
 
             <div className="mt-16 flex items-center justify-center gap-x-6 text-gray-400">
-                <Link href="https://github.com/ncrz1337" target="_blank" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                <Link href="https://github.com/sercan1337" target="_blank" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">
                   <IconBrandGithub size={20} stroke={1.5} />
                 </Link>
-                <Link href="https://x.com/ncrz1337" target="_blank" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">
+                <Link href="https://x.com/sercan1337" target="_blank" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">
                   <IconBrandX size={20} stroke={1.5} />
                 </Link>
                 <Link href="mailto:sercanking40@gmail.com" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">     
