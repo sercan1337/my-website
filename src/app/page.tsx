@@ -75,7 +75,7 @@ export default function Home() {
                 <a href="https://x.com/sercan1337" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 dark:hover:text-white transition-colors">
                   <IconBrandX size={20} stroke={1.5} />
                 </a>
-                <a href="mailto:sercanking40@gmail.com" className="hover:text-gray-900 dark:hover:text-white transition-colors">     
+                <a href="mailto:sercanduran40@hotmail.com" className="hover:text-gray-900 dark:hover:text-white transition-colors">     
                   <IconMail size={20} stroke={1.5} />
                 </a>
               </div>

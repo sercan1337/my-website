@@ -83,7 +83,7 @@ export default function Leet1337() {
                 <Link href="https://x.com/sercan1337" target="_blank" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">
                   <IconBrandX size={20} stroke={1.5} />
                 </Link>
-                <Link href="mailto:sercanking40@gmail.com" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">     
+                <Link href="mailto:sercanduran40@hotmail.com" className="hover:text-green-600 dark:hover:text-green-400 transition-colors">     
                   <IconMail size={20} stroke={1.5} />
                 </Link>
             </div>
