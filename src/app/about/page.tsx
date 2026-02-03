@@ -54,10 +54,10 @@
           <div className="relative z-20 max-w-3xl mx-auto py-20 px-6 w-full">
             
           <header className="mb-16 border-b border-gray-200 dark:border-gray-800/60 pb-10">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-500/10 text-green-700 dark:text-green-400 text-xs font-mono mb-6 border border-green-200 dark:border-green-500/20">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white-100 dark:bg-white-500/10 text-white-700 dark:text-green-400 text-xs font-mono mb-6 border border-white-200 dark:border-white-500/20">
              <span className="relative flex h-2 w-2">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-500 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-600 dark:bg-green-500"></span>
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white-500 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-600 dark:bg-white-500"></span>
             </span>
             System Online
           </div>
