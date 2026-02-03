@@ -119,7 +119,7 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
               <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
               <div className="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
             </div>
-            <span className="ml-2 text-[10px] text-gray-500 uppercase">better_auth_cli</span>
+            <span className="ml-2 text-[10px] text-gray-500 uppercase">comments</span>
           </div>
           <ShieldAlert size={14} className="text-gray-400" />
         </div>
@@ -191,7 +191,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
   );
 }
 
-// --- HELPERS ---
 interface InputGroupProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon: React.ReactNode;
 }
