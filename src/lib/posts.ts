@@ -42,7 +42,6 @@ export function getAllPosts(): BlogPost[] {
         };
       })
       .sort((a, b) => {
-        // Sort by date, newest first
         return new Date(b.date).getTime() - new Date(a.date).getTime();
       });
 
@@ -109,7 +108,7 @@ export interface ContentStats {
 }
 
 export function getContentStats(content: string): ContentStats {
-  const text = content.replace(/<[^>]*>/g, ""); // Remove HTML tags if any
+  const text = content.replace(/<[^>]*>/g, ""); 
   const words = text.trim().split(/\s+/).filter(word => word.length > 0);
   const characters = text.length;
   const charactersNoSpaces = text.replace(/\s+/g, "").length;
@@ -241,7 +240,7 @@ export function formatDate(dateString: string, locale: string = "tr-TR"): string
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
-      return dateString; // Return original if invalid
+      return dateString;
     }
     return date.toLocaleDateString(locale, {
       year: "numeric",

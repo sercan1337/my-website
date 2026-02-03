@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
 interface UseAnalyticsOptions {
   slug: string;
   trackReadingTime?: boolean;
-  minReadingTime?: number; // Minimum seconds to count as a read
+  minReadingTime?: number;
 }
 
 export function useAnalytics({
@@ -60,7 +60,7 @@ export function useAnalytics({
           });
         }
       }
-    }, 30000); // Check every 30 seconds
+    }, 30000);
 
     window.addEventListener("beforeunload", handleBeforeUnload);
 
