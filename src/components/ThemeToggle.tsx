@@ -36,7 +36,12 @@ export function ThemeToggle() {
       }}
       className={cn(
         "flex w-full items-center justify-between px-3 py-2 text-sm transition-colors hover:bg-gray-100 dark:hover:bg-gray-800",
-        theme === value ? "text-green-600 dark:text-green-400 font-medium" : "text-gray-700 dark:text-gray-300"
+        // DEĞİŞİKLİK BURADA YAPILDI:
+        // Eski: "text-green-600 dark:text-green-400 font-medium"
+        // Yeni: "text-gray-900 dark:text-gray-100 font-medium" (Siyah/Beyaz tonları)
+        theme === value 
+          ? "text-gray-900 dark:text-gray-100 font-medium" 
+          : "text-gray-700 dark:text-gray-300"
       )}
     >
       <div className="flex items-center gap-2">
