@@ -15,7 +15,7 @@ module.exports = {
       },
     },
     plugins: [
-      require("tailwindcss-animate"), // Eğer shadcn kullanıyorsan bu gereklidir
-      require("@tailwindcss/typography"), // <-- Blog yazıları için bu eklediğimiz kısım
+      require("tailwindcss-animate"), 
+      require("@tailwindcss/typography"),
     ],
   };
