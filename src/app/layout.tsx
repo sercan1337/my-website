@@ -4,8 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { Providers } from "@/components/Providers";
 import ScrollToTop from "@/components/ScrollToTop";
-import { KeyboardShortcuts } from "@/components/KeyboardShortcuts";
-import { Toaster } from "@/components/ui/sonner"; // Import zaten var
+import { Toaster } from "@/components/ui/sonner"; 
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +32,6 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
       >
         <Providers>
-          <KeyboardShortcuts />
           <Header />
           <main>{children}</main>
           <ScrollToTop />
