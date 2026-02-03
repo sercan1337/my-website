@@ -22,7 +22,6 @@ export default function TableOfContents({
   const [activeId, setActiveId] = useState<string>("");
 
   useEffect(() => {
-    // Extract headings from markdown content
     const headingRegex = /^(#{2,3})\s+(.+)$/gm;
     const matches: Heading[] = [];
     let match;

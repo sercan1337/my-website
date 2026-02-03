@@ -26,7 +26,7 @@ export async function GET(request: NextRequest) {
         return b.averageReadingTime - a.averageReadingTime;
       })
       .slice(0, limit)
-      .map(({ averageReadingTime, ...post }) => post); // Remove stats before returning
+      .map(({ averageReadingTime, ...post }) => post);
     
     return NextResponse.json({ posts: popularPosts });
   } catch (error) {

@@ -15,7 +15,7 @@ interface AuthContextType {
   register: (name: string, email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   isPending: boolean;
-  session: any; // Session verisi
+  session: any;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
