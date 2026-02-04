@@ -78,7 +78,7 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
         >
           <div className="flex items-center gap-2 mb-2">
             <Avvvatars value={comment.userName || "anon"} style="shape" size={20} />
-            <span className="text-green-600 dark:text-green-400 font-mono font-bold text-sm">
+            <span className="text-white-600 dark:text-white-400 font-mono font-bold text-sm">
               {comment.userName || "anon"}
             </span>
             <span className="text-[10px] text-gray-400 font-mono flex items-center gap-1">

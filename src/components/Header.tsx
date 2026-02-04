@@ -108,12 +108,12 @@ export default function Header() {
                 className={cn(
                   "group relative text-4xl font-mono font-bold transition-all duration-300",
                   pathname === link.href 
-                    ? "text-green-600 dark:text-green-500" 
-                    : "text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400"
+                    ? "text-white-600 dark:text-white-500" 
+                    : "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
                 )}
               >
                 <span className={cn(
-                    "absolute -left-8 transition-opacity duration-300 text-green-600 dark:text-green-500",
+                    "absolute -left-8 transition-opacity duration-300 text-white-600 dark:text-white-500",
                     pathname === link.href ? "opacity-100" : "opacity-0 group-hover:opacity-100"
                 )}>
                   &gt;
