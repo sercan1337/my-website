@@ -284,7 +284,7 @@ export default function MinimalDesignExample() {
                 className={`inline-flex items-center justify-center transition-all duration-500 ${
                   isAnimating ? "icon-rotate-animation" : ""
                 }`}
-                key={exampleTheme} // Force re-render when theme changes to help animation
+                key={exampleTheme} 
               >
                 {mounted && exampleTheme === "dark" ? (
                   <Sun className="h-4 w-4" style={{ color: '#d1d5db' }} />

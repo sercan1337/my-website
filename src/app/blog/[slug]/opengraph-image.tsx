@@ -17,7 +17,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
 
   return new ImageResponse(
     (
-      // --- TASARIM BAŞLANGICI ---
       <div
         style={{
           height: '100%',
@@ -123,7 +122,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
             </div>
         </div>
       </div>
-      // --- TASARIM BİTİŞİ ---
     ),
     {
       ...size,

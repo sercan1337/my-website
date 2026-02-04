@@ -6,6 +6,7 @@ import { Providers } from "@/components/Providers";
 import ScrollToTop from "@/components/ScrollToTop";
 import { Toaster } from "@/components/ui/sonner"; 
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +41,7 @@ export default function RootLayout({
           <Toaster position="top-center" richColors />
           
           <SpeedInsights />
-          
+          <Analytics/>
         </Providers>
       </body>
     </html>
