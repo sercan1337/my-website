@@ -52,8 +52,8 @@ export default function TableOfContents({
         });
       },
       {
-        rootMargin: "-100px 0px -66%",
-        threshold: 0,
+        rootMargin: "-100px 0px -70% 0px",
+        threshold: 0, 
       }
     );
 
@@ -81,42 +81,51 @@ export default function TableOfContents({
   return (
     <nav
       className={cn(
-        "sticky top-20 hidden max-h-[calc(100vh-8rem)] overflow-y-auto lg:block",
+        "sticky top-24 hidden max-h-[calc(100vh-6rem)] overflow-y-auto lg:block self-start py-4 pl-4",
         className
       )}
     >
-      <div className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-900">
-        <h2 className="mb-4 text-sm font-semibold text-gray-900 dark:text-white">
-          Table of Contents
-        </h2>
-        <ul className="space-y-2 text-sm">
-          {headings.map((heading) => (
-            <li key={heading.id}>
+      <h2 className="mb-4 text-xs font-bold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+        İçindekiler
+      </h2>
+            <ul className="relative space-y-1 border-l border-gray-200 dark:border-gray-800">
+        {headings.map((heading) => {
+          const isActive = activeId === heading.id;
+          
+          return (
+            <li key={heading.id} className="relative">
               <a
                 href={`#${heading.id}`}
                 onClick={(e) => {
                   e.preventDefault();
                   const element = document.getElementById(heading.id);
                   if (element) {
-                    element.scrollIntoView({ behavior: "smooth", block: "start" });
+                    const y = element.getBoundingClientRect().top + window.scrollY - 100;
+                    window.scrollTo({ top: y, behavior: "smooth" });
+                    setActiveId(heading.id); // Tıklandığında hemen aktif yap
                   }
                 }}
                 className={cn(
-                  "block transition-colors hover:text-gray-900 dark:hover:text-white",
-                  heading.level === 2
-                    ? "font-medium text-gray-700 dark:text-gray-300"
-                    : "ml-4 text-gray-600 dark:text-gray-400",
-                  activeId === heading.id &&
-                    "font-semibold text-blue-600 dark:text-blue-400"
+                  "block py-1 pr-2 transition-all duration-200 ease-in-out hover:text-gray-900 dark:hover:text-white",
+                  heading.level === 3 ? "pl-6 text-xs" : "pl-4 text-sm",
+                  isActive
+                    ? "font-medium text-gray-900 dark:text-gray-50" // Aktifken koyu gri/beyaz
+                    : "text-gray-500 dark:text-gray-400" // Pasifken orta gri
                 )}
               >
                 {heading.text}
               </a>
+              
+              {isActive && (
+                <span 
+                  className="absolute left-[-1px] top-1/2 h-full w-[2px] -translate-y-1/2 bg-gray-900 dark:bg-gray-50 rounded-full"
+                  aria-hidden="true"
+                />
+              )}
             </li>
-          ))}
-        </ul>
-      </div>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
-
