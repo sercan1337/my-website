@@ -1,58 +1,58 @@
-  "use client";
+"use client";
 
-  import { 
-    Terminal, 
-    Cpu, 
-    Quote,
-    Command,
-    Hash,
-    Type,
-    LucideIcon
-  } from "lucide-react";
+import { 
+  Terminal, 
+  Cpu, 
+  Quote,
+  Command,
+  Hash,
+  Type,
+  LucideIcon
+} from "lucide-react";
 
-  export default function AboutPage() {
+export default function AboutPage() {
 
-    const me = {
-      education: "High School (9th Grade)",
-      location: "Turkey",
-      stack: ["Next.js", "TypeScript", "Tailwind"],
-      learning: ["Backend", "Algorithms"],
-    };
+  const me = {
+    education: "High School (9th Grade)",
+    location: "Turkey",
+    stack: ["Next.js", "TypeScript", "Tailwind"],
+    learning: ["Backend", "Algorithms"],
+  };
 
-    const devTools = [
-      { icon: Terminal, title: "Editor", desc: "Supra (Dark)" },
-      { icon: Command, title: "Terminal", desc: "PowerShell / Git Bash" },
-      { icon: Type, title: "Font", desc: "Inter" },
-      { icon: Hash, title: "Version Control", desc: "Git & GitHub" }
-    ];
+  const devTools = [
+    { icon: Terminal, title: "Editor", desc: "Supra (Dark)" },
+    { icon: Command, title: "Terminal", desc: "PowerShell / Git Bash" },
+    { icon: Type, title: "Font", desc: "Inter" },
+    { icon: Hash, title: "Version Control", desc: "Git & GitHub" }
+  ];
 
-    return (
-      <>
-        <style dangerouslySetInnerHTML={{__html: `
-          @keyframes grid-move {
-            0% { background-position: 0 0; }
-            100% { background-position: 30px 30px; }
-          }
-          .animate-grid {
-            animation: grid-move 3s linear infinite;
-          }
-        `}} />
+  return (
+    <>
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes grid-move {
+          0% { background-position: 0 0; }
+          100% { background-position: 30px 30px; }
+        }
+        .animate-grid {
+          animation: grid-move 3s linear infinite;
+        }
+      `}} />
 
-        <div className="min-h-screen w-full relative flex flex-col items-center bg-white dark:bg-gray-950 transition-colors duration-500">
-          
-          <div className="absolute inset-0 h-full w-full overflow-hidden">
-            <div className="absolute h-full w-full -top-10 -left-10 
-              bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
-              dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] 
-              animate-grid"
-              style={{ backgroundSize: '30px 30px' }}>
-            </div>
+      <div className="min-h-screen w-full relative flex flex-col items-center bg-white dark:bg-gray-950 transition-colors duration-500">
+        
+        <div className="absolute inset-0 h-full w-full overflow-hidden">
+          <div className="absolute h-full w-full -top-10 -left-10 
+            bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] 
+            dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.08)_1px,transparent_1px)] 
+            animate-grid"
+            style={{ backgroundSize: '30px 30px' }}>
           </div>
+        </div>
 
-          <div className="absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,transparent_10%,black)] dark:bg-gray-950 pointer-events-none transition-colors duration-500"></div>
+        <div className="absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,transparent_10%,black)] dark:bg-gray-950 pointer-events-none transition-colors duration-500"></div>
 
-          <div className="relative z-20 max-w-3xl mx-auto py-20 px-6 w-full">
-            
+        <div className="relative z-20 max-w-3xl mx-auto py-20 px-6 w-full">
+          
           <header className="mb-16 border-b border-gray-200 dark:border-gray-800/60 pb-10">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white-100 dark:bg-white-500/10 text-white-700 dark:text-green-400 text-xs font-mono mb-6 border border-white-200 dark:border-white-500/20">
              <span className="relative flex h-2 w-2">
@@ -63,8 +63,8 @@
           </div>
               
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-mono tracking-tight break-words">
-             <span className="text-white-400 dark:text-white-400">~/sercan/</span>
-             <span className="text-green-500 dark:text-green-500">readme.md</span>
+              <span className="text-white-400 dark:text-white-400">~/sercan/</span>
+              <span className="text-green-500 dark:text-green-500">readme.md</span>
         </h1>
               
               <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
@@ -81,38 +81,53 @@
                   Console.log(Me)
                 </h2>
                 
-                <div className="font-mono text-sm bg-gray-50/80 dark:bg-gray-900/60 backdrop-blur-sm border border-gray-200 dark:border-gray-800 p-6 rounded-xl text-gray-800 dark:text-gray-300 shadow-sm relative overflow-hidden group hover:border-gray-300 dark:hover:border-gray-700 transition-colors">
-                  <div className="absolute top-0 right-0 p-4 opacity-5 dark:opacity-[0.03] pointer-events-none">
-                    <Hash size={100} />
-                  </div>
-
+                <div className="font-mono text-sm bg-gray-50/80 dark:bg-gray-900/60 backdrop-blur-sm border border-gray-200 dark:border-gray-800 p-6 rounded-xl shadow-sm relative overflow-hidden group hover:border-gray-300 dark:hover:border-gray-700 transition-colors"> 
                   <div className="relative z-10 space-y-2">
                     <div className="flex gap-2">
-                      <span className="text-purple-600 dark:text-purple-400">const</span> 
-                      <span className="text-yellow-600 dark:text-yellow-200">me</span> 
-                      <span className="text-gray-400">=</span> 
-                      <span className="text-gray-400">{`{`}</span>
+                      <span className="text-[#42CF8E]">const</span> 
+                      
+                      <span className="text-[#374151] dark:text-gray-200">me</span> 
+                      
+                      <span className="text-[#6B7280] dark:text-gray-400">=</span> 
+                      
+                      <span className="text-[#6B7280] dark:text-gray-400">{`{`}</span>
                     </div>
 
                     {Object.entries(me).map(([key, value], index) => (
                       <div key={key} className="pl-6 flex gap-1 flex-wrap">
-                        <span className="text-blue-600 dark:text-blue-300">{key}</span>
-                        <span className="text-gray-400">:</span>
+                        <span className="text-[#374151] dark:text-gray-200">{key}</span>
+                        
+                        <span className="text-[#6B7280] dark:text-gray-400">:</span>
                         
                         {Array.isArray(value) ? (
-                          <span className="text-orange-600 dark:text-orange-300 break-all">
-                            [{value.map(v => `"${v}"`).join(", ")}]
-                          </span>
+                          <div className="flex flex-wrap gap-1">
+                            <span className="text-[#6B7280] dark:text-gray-400">[</span>
+                            
+                            {value.map((v, i) => (
+                              <span key={i} className="flex">
+                                <span className="text-[#42CF8E]">"{v}"</span>
+                                
+                                {i < value.length - 1 && (
+                                  <span className="text-[#6B7280] dark:text-gray-400 mr-1">,</span>
+                                )}
+                              </span>
+                            ))}
+                            
+                            <span className="text-[#6B7280] dark:text-gray-400">]</span>
+                          </div>
                         ) : (
-                          <span className="text-green-600 dark:text-green-400">"{value}"</span>
+                          <span className="text-[#42CF8E]">"{value}"</span>
                         )}
                         
-                        <span className="text-gray-400">,</span>
+                        <span className="text-[#6B7280] dark:text-gray-400">,</span>
                       </div>
                     ))}
 
-                    <div className="text-gray-400">{`};`}</div>
-                    <div className="text-gray-400 dark:text-gray-600 pt-2 opacity-70 italic">// TODO: Build something awesome</div>
+                    <div className="text-[#6B7280] dark:text-gray-400">{`};`}</div>
+                    
+                    <div className="text-[#626262] dark:text-gray-500 pt-2 opacity-70 italic">
+                      // TODO: Build something awesome
+                    </div>
                   </div>
                 </div>
               </section>
@@ -139,7 +154,14 @@
                 <Quote size={20} className="text-gray-400 shrink-0" />
                 <p className="text-gray-600 dark:text-gray-500 italic text-sm font-mono">
                   "Talk is cheap. Show me the code." <br/>
-                  <span className="text-xs not-italic mt-1 block text-gray-400 dark:text-gray-600">— Linus Torvalds</span>
+                  <a 
+                    href="https://github.com/torvalds"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs not-italic mt-1 inline-block text-gray-400 dark:text-gray-600 hover:text-gray-900 dark:hover:text-gray-300 hover:underline underline-offset-2 transition-colors cursor-pointer"
+                  >
+                    — Linus Torvalds
+                  </a>
                 </p>
               </div>
 
