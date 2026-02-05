@@ -111,7 +111,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     <div className="w-full max-w-2xl mx-auto my-8 font-mono">
       <div className="relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-sm transition-all duration-300">
         
-        {/* TERMINAL HEADER */}
         <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 dark:border-gray-800 bg-gray-100/50 dark:bg-gray-950/50">
           <div className="flex items-center gap-2">
             <div className="flex gap-1.5">
@@ -124,7 +123,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
           <ShieldAlert size={14} className="text-gray-400" />
         </div>
 
-        {/* CONTENT */}
         <div className="p-8 flex flex-col items-center text-center min-h-[350px] justify-center">
           <AnimatePresence mode="wait">
 

@@ -5,7 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
-import { Menu, X as CloseIcon, Home, BookOpen, User } from "lucide-react";
+import { Menu, X as CloseIcon, Terminal } from "lucide-react";
+import { IconBrandGithub, IconBrandX, IconMail } from "@tabler/icons-react";
 
 export default function Header() {
   const pathname = usePathname();
@@ -14,51 +15,60 @@ export default function Header() {
 
   useEffect(() => {
     setMounted(true);
+  }, []);
+
+  // Menü açıldığında scroll'u kilitle
+  useEffect(() => {
     if (isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = "unset";
     }
-    return () => { document.body.style.overflow = 'unset'; }
   }, [isOpen]);
 
   const links = [
-    { href: "/", label: "Home", icon: <Home className="w-4 h-4" /> },
-    { href: "/blog", label: "Blog", icon: <BookOpen className="w-4 h-4" /> },
-    { href: "/about", label: "About", icon: <User className="w-4 h-4" /> },
+    { href: "/", label: "Home" },
+    { href: "/blog", label: "Blog" },
+    { href: "/about", label: "About" },
   ];
 
-  if (!mounted) {
-    return (
-      <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 h-16 flex items-center px-4">
-         <span className="font-mono font-bold text-lg">~/sercan</span>
-      </header>
-    );
-  }
+  if (!mounted) return null;
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-gray-200/40 dark:border-gray-800/40 bg-white/80 dark:bg-gray-950/80 backdrop-blur-md transition-colors duration-500">
-      <div className="container mx-auto flex h-16 items-center justify-between px-3 sm:px-8">
-        
-        <Link 
-          href="/" 
-          onClick={() => setIsOpen(false)}
-          className="font-mono font-bold text-base sm:text-lg tracking-tight hover:opacity-70 transition-opacity z-50"
-        >
-          ~/sercan
-        </Link>
+    <>
+      {/* Grid Animasyonu İçin Style */}
+      <style dangerouslySetInnerHTML={{__html: `
+        @keyframes grid-move {
+          0% { background-position: 0 0; }
+          100% { background-position: 30px 30px; }
+        }
+        .animate-grid {
+          animation: grid-move 3s linear infinite;
+        }
+      `}} />
 
-        <div className="hidden md:flex items-center gap-6">
-          <nav className="flex items-center gap-1">
+      <header className="fixed top-6 inset-x-0 mx-auto z-50 max-w-fit px-2">
+        <div className="flex items-center gap-2 p-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-white/70 dark:bg-zinc-950/30 backdrop-blur-md shadow-xl shadow-black/5">
+          
+          {/* LOGO */}
+          <Link 
+            href="/" 
+            className="pl-4 pr-2 font-mono font-bold text-sm tracking-tight text-zinc-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
+          >
+            ~/sercan
+          </Link>
+
+          {/* DESKTOP NAV */}
+          <nav className="hidden md:flex items-center">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "relative px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg group",
+                  "relative px-4 py-1.5 text-sm font-medium transition-all duration-300 rounded-full",
                   pathname === link.href
-                    ? "text-black dark:text-white bg-gray-100 dark:bg-gray-800"
-                    : "text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100"
+                    ? "bg-white dark:bg-white/10 text-black dark:text-white shadow-sm ring-1 ring-black/5 dark:ring-white/10"
+                    : "text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-200 hover:bg-black/5 dark:hover:bg-white/5"
                 )}
               >
                 {link.label}
@@ -66,72 +76,88 @@ export default function Header() {
             ))}
           </nav>
 
-          <div className="h-4 w-px bg-gray-200 dark:bg-gray-800"></div>
-
-          <div className="flex items-center">
-            <ThemeToggle />
-          </div>
-        </div>
-
-        <div className="flex items-center gap-4 md:hidden z-50">
+          {/* SAĞ KISIM (Tema ve Burger) */}
+          <div className="flex items-center gap-2 pl-2 pr-2">
             <ThemeToggle />
             
             <button 
-                onClick={() => setIsOpen(!isOpen)}
-                className="p-2 -mr-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-full transition-all duration-300 focus:outline-none"
-                aria-label="Toggle Menu"
+                onClick={() => setIsOpen(true)}
+                className="p-2 md:hidden text-zinc-600 dark:text-zinc-300 hover:bg-black/5 dark:hover:bg-white/10 rounded-full transition-all"
             >
-                <Menu className="w-6 h-6" />
-            </button>
-        </div>
-      </div>
-
-      {isOpen && (
-        <div className="md:hidden fixed inset-0 z-[60] flex flex-col justify-between 
-          bg-white/95 dark:bg-black/95 backdrop-blur-xl animate-in fade-in duration-200 h-[100dvh]">
-          
-          <div className="flex justify-end p-6">
-            <button 
-              onClick={() => setIsOpen(false)}
-              className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-white/10 hover:text-red-500 transition-colors rounded-full"
-            >
-               <CloseIcon className="w-8 h-8" />
+                <Menu className="w-5 h-5" />
             </button>
           </div>
+        </div>
+      </header>
 
-          <nav className="flex flex-col items-center space-y-8">
-            {links.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
+      {/* --- CYBER MOBILE MENU OVERLAY --- */}
+      <div
+        className={cn(
+          "fixed inset-0 z-[60] bg-white dark:bg-gray-950 flex flex-col transition-all duration-500 ease-in-out md:hidden",
+          isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"
+        )}
+      >
+        {/* Arka Plan Grid Efekti */}
+        <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
+            <div className="absolute inset-0 h-full w-full bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]" />
+            <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white dark:from-gray-950 dark:via-transparent dark:to-gray-950" />
+        </div>
+
+        {/* Mobil Menü Header (Kapatma Butonu) */}
+        <div className="relative z-10 flex items-center justify-between px-6 pt-8 pb-4">
+            <span className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
+                <Terminal size={14} /> System Navigation
+            </span>
+            <button
                 onClick={() => setIsOpen(false)}
-                className={cn(
-                  "group relative text-4xl font-mono font-bold transition-all duration-300",
-                  pathname === link.href 
-                    ? "text-white-600 dark:text-white-500" 
-                    : "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400"
-                )}
-              >
-                <span className={cn(
-                    "absolute -left-8 transition-opacity duration-300 text-white-600 dark:text-white-500",
-                    pathname === link.href ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-                )}>
-                  &gt;
-                </span>
-                
-                {link.label === 'Home' ? '~/home' : `./${link.label.toLowerCase()}`}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="p-10 text-center">
-            <p className="text-xs text-gray-400 dark:text-gray-600 font-mono">
-              root@user:~$ system_shutdown_menu
-            </p>
-          </div>
-          
+                className="p-2 text-gray-600 dark:text-gray-300 hover:text-red-500 dark:hover:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 rounded-full transition-all border border-transparent hover:border-red-200 dark:hover:border-red-900/30"
+            >
+                <CloseIcon size={24} strokeWidth={1.5} />
+            </button>
         </div>
-      )}
-    </header>
+
+        {/* Linkler */}
+        <div className="relative z-10 flex flex-col items-center justify-center flex-1 gap-10">
+            {links.map((link) => (
+                <Link
+                    key={link.href}
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                        "group font-mono text-5xl font-bold tracking-tight transition-all duration-300 flex items-center",
+                        pathname === link.href
+                            ? "text-gray-900 dark:text-white"
+                            : "text-gray-400 dark:text-gray-600 hover:text-gray-900 dark:hover:text-white"
+                    )}
+                >
+                    <span className={cn(
+                        "text-2xl mr-4 transition-all duration-300 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0",
+                        pathname === link.href ? "opacity-100 translate-x-0 text-green-500" : "text-gray-400"
+                    )}>
+                        {">"}
+                    </span>
+                    {link.label}
+                </Link>
+            ))}
+        </div>
+
+        {/* Footer (Sosyal Medya) */}
+        <div className="relative z-10 pb-12 flex flex-col items-center gap-6">
+            <div className="w-12 h-1 bg-gray-100 dark:bg-gray-800 rounded-full"></div>
+            <div className="flex items-center gap-8">
+                <a href="https://github.com/sercan1337" target="_blank" className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors hover:scale-110 duration-200">
+                    <IconBrandGithub size={28} stroke={1.5} />
+                </a>
+                <a href="https://x.com/sercan1337" target="_blank" className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors hover:scale-110 duration-200">
+                    <IconBrandX size={28} stroke={1.5} />
+                </a>
+                <a href="mailto:sercanduran40@hotmail.com" className="text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors hover:scale-110 duration-200">
+                    <IconMail size={28} stroke={1.5} />
+                </a>
+            </div>
+        </div>
+
+      </div>
+    </>
   );
 }
