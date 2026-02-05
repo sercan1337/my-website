@@ -78,7 +78,6 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         {mode === "LOGIN" && (
           <div className="group relative">
             <label className="block text-[10px] uppercase tracking-widest text-gray-500 font-mono mb-1 group-focus-within:text-green-500 transition-colors">
-              {/* USER_IDENTITY */}
             </label>
             <div className="flex items-center border-b border-gray-700 group-focus-within:border-green-500 transition-colors py-2">
               <span className="text-gray-500 mr-2 font-mono">{">"}</span>
@@ -97,7 +96,6 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         {mode === "REGISTER" && (
           <div className="group relative">
             <label className="block text-[10px] uppercase tracking-widest text-gray-500 font-mono mb-1 group-focus-within:text-green-500 transition-colors">
-              {/* EMAIL */}
             </label>
             <div className="flex items-center border-b border-gray-700 group-focus-within:border-green-500 transition-colors py-2">
               <span className="text-gray-500 mr-2 font-mono">{">"}</span>
@@ -116,7 +114,6 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         {mode === "RESET" && (
           <div className="group relative">
             <label className="block text-[10px] uppercase tracking-widest text-gray-500 font-mono mb-1 group-focus-within:text-green-500 transition-colors">
-              {/* EMAIL */}
             </label>
             <div className="flex items-center border-b border-gray-700 group-focus-within:border-green-500 transition-colors py-2">
               <span className="text-gray-500 mr-2 font-mono">{">"}</span>
@@ -135,7 +132,6 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         {(mode === "LOGIN" || mode === "REGISTER") && (
           <div className="group relative">
             <label className="block text-[10px] uppercase tracking-widest text-gray-500 font-mono mb-1 group-focus-within:text-green-500 transition-colors">
-              {/* ACCESS_KEY */}
             </label>
             <div className="flex items-center border-b border-gray-700 group-focus-within:border-green-500 transition-colors py-2">
               <Lock size={12} className="text-gray-500 mr-2" />

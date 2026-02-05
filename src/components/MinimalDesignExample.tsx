@@ -335,7 +335,7 @@ export default function MinimalDesignExample() {
         </div>
 
         <a
-          href="https://gist.github.com/ncrz1337/b0df58f8658820321ef463806a36a6e2"
+          href="https://gist.github.com/sercan1337/b0df58f8658820321ef463806a36a6e2"
           target="_blank"
           rel="noopener noreferrer"
           className="
