@@ -31,15 +31,23 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 transition-colors duration-300`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased text-gray-900 dark:text-gray-100 transition-colors duration-300 overflow-x-hidden`}
       >
         <Providers>
+          
+          <div className="fixed inset-0 -z-50 h-full w-full bg-white dark:bg-gray-950 transition-colors duration-300">
+            <div className="absolute inset-0 h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+            <div className="absolute inset-0 bg-white/30 dark:bg-gray-950/30 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+          </div>
+
           <Header />
-          <main>{children}</main>
+          
+          <main className="relative z-10 pt-32 pb-0 px-4 sm:px-8 max-w-5xl mx-auto w-full min-h-screen">
+            {children}
+          </main>
+          
           <ScrollToTop />
-          
           <Toaster position="top-center" richColors />
-          
           <SpeedInsights />
           <Analytics/>
         </Providers>
