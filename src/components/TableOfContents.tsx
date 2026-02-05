@@ -86,7 +86,7 @@ export default function TableOfContents({
       )}
     >
       <h2 className="mb-4 text-xs font-bold tracking-widest text-gray-500 uppercase dark:text-gray-400">
-        İçindekiler
+      Table Of Contents
       </h2>
             <ul className="relative space-y-1 border-l border-gray-200 dark:border-gray-800">
         {headings.map((heading) => {
@@ -102,15 +102,15 @@ export default function TableOfContents({
                   if (element) {
                     const y = element.getBoundingClientRect().top + window.scrollY - 100;
                     window.scrollTo({ top: y, behavior: "smooth" });
-                    setActiveId(heading.id); // Tıklandığında hemen aktif yap
+                    setActiveId(heading.id);
                   }
                 }}
                 className={cn(
                   "block py-1 pr-2 transition-all duration-200 ease-in-out hover:text-gray-900 dark:hover:text-white",
                   heading.level === 3 ? "pl-6 text-xs" : "pl-4 text-sm",
                   isActive
-                    ? "font-medium text-gray-900 dark:text-gray-50" // Aktifken koyu gri/beyaz
-                    : "text-gray-500 dark:text-gray-400" // Pasifken orta gri
+                    ? "font-medium text-gray-900 dark:text-gray-50"
+                    : "text-gray-500 dark:text-gray-400"
                 )}
               >
                 {heading.text}
