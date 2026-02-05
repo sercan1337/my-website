@@ -16,9 +16,7 @@ export default function Header() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Menü açıldığında scroll'u kilitle
-  useEffect(() => {
+ useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
     } else {
@@ -36,7 +34,6 @@ export default function Header() {
 
   return (
     <>
-      {/* Grid Animasyonu İçin Style */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes grid-move {
           0% { background-position: 0 0; }
@@ -50,7 +47,6 @@ export default function Header() {
       <header className="fixed top-6 inset-x-0 mx-auto z-50 max-w-fit px-2">
         <div className="flex items-center gap-2 p-1.5 rounded-full border border-zinc-200 dark:border-white/10 bg-white/70 dark:bg-zinc-950/30 backdrop-blur-md shadow-xl shadow-black/5">
           
-          {/* LOGO */}
           <Link 
             href="/" 
             className="pl-4 pr-2 font-mono font-bold text-sm tracking-tight text-zinc-900 dark:text-gray-100 hover:text-gray-600 dark:hover:text-gray-400 transition-colors"
@@ -58,7 +54,6 @@ export default function Header() {
             ~/sercan
           </Link>
 
-          {/* DESKTOP NAV */}
           <nav className="hidden md:flex items-center">
             {links.map((link) => (
               <Link
@@ -76,7 +71,6 @@ export default function Header() {
             ))}
           </nav>
 
-          {/* SAĞ KISIM (Tema ve Burger) */}
           <div className="flex items-center gap-2 pl-2 pr-2">
             <ThemeToggle />
             
@@ -90,20 +84,17 @@ export default function Header() {
         </div>
       </header>
 
-      {/* --- CYBER MOBILE MENU OVERLAY --- */}
       <div
         className={cn(
           "fixed inset-0 z-[60] bg-white dark:bg-gray-950 flex flex-col transition-all duration-500 ease-in-out md:hidden",
           isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-full pointer-events-none"
         )}
       >
-        {/* Arka Plan Grid Efekti */}
         <div className="absolute inset-0 z-0 pointer-events-none opacity-40">
             <div className="absolute inset-0 h-full w-full bg-[linear-gradient(to_right,rgba(0,0,0,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(0,0,0,0.05)_1px,transparent_1px)] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.05)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.05)_1px,transparent_1px)] bg-[size:30px_30px]" />
             <div className="absolute inset-0 bg-gradient-to-b from-white via-transparent to-white dark:from-gray-950 dark:via-transparent dark:to-gray-950" />
         </div>
 
-        {/* Mobil Menü Header (Kapatma Butonu) */}
         <div className="relative z-10 flex items-center justify-between px-6 pt-8 pb-4">
             <span className="font-mono text-xs font-bold text-gray-400 uppercase tracking-widest flex items-center gap-2">
                 <Terminal size={14} /> System Navigation
@@ -116,7 +107,6 @@ export default function Header() {
             </button>
         </div>
 
-        {/* Linkler */}
         <div className="relative z-10 flex flex-col items-center justify-center flex-1 gap-10">
             {links.map((link) => (
                 <Link
@@ -141,7 +131,6 @@ export default function Header() {
             ))}
         </div>
 
-        {/* Footer (Sosyal Medya) */}
         <div className="relative z-10 pb-12 flex flex-col items-center gap-6">
             <div className="w-12 h-1 bg-gray-100 dark:bg-gray-800 rounded-full"></div>
             <div className="flex items-center gap-8">
