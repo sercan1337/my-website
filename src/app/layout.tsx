@@ -42,7 +42,7 @@ export default function RootLayout({
 
           <Header />
           
-          <main className="relative z-10 pt-32 pb-0 px-4 sm:px-8 max-w-5xl mx-auto w-full min-h-screen">
+          <main className="relative z-10 pt-32 pb-0 px-4 sm:px-8 max-w-[72rem] mx-auto w-full min-h-screen">
             {children}
           </main>
           
