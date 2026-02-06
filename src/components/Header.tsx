@@ -122,7 +122,7 @@ export default function Header() {
                 >
                     <span className={cn(
                         "text-2xl mr-4 transition-all duration-300 opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0",
-                        pathname === link.href ? "opacity-100 translate-x-0 text-green-500" : "text-gray-400"
+                        pathname === link.href ? "opacity-100 translate-x-0 text-white-500" : "text-gray-400"
                     )}>
                         {">"}
                     </span>
