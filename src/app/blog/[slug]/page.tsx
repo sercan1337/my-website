@@ -5,7 +5,7 @@ import {
   getPostBySlug,
   getAllPostSlugs,
 } from "@/lib/posts";
-import { calculateReadingTime } from "@/lib/utils";
+import { calculateReadingTime as calcReadTimeUtil } from "@/lib/utils";
 import ReactMarkdown from "react-markdown";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -64,7 +64,7 @@ export default async function BlogPost({
     notFound();
   }
 
-  const readingTime = calculateReadingTime(post.content);
+  const readingTime = calcReadTimeUtil(post.content);
   const claps = await getClaps(resolvedParams.slug);
 
   const markdownComponents = {
@@ -88,13 +88,12 @@ export default async function BlogPost({
   };
 
   return (
-
     <div className="min-h-screen relative transition-colors duration-500 animate-in fade-in zoom-in-95 duration-700">
       
-      <article className="relative z-10 mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+      <article className="relative z-10 mx-auto max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_250px]">
           
-          <div className="mx-auto max-w-3xl w-full">
+          <div className="mx-auto w-full min-w-0">
             
             <Link
               href="/blog"
