@@ -57,27 +57,3 @@ export function BlogPostSkeleton() {
     </div>
   );
 }
-
-export function PopularPostsSkeleton() {
-  return (
-    <div className="space-y-3">
-      {[...Array(5)].map((_, i) => (
-        <div
-          key={i}
-          className="rounded-lg border border-gray-200 bg-white p-4 dark:border-gray-800 dark:bg-gray-800"
-        >
-          <div className="mb-2 flex items-center gap-2">
-            <Skeleton className="h-6 w-6" variant="circular" />
-            <Skeleton className="h-4 w-3/4" variant="text" />
-          </div>
-          <Skeleton className="mb-2 h-3 w-full" variant="text" />
-          <div className="flex gap-3">
-            <Skeleton className="h-3 w-16" variant="text" />
-            <Skeleton className="h-3 w-20" variant="text" />
-          </div>
-        </div>
-      ))}
-    </div>
-  );
-}
-
