@@ -2,7 +2,6 @@
 title: "About coding and having fun"
 date: "November 10, 2025"
 excerpt: "I have always been interested in coding, but I never had the opportunity to learn it. Now, I am able to write code and have fun with it."
-tags: ["coding", "learning", "journey"]
 ---
 
 I have always been interested in coding, but I never had the opportunity to learn it. Now, I am able to write code and have fun with it.
