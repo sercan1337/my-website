@@ -36,7 +36,7 @@ export function ThemeToggle() {
       }}
       className={cn(
         "flex w-full items-center justify-between px-3 py-2 text-sm transition-all duration-200 rounded-md mx-1 my-0.5 w-[calc(100%-8px)]",
-        "hover:bg-gray-100 dark:hover:bg-gray-800", // Hover rengi (Gri)
+        "hover:bg-gray-100 dark:hover:bg-gray-800",
         theme === value 
           ? "text-gray-950 dark:text-white font-medium bg-gray-100 dark:bg-gray-800" 
           : "text-gray-500 dark:text-gray-400"
