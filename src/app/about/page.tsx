@@ -17,6 +17,13 @@ export default function AboutPage() {
     location: "Turkey",
     stack: ["Next.js", "TypeScript", "Tailwind"],
     learning: ["Backend", "Algorithms"],
+    contact: ["Github", "X", "Mail"]
+  };
+
+  const links: Record<string, string> = {
+    "Github": "https://github.com/sercan1337",
+    "X": "https://x.com/sercan1337", 
+    "Mail": "mailto:sercanduran40@hotmail.com"
   };
 
   const devTools = [
@@ -32,7 +39,7 @@ export default function AboutPage() {
       <div className="relative z-20 max-w-3xl mx-auto py-20 px-6 w-full">
         
         <header className="mb-16 border-b border-gray-200 dark:border-gray-800/60 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white-100 dark:bg-white-500/10 text-white-700 dark:text-white-700 text-xs font-mono mb-6 border border-white-200 dark:border-white-500/20">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white-100 dark:bg-white-500/10 text-white-700 dark:text-white-700 text-xs font-mono mb-6 border border-[#42CF8E] dark:border-[#42CF8E]-500/20">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white-500 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#42CF8E] dark:bg-white-500"></span>
@@ -48,7 +55,7 @@ export default function AboutPage() {
             
           <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
             High school student from Turkey. I don't just write code; I try to understand how things work under the hood. 
-            Currently exploring the depths of Next.js and React ecosystem.
+            Currently exploring the depths of Next.js and Typescript ecosystem.
           </p>
         </header>
 
@@ -84,7 +91,18 @@ export default function AboutPage() {
                         
                         {value.map((v, i) => (
                           <span key={i} className="flex">
-                            <span className="text-[#42CF8E]">"{v}"</span>
+                            {key === "contact" ? (
+                              <a 
+                                href={links[v] || "#"} 
+                                target="_blank" 
+                                rel="noopener noreferrer"
+                                className="text-[#42CF8E] hover:underline hover:underline-offset-4 cursor-pointer transition-all inline-block hover:-translate-y-0.5"
+                              >
+                                "{v}"
+                              </a>
+                            ) : (
+                              <span className="text-[#42CF8E]">"{v}"</span>
+                            )}
                             
                             {i < value.length - 1 && (
                               <span className="text-[#6B7280] dark:text-gray-400 mr-1">,</span>
