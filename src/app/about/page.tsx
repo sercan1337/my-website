@@ -79,7 +79,7 @@ export default function AboutPage() {
                   <span className="text-[#6B7280] dark:text-gray-400">{`{`}</span>
                 </div>
 
-                {Object.entries(me).map(([key, value], index) => (
+                {Object.entries(me).map(([key, value],) => (
                   <div key={key} className="pl-6 flex gap-1 flex-wrap">
                     <span className="text-[#374151] dark:text-gray-200">{key}</span>
                     
