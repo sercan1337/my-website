@@ -77,7 +77,6 @@ export default function Header() {
 
   return (
     <>
-      {/* 🎨 Saf siyah / beyaz renk sistemi */}
       <style>{`
         :root {
           --pill-bg: #ffffff;
@@ -98,7 +97,6 @@ export default function Header() {
             ~/sercan
           </Link>
 
-          {/* DESKTOP NAV */}
           <nav
             className="relative hidden md:flex items-center"
             onMouseLeave={() => setMode("underline")}
@@ -108,14 +106,14 @@ export default function Header() {
                 animate={{
                   left: indicator.left,
                   width: indicator.width,
-                  height: mode === "pill" ? 30 : 2,
+                  height: mode === "pill" ? 20 : 1.5,
                   top: mode === "pill" ? "50%" : "100%",
                   borderRadius: mode === "pill" ? 999 : 1,
                   backgroundColor:
                     mode === "pill"
                       ? "var(--pill-bg)"
                       : "var(--underline-bg)",
-                  opacity: mode === "pill" ? 0.75 : 0.95, // 👈 yumuşak giriş
+                  opacity: mode === "pill" ? 0.75 : 0.95,
                 }}
                 transition={{
                   type: "tween",
@@ -147,7 +145,6 @@ export default function Header() {
                   }}
                   onMouseEnter={() => {
                     measure(link.href);
-                    setMode("pill");
                   }}
                   className={cn(
                     "relative px-4 py-1.5 text-sm font-medium z-10 transition-colors",
@@ -174,7 +171,6 @@ export default function Header() {
         </div>
       </header>
 
-      {/* MOBILE MENU */}
       <div
         className={cn(
           "fixed inset-0 z-[60] bg-white dark:bg-gray-950 flex flex-col transition-all duration-500 md:hidden",
