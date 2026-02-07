@@ -2,7 +2,6 @@
 title: "Being able to write code"
 date: "November 6, 2025"
 excerpt: "Two years ago, coding was just a dream for me, but now things have changed."
-tags: ["coding", "growth", "persistence"]
 ---
 
 Two years ago, coding was just a dream for me, but now things have changed.
