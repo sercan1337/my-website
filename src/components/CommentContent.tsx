@@ -32,7 +32,6 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
       if (!res.ok) return;
       const data = await res.json();
       setComments(data);
-    } catch (error) {
       console.error("Failed to load comments");
     } finally {
       setLoading(false);
