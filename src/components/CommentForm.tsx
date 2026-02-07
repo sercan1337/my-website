@@ -40,7 +40,6 @@ export default function CommentForm({ user, slug, onCommentPosted }: CommentForm
       toast.success("COMMENT POSTED", { description: "Your entry has been added to the stream." });
       onCommentPosted?.();
       router.refresh();
-    } catch (error) {
       toast.error("ERROR", { description: "Failed to write to database." });
     } finally {
       setIsLoading(false);
