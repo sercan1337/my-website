@@ -38,7 +38,7 @@ export default function AboutPage() {
       
       <div className="relative z-20 max-w-3xl mx-auto py-20 px-6 w-full">
         
-        <header className="mb-16 border-b border-gray-200 dark:border-gray-800/60 pb-10">
+        <header className="mb-16 border-b border-[#42CF8E] dark:border-gray-800 pb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white-100 dark:bg-white-500/10 text-white-700 dark:text-white-700 text-xs font-mono mb-6 border border-[#42CF8E] dark:border-[#42CF8E]-500/20">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white-500 opacity-75"></span>
@@ -67,7 +67,7 @@ export default function AboutPage() {
               Console.log(Me)
             </h2>
             
-            <div className="font-mono text-sm bg-gray-50/80 dark:bg-gray-900/60 backdrop-blur-sm border border-gray-200 dark:border-gray-800 p-6 rounded-xl shadow-sm relative overflow-hidden group hover:border-gray-300 dark:hover:border-gray-700 transition-colors"> 
+            <div className="font-mono text-sm bg-gray-50/80 dark:bg-gray-900/60 backdrop-blur-sm border border-gray-200 dark:border-gray-800 p-6 rounded-xl shadow-sm relative overflow-hidden group hover:border-[#42CF8E] dark:hover:border-gray-700 transition-colors"> 
               <div className="relative z-10 space-y-2">
                 <div className="flex gap-2">
                   <span className="text-[#42CF8E]">const</span> 
@@ -170,7 +170,7 @@ export default function AboutPage() {
 
 function SetupItem({ icon: Icon, title, desc }: { icon: LucideIcon, title: string, desc: string }) {
   return (
-    <div className="flex items-center gap-4 p-4 rounded-lg bg-gray-50/60 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 hover:border-green-500/30 hover:bg-white dark:hover:bg-gray-800/80 transition-all group backdrop-blur-sm shadow-sm hover:shadow-md">
+    <div className="flex items-center gap-4 p-4 rounded-lg bg-gray-50/60 dark:bg-gray-900/40 border border-gray-200 dark:border-gray-800 hover:border-[#42CF8E] hover:bg-white dark:hover:bg-gray-800/80 transition-all group backdrop-blur-sm shadow-sm hover:shadow-md">
       <div className="text-gray-400 group-hover:text-green-600 dark:group-hover:text-green-500 transition-colors">
         <Icon size={18} />
       </div>
