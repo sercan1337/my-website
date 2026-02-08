@@ -47,13 +47,13 @@ export default function Home() {
             </div>
 
             <div className="flex items-center gap-x-5 text-gray-400">
-                <a href="https://github.com/sercan1337" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+            <a href="https://github.com/sercan1337" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">
                   <IconBrandGithub size={20} stroke={1.5} />
                 </a>
-                <a href="https://x.com/sercan1337" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 dark:hover:text-white transition-colors">
+                <a href="https://x.com/sercan1337" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">
                   <IconBrandX size={20} stroke={1.5} />
                 </a>
-                <a href="mailto:sercanduran40@hotmail.com" className="hover:text-gray-900 dark:hover:text-white transition-colors">     
+                <a href="mailto:sercanduran40@hotmail.com" className="hover:text-black dark:hover:text-white transition-colors">          
                   <IconMail size={20} stroke={1.5} />
                 </a>
               </div>
