@@ -70,7 +70,7 @@ export default async function BlogPost({
   const markdownComponents = {
     h2: ({ children }: any) => {
       const id = generateHeadingId(children?.toString() || "");
-      return <h2 id={id} className="mt-12 mb-6 scroll-mt-24 text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200/50 pb-2 dark:border-gray-800/50">{children}</h2>;
+      return <h2 id={id} className="mt-12 mb-6 scroll-mt-24 text-2xl font-bold text-gray-900 dark:text-white border-b border-600/50 pb-6 dark:border-gray-600/50">{children}</h2>;
     },
     h3: ({ children }: any) => {
       const id = generateHeadingId(children?.toString() || "");
@@ -105,7 +105,7 @@ export default async function BlogPost({
               <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" /> Back to Blog
             </Link>
 
-            <header className="mb-10 pb-6 border-b border-gray-100 dark:border-gray-800/50">
+            <header className="mb-10 pb-6 border-b border-[#42CF8E] dark:border-gray-[#42CF8E]">
               <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 font-bold leading-tight">
                 {post.title}
               </h1>
