@@ -106,7 +106,7 @@ export default async function BlogPost({
             </Link>
 
             <header className="mb-10 pb-6 border-b border-gray-100 dark:border-gray-800/50">
-              <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 font-mono leading-tight">
+              <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 font-bold leading-tight">
                 {post.title}
               </h1>
               
