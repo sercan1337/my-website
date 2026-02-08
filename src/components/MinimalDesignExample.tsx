@@ -44,17 +44,16 @@ export default function MinimalDesignExample() {
     <div className="my-8">
       <button
         onClick={() => setShowExample(!showExample)}
-        className="w-full flex items-center justify-between gap-3 px-6 py-4 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-200 dark:border-blue-800 hover:from-blue-100 hover:to-purple-100 dark:hover:from-blue-900/30 dark:hover:to-purple-900/30 transition-all duration-300 shadow-sm hover:shadow-md group active:scale-[0.98]"
-      >
+        className="w-full flex items-center justify-between gap-3 px-6 py-4 bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/20 dark:border-emerald-500/30 rounded-lg text-gray-800 dark:text-white hover:bg-emerald-500/10 dark:hover:bg-emerald-500/20 transition-all duration-300 shadow-sm hover:shadow-md group active:scale-[0.98]">
         <span className="flex items-center gap-3 text-base font-semibold text-gray-700 dark:text-gray-200 transition-colors duration-200">
           {showExample ? (
             <>
-              <EyeOff className="h-5 w-5 text-blue-600 dark:text-blue-400 transition-transform duration-300 group-hover:scale-110" />
+              <EyeOff className="h-5 w-5 text-black-600 dark:text-white-400 transition-transform duration-300 group-hover:scale-110" />
               Hide Example
             </>
           ) : (
             <>
-              <Eye className="h-5 w-5 text-purple-600 dark:text-purple-400 transition-transform duration-300 group-hover:scale-110" />
+              <Eye className="h-5 w-5 text-black-600 dark:text-white-400 transition-transform duration-300 group-hover:scale-110" />
               View Minimal Design Example
             </>
           )}
@@ -100,8 +99,6 @@ export default function MinimalDesignExample() {
             --text-tertiary: #666666;
             --border-color: #2a2a2a;
           }
-
-          /* ... (Previous CSS remains the same) ... */
 
           .minimal-header {
             margin-bottom: 36px;
@@ -149,14 +146,15 @@ export default function MinimalDesignExample() {
           .minimal-card:nth-child(2) { animation-delay: 0.35s; }
           .minimal-card:nth-child(3) { animation-delay: 0.45s; }
 
+          /* BURADA DEĞİŞİKLİK YAPILDI: Hover çizgisi rengi */
           .minimal-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            height: 4px; /* Biraz daha belirgin olması için 3px'den 4px'e çıkarıldı */
+            background: #42CF8E; /* İstenilen yeşil renk buraya eklendi */
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.3s ease;
@@ -220,7 +218,6 @@ export default function MinimalDesignExample() {
             to { opacity: 1; transform: translateY(0); }
           }
 
-          /* --- NEW ANIMATIONS FOR BUTTON --- */
           .theme-toggle-ripple {
             position: absolute;
             border-radius: 50%;
