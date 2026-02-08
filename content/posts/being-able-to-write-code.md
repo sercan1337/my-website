@@ -1,7 +1,7 @@
 ---
 title: "being able to write code"
-date: "November 6, 2025"
-excerpt: "Two years ago, coding was just a dream for me, but now things have changed."
+date: "Nov 6, 2025"
+excerpt: "two years ago, coding was just a dream for me, but now things have changed."
 ---
 
 Two years ago, coding was just a dream for me, but now things have changed.
