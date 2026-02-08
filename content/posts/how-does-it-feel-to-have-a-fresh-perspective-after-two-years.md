@@ -1,7 +1,7 @@
 ---
 title: "how does it feel to have a fresh perspective after two years?"
-date: "November 4, 2025"
-excerpt: "Actually, my first encounter with coding was in 2023. Artificial intelligence wasn't used back then like it is now."
+date: "Nov 4, 2025"
+excerpt: "actually, my first encounter with coding was in 2023. Artificial intelligence wasn't used back then like it is now."
 ---
 
 Actually, my first encounter with coding was in 2023. Artificial intelligence wasn't used back then like it is now.

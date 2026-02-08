@@ -1,7 +1,7 @@
 ---
 title: "is minimalism in websites really a good thing?"
-date: "December 29, 2025"
-excerpt: "Minimalism is a defining factor for everyone, but is minimalism really the best?"
+date: "Dec 29, 2025"
+excerpt: "minimalism is a defining factor for everyone, but is minimalism really the best?"
 ---
 
 Minimalism has actually become one of the dominant forces that shape web design today. "Pure" and simple layouts, the use of monochromatic schemes, and the selection of appropriate fonts all indicate the quality and professionalism of a website today. But is it always good to include this web design approach, or does it sometimes bring more disadvantages than benefits?
