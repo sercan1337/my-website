@@ -78,7 +78,6 @@ export default async function Image() {
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '20px', fontSize: '28px', color: '#6b7280', fontFamily: 'monospace' }}>
-            <span style={{ color: '#10b981' }}>➜</span>
             <span>run introduction --visual</span>
         </div>
 

@@ -25,7 +25,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
           flexDirection: 'column',
           alignItems: 'flex-start',
           justifyContent: 'center',
-          backgroundColor: '#030712', // bg-gray-950
+          backgroundColor: '#030712',
           backgroundImage: 'radial-gradient(circle at 25px 25px, #333 2%, transparent 0%), radial-gradient(circle at 75px 75px, #333 2%, transparent 0%)',
           backgroundSize: '100px 100px',
           padding: '80px',
@@ -34,7 +34,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
           color: '#e5e7eb',
         }}
       >
-        {/* Arka Plan Glow Efekti */}
         <div
             style={{
                 position: 'absolute',
@@ -48,7 +47,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
             }}
         />
 
-        {/* Ana İçerik Kutusu */}
         <div
             style={{
                 display: 'flex',
@@ -66,9 +64,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
                 justifyContent: 'space-between',
             }}
         >
-            {/* Üst Kısım: Dosya Yolu ve Başlık */}
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-                {/* Dosya Yolu Ekmek Kırıntısı */}
                 <div style={{ color: '#6b7280', fontSize: '24px', marginBottom: '30px', display: 'flex', alignItems: 'center', gap: '10px' }}>
                     <img
                         src={`data:image/svg+xml,${encodeURIComponent(iconSvg.replace('currentColor', '#10b981'))}`}
@@ -80,7 +76,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
                     <span style={{ color: '#9ca3af' }}>{slug.slice(0, 20)}{slug.length > 20 ? '...' : ''}.md</span>
                 </div>
 
-                {/* Başlık */}
                 <div
                 style={{
                     fontSize: '64px',
@@ -96,7 +91,6 @@ export default async function Image({ params }: { params: { slug: string } }) {
                 </div>
             </div>
 
-            {/* Alt Kısım: Meta Bilgileri (Terminal Çıktısı Gibi) */}
             <div
                 style={{
                     display: 'flex',
