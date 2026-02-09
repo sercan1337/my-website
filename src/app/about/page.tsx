@@ -38,7 +38,7 @@ export default function AboutPage() {
       
       <div className="relative z-20 max-w-3xl mx-auto py-20 px-6 w-full">
         
-        <header className="mb-16 border-b border-[#42CF8E] dark:border-[#42CF8E] pb-10">
+        <header className="mb-16 border-b border-[#42CF8E] dark:border-gray-600/50 pb-10">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white-100 dark:bg-white-500/10 text-white-700 dark:text-white-700 text-xs font-mono mb-6 border border-[#42CF8E] dark:border-[#42CF8E]-500/20">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white-500 opacity-75"></span>
@@ -54,7 +54,7 @@ export default function AboutPage() {
           </h1>
             
           <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
-            High school student from Turkey. I don't just write code; I try to understand how things work under the hood. 
+            High school student from Türkiye. I don't just write code; I try to understand how things work under the hood. 
             Currently exploring the depths of Next.js and Typescript ecosystem.
           </p>
         </header>
