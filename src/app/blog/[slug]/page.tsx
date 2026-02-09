@@ -105,7 +105,7 @@ export default async function BlogPost({
               <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" /> Back to Blog
             </Link>
 
-            <header className="mb-10 pb-6 border-b border-[#42CF8E] dark:border-gray-[#42CF8E]">
+            <header className="mb-10 pb-6 border-b border-[#42CF8E] dark:border-gray-600/50">
               <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 font-bold leading-tight">
                 {post.title}
               </h1>
