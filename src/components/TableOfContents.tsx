@@ -85,7 +85,7 @@ export default function TableOfContents({
         className
       )}
     >
-      <h2 className="mb-4 text-xs font-bold tracking-widest text-gray-500 uppercase dark:text-gray-400">
+      <h2 className="mb-4 text-xs font-bold tracking-widest text-black-500 uppercase dark:text-black-400">
       Table Of Contents
       </h2>
             <ul className="relative space-y-1 border-l border-gray-200 dark:border-gray-800">
@@ -118,7 +118,7 @@ export default function TableOfContents({
               
               {isActive && (
                 <span 
-                  className="absolute left-[-1px] top-1/2 h-full w-[2px] -translate-y-1/2 bg-gray-900 dark:bg-gray-50 rounded-full"
+                  className="absolute left-[-1px] top-1/2 h-full w-[2px] -translate-y-1/2 bg-[#42CF8E] dark:bg-gray-50 rounded-full"
                   aria-hidden="true"
                 />
               )}
