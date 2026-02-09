@@ -54,7 +54,7 @@ export default function Leet1337() {
 
           </div>
 
-            <div className="mt-16 flex items-center justify-center gap-x-6 text-gray-400">
+            <div className="mt-10 flex items-center justify-center gap-x-6 text-gray-400">
                 <Link href="https://github.com/sercan1337" target="_blank" className="hover:text-[#42CF8E] dark:hover:text-[#42CF8E] transition-colors">
                   <IconBrandGithub size={20} stroke={1.5} />
                 </Link>
