@@ -42,7 +42,7 @@ export default function BlogList({ posts }: BlogListProps) {
                 href={`/blog/${post.slug}`}
                 className="group relative block p-6 -mx-6 rounded-2xl transition-all duration-300 hover:bg-gray-50 dark:hover:bg-white/[0.03]"
               >
-                <div className="absolute left-0 top-6 bottom-6 w-1 bg-gradient-to-b from-[#42CF8E] to-[#2ecc71] rounded-r-full scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center" />
+                <div className="absolute left-0 top-6 bottom-6 w-1 bg-gradient-to-b from-[#42CF8E] to-[#2ecc71] dark:from-[#ffffff] dark:to-[#e3e3e3] rounded-r-full scale-y-0 group-hover:scale-y-100 transition-transform duration-300 origin-center" />
 
                 <article className="flex flex-col space-y-3">
                   <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100 group-hover:text-[#42CF8E] transition-colors">
