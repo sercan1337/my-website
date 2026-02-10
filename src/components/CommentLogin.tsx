@@ -3,8 +3,8 @@
 import { useState, useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  ShieldAlert, Terminal, LogIn, Mail, Lock, User, 
-  ArrowRight, Loader2, ChevronLeft 
+  Terminal, Mail, Lock, User, 
+  ArrowRight, Loader2, ChevronLeft, Command, AlertTriangle
 } from "lucide-react";
 import { toast } from "sonner"; 
 import { authClient } from "@/lib/auth-client";
@@ -14,7 +14,7 @@ interface CommentLoginProps {
   onLoginSuccess?: () => void;
 }
 
-type AuthView = "INTRO" | "LOGIN" | "REGISTER" | "FORGOT_EMAIL";
+type AuthView = "INTRO" | "LOGIN" | "REGISTER";
 
 const emptySubscribe = () => () => {};
 
@@ -23,6 +23,7 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
   const [isLoading, setIsLoading] = useState(false);
   const mounted = useSyncExternalStore(emptySubscribe, () => true, () => false);
   const router = useRouter();
+  const [errors, setErrors] = useState<Record<string, string>>({});
 
   const [formData, setFormData] = useState({
     email: "",
@@ -30,38 +31,80 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     name: "",
   });
 
+  // DÜZELTME:
+  // 1. '!bg-...' kullanarak Sonner'ın varsayılan şeffaflığını ezdik.
+  // 2. Dark modda 'dark:!bg-zinc-950' ile kesin siyah/koyu gri arka plan verdik.
+  // 3. Yeşil vurguları sadece Light modda bıraktık.
+  const toastClass = `
+    group flex items-center gap-3 p-4 rounded-lg shadow-xl border
+    font-mono text-xs tracking-wide
+    
+    /* LIGHT MODE: Beyaz zemin, Yeşil detay yok */
+    !bg-white text-zinc-900 border-zinc-200
+    
+    /* DARK MODE: Arka planı !important ile zorladık */
+    dark:!bg-zinc-950 dark:text-zinc-200 dark:border-zinc-800
+  `;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (errors[e.target.name]) {
+      setErrors({ ...errors, [e.target.name]: "" });
+    }
+  };
+
+  const validateForm = (type: "LOGIN" | "REGISTER") => {
+    const newErrors: Record<string, string> = {};
+    let isValid = true;
+
+    if (!formData.email) {
+      newErrors.email = "ERR: MISSING_EMAIL";
+      isValid = false;
+    }
+    if (!formData.password) {
+      newErrors.password = "ERR: MISSING_KEY";
+      isValid = false;
+    }
+    if (type === "REGISTER" && !formData.name) {
+      newErrors.name = "ERR: MISSING_USER";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
   };
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (!validateForm("LOGIN")) return;
 
+    setIsLoading(true);
     const promise = authClient.signIn.email({
         email: formData.email,
         password: formData.password,
     });
-
+    
     toast.promise(promise, {
-      loading: 'Verifying credentials...',
+      loading: 'Authenticating...',
       success: () => {
         setIsLoading(false);
         onLoginSuccess?.();
         router.refresh();
-        return "ACCESS GRANTED: Session initialized.";
+        return "ACCESS GRANTED";
       },
       error: (err) => {
         setIsLoading(false);
-        return `ACCESS DENIED: ${err.error?.message || "Invalid credentials"}`;
+        return `ERROR: ${err.error?.message || "Access Denied"}`;
       },
+      className: toastClass,
     });
   };
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
+    if (!validateForm("REGISTER")) return;
 
+    setIsLoading(true);
     const promise = authClient.signUp.email({
         email: formData.email,
         password: formData.password,
@@ -69,178 +112,247 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     });
 
     toast.promise(promise, {
-      loading: 'Creating new identity...',
+      loading: 'Writing to database...',
       success: () => {
         setIsLoading(false);
         setView("LOGIN");
-        return "IDENTITY CREATED: Please login.";
+        return "USER REGISTERED";
       },
       error: (err) => {
         setIsLoading(false);
-        return `ERROR: ${err.error?.message || "Registration failed"}`;
+        return `ERROR: ${err.error?.message || "Registration Failed"}`;
       },
+      className: toastClass,
     });
   };
 
-  const handleForgotEmail = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
-
-    const promise = authClient.requestPasswordReset({
-        email: formData.email,
-        redirectTo: "/reset-password", 
-    });
-
-    toast.promise(promise, {
-      loading: 'Generating reset token...',
-      success: () => {
-        setIsLoading(false);
-        setView("LOGIN");
-        return "TOKEN SENT: Check your email.";
-      },
-      error: (err) => {
-        setIsLoading(false);
-        return `ERROR: ${err.error?.message || "Failed to send email"}`;
-      },
+  const handleDisabledFeature = () => {
+    toast("COMMAND REJECTED", {
+        description: "Feature [reset_key] is offline.",
+        icon: <AlertTriangle className="w-4 h-4 text-[#42CF8E] dark:text-white" />,
+        className: toastClass,
     });
   };
 
   if (!mounted) return null;
 
   return (
-    <div className="w-full max-w-2xl mx-auto my-8 font-mono">
-      <div className="relative overflow-hidden rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-900/50 backdrop-blur-sm transition-all duration-300">
-        
-        <div className="flex items-center justify-between px-4 py-2 border-b border-gray-200 dark:border-gray-800 bg-gray-100/50 dark:bg-gray-950/50">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <div className="w-2.5 h-2.5 rounded-full bg-red-500/80"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80"></div>
-              <div className="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
-            </div>
-            <span className="ml-2 text-[10px] text-gray-500 uppercase">comments</span>
-          </div>
-          <ShieldAlert size={14} className="text-gray-400" />
-        </div>
+    <div className="w-full max-w-[360px] mx-auto my-12 font-mono text-zinc-300 antialiased">
+      <div className="relative flex flex-col items-center justify-center min-h-[320px]">
+        <AnimatePresence mode="wait">
+          
+          {/* --- INTRO VIEW --- */}
+          {view === "INTRO" && (
+            <motion.div key="intro" {...animProps} className="flex flex-col items-center justify-center w-full space-y-8">
+              <div className="flex items-center gap-3 text-zinc-500 select-none">
+                <Terminal size={20} className="text-[#42CF8E] dark:text-zinc-500" />
+                <span className="text-sm font-medium">guest@system:~ $</span>
+                <span className="w-2 h-4 bg-[#42CF8E] dark:bg-zinc-500 animate-pulse block shadow-[0_0_8px_rgba(66,207,142,0.5)] dark:shadow-none"></span>
+              </div>
+              
+              <button
+                onClick={() => setView("LOGIN")}
+                className="
+                  group flex items-center gap-3 px-8 py-3 rounded-lg border transition-all duration-300 active:scale-95
+                  bg-white border-zinc-200 text-zinc-600 shadow-sm
+                  hover:border-[#42CF8E] hover:text-[#42CF8E] hover:shadow-md
+                  dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 
+                  dark:hover:bg-zinc-800 dark:hover:border-zinc-600 dark:hover:text-zinc-200
+                "
+              >
+                <span className="text-sm font-bold tracking-wide">INITIALIZE_LOGIN</span>
+                <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1 opacity-50 group-hover:opacity-100 group-hover:text-[#42CF8E] dark:group-hover:text-zinc-200" />
+              </button>
+            </motion.div>
+          )}
 
-        <div className="p-8 flex flex-col items-center text-center min-h-[350px] justify-center">
-          <AnimatePresence mode="wait">
-
-            {view === "INTRO" && (
-              <motion.div key="intro" {...animProps} className="flex flex-col items-center w-full">
-                <div className="mb-6 p-3 rounded-full bg-gray-200 dark:bg-gray-800 text-gray-500">
-                  <Terminal size={24} />
+          {/* --- LOGIN VIEW --- */}
+          {view === "LOGIN" && (
+            <motion.div key="login" {...animProps} className="w-full">
+              <HeaderTitle title="login" />
+              <form onSubmit={handleLogin} className="space-y-5" noValidate>
+                <div className="space-y-4">
+                  <InputGroup 
+                    icon={<Mail size={16} />} 
+                    type="email" 
+                    name="email" 
+                    placeholder="email address" 
+                    value={formData.email} 
+                    onChange={handleChange}
+                    error={errors.email}
+                  />
+                  <InputGroup 
+                    icon={<Lock size={16} />} 
+                    type="password" 
+                    name="password" 
+                    placeholder="passcode" 
+                    value={formData.password} 
+                    onChange={handleChange}
+                    error={errors.password}
+                  />
                 </div>
-                <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">Authentication Required</h3>
-                <p className="text-sm text-gray-500 max-w-sm mb-8">Share Your Thoughts</p>
-                <button
-                  onClick={() => setView("LOGIN")}
-                  className="group w-full max-w-xs flex items-center justify-center gap-3 px-6 py-3 rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-black hover:border-green-500/50 transition-all active:scale-95"
-                >
-                  <LogIn size={18} className="text-gray-500 group-hover:text-green-500" />
-                  <span className="text-sm font-medium">INITIALIZE_SESSION</span>
-                </button>
-              </motion.div>
-            )}
+                
+                <div className="flex justify-between items-center w-full px-1">
+                   <button type="button" onClick={() => { setView("REGISTER"); setErrors({}); }} className="text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300 transition-colors font-medium">
+                    create_account
+                  </button>
+                  <button type="button" onClick={handleDisabledFeature} className="text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300 transition-colors font-medium">
+                    reset_key?
+                  </button>
+                </div>
 
-            {view === "LOGIN" && (
-              <motion.div key="login" {...animProps} className="w-full max-w-sm">
-                <HeaderTitle title="System Login" subtitle="Authenticating via Better Auth." />
-                <form onSubmit={handleLogin} className="space-y-4 text-left">
-                  <InputGroup icon={<Mail />} type="email" name="email" placeholder="user@email.com" value={formData.email} onChange={handleChange} />
-                  <InputGroup icon={<Lock />} type="password" name="password" placeholder="Passcode" value={formData.password} onChange={handleChange} />
-                  <div className="flex justify-end">
-                    <button type="button" onClick={() => setView("FORGOT_EMAIL")} className="text-[10px] text-blue-500 hover:underline uppercase tracking-wide">Lost Key?</button>
-                  </div>
-                  <SubmitButton isLoading={isLoading}>AUTHENTICATE</SubmitButton>
-                </form>
-                <FooterNav text="No record?" actionText="INSERT_NEW_USER" onClick={() => setView("REGISTER")} onBack={() => setView("INTRO")} />
-              </motion.div>
-            )}
+                <SubmitButton isLoading={isLoading}>ENTER</SubmitButton>
+              </form>
+              <BackButton onClick={() => { setView("INTRO"); setErrors({}); }} />
+            </motion.div>
+          )}
 
-            {view === "REGISTER" && (
-              <motion.div key="register" {...animProps} className="w-full max-w-sm">
-                <HeaderTitle title="New Entry" subtitle="Creating secure user session." />
-                <form onSubmit={handleRegister} className="space-y-4 text-left">
-                  <InputGroup icon={<User />} type="text" name="name" placeholder="Username" value={formData.name} onChange={handleChange} />
-                  <InputGroup icon={<Mail />} type="email" name="email" placeholder="user@email.com" value={formData.email} onChange={handleChange} />
-                  <InputGroup icon={<Lock />} type="password" name="password" placeholder="Set Passcode" value={formData.password} onChange={handleChange} />
-                  <SubmitButton isLoading={isLoading}>COMMIT_TRANSACTION</SubmitButton>
-                </form>
-                <FooterNav text="Key exists?" actionText="LOGIN" onClick={() => setView("LOGIN")} onBack={() => setView("INTRO")} />
-              </motion.div>
-            )}
+          {/* --- REGISTER VIEW --- */}
+          {view === "REGISTER" && (
+            <motion.div key="register" {...animProps} className="w-full">
+              <HeaderTitle title="register" />
+              <form onSubmit={handleRegister} className="space-y-5" noValidate>
+                <div className="space-y-4">
+                    <InputGroup 
+                      icon={<User size={16} />} 
+                      type="text" 
+                      name="name" 
+                      placeholder="username" 
+                      value={formData.name} 
+                      onChange={handleChange}
+                      error={errors.name}
+                    />
+                    <InputGroup 
+                      icon={<Mail size={16} />} 
+                      type="email" 
+                      name="email" 
+                      placeholder="email address" 
+                      value={formData.email} 
+                      onChange={handleChange}
+                      error={errors.email}
+                    />
+                    <InputGroup 
+                      icon={<Lock size={16} />} 
+                      type="password" 
+                      name="password" 
+                      placeholder="set passcode" 
+                      value={formData.password} 
+                      onChange={handleChange}
+                      error={errors.password}
+                    />
+                </div>
+                
+                <div className="flex justify-start w-full px-1">
+                   <button type="button" onClick={() => { setView("LOGIN"); setErrors({}); }} className="text-[11px] text-zinc-500 hover:text-zinc-800 dark:hover:text-zinc-300 transition-colors font-medium">
+                    already_have_account
+                  </button>
+                </div>
 
-            {view === "FORGOT_EMAIL" && (
-              <motion.div key="forgot" {...animProps} className="w-full max-w-sm">
-                <HeaderTitle title="Key Recovery" subtitle="Triggering recovery protocol." />
-                <form onSubmit={handleForgotEmail} className="space-y-4 text-left">
-                   <InputGroup icon={<Mail />} type="email" name="email" placeholder="Target Email" value={formData.email} onChange={handleChange} />
-                   <SubmitButton isLoading={isLoading}>EXECUTE_RECOVERY</SubmitButton>
-                </form>
-                <FooterNav onBack={() => setView("LOGIN")} />
-              </motion.div>
-            )}
+                <SubmitButton isLoading={isLoading}>CREATE</SubmitButton>
+              </form>
+              <BackButton onClick={() => { setView("LOGIN"); setErrors({}); }} />
+            </motion.div>
+          )}
 
-          </AnimatePresence>
-        </div>
+        </AnimatePresence>
       </div>
     </div>
   );
 }
 
+// --- Components ---
+
 interface InputGroupProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon: React.ReactNode;
+  error?: string;
 }
 
-const InputGroup = ({ icon, ...props }: InputGroupProps) => (
-  <div className="relative group">
-    <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-green-500 transition-colors">
-      <div className="w-4 h-4">{icon}</div>
+const InputGroup = ({ icon, error, ...props }: InputGroupProps) => (
+  <div className="relative">
+    <div 
+      className={`
+        group flex items-center gap-3 border-b py-3 transition-colors duration-300
+        ${error 
+          ? "border-red-500/50 text-red-500" 
+          : `
+            border-zinc-200 dark:border-zinc-800 
+            text-zinc-400 dark:text-zinc-500 
+            focus-within:border-[#42CF8E] focus-within:text-[#42CF8E]
+            dark:focus-within:border-zinc-500 dark:focus-within:text-zinc-200
+            `
+        }
+      `}
+    >
+      <div className={`shrink-0 transition-colors duration-300 ${
+        error 
+          ? "text-red-500" 
+          : `
+            group-focus-within:text-[#42CF8E] group-focus-within:drop-shadow-[0_0_5px_rgba(66,207,142,0.5)]
+            dark:group-focus-within:text-zinc-200 dark:group-focus-within:drop-shadow-none
+            `
+      }`}>
+        {error ? <AlertTriangle size={16} /> : icon}
+      </div>
+
+      <input 
+        {...props} 
+        className={`
+          w-full bg-transparent border-none outline-none text-sm font-mono 
+          placeholder:text-zinc-400 dark:placeholder:text-zinc-700 
+          focus:placeholder:text-zinc-300 dark:focus:placeholder:text-zinc-600
+          ${error ? "text-red-500 placeholder:text-red-300" : "text-zinc-800 dark:text-zinc-200"}
+        `} 
+      />
     </div>
-    <input {...props} required className="w-full bg-white/50 dark:bg-black/50 border border-gray-200 dark:border-gray-800 rounded-lg py-2.5 pl-10 pr-4 text-sm focus:outline-none focus:border-green-500/50 transition-all font-mono" />
+
+    {error && (
+      <motion.span 
+        initial={{ opacity: 0, x: -5 }}
+        animate={{ opacity: 1, x: 0 }}
+        className="absolute right-0 top-3 text-[10px] text-red-500 font-bold bg-white dark:bg-black px-1"
+      >
+        ERROR
+      </motion.span>
+    )}
   </div>
 );
 
 const SubmitButton = ({ isLoading, children }: { isLoading: boolean; children: React.ReactNode }) => (
-  <button type="submit" disabled={isLoading} className="w-full bg-gray-900 dark:bg-white text-white dark:text-black font-bold py-2.5 rounded-lg hover:opacity-90 active:scale-95 transition-all flex items-center justify-center gap-2 disabled:opacity-50 text-sm font-mono tracking-wide">
+  <button 
+    type="submit" 
+    disabled={isLoading} 
+    className="
+      w-full mt-4 py-3 rounded transition-all duration-300 flex items-center justify-center gap-2 
+      disabled:opacity-50 text-xs font-bold tracking-widest uppercase
+      bg-zinc-900 text-white hover:bg-zinc-800
+      dark:bg-zinc-100 dark:text-black dark:hover:bg-white dark:hover:shadow-[0_0_10px_rgba(255,255,255,0.1)]
+    "
+  >
     {isLoading ? <Loader2 className="w-4 h-4 animate-spin" /> : children}
-    {!isLoading && <ArrowRight className="w-4 h-4" />}
   </button>
 );
 
-const HeaderTitle = ({ title, subtitle }: { title: string; subtitle: string }) => (
-  <div className="mb-6 text-center">
-    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1 font-mono">{title}</h3>
-    <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{subtitle}</p>
+const HeaderTitle = ({ title }: { title: string }) => (
+  <div className="mb-8 w-full">
+    <div className="flex items-center gap-2 text-zinc-500 mb-2">
+        <Command size={14} className="text-[#42CF8E] dark:text-zinc-500" />
+        <span className="text-xs font-bold font-mono uppercase tracking-widest">~/{title}</span>
+    </div>
+    <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800"></div>
   </div>
 );
 
-interface FooterNavProps {
-  text?: string;
-  actionText?: string;
-  onClick?: () => void;
-  onBack?: () => void;
-}
-
-const FooterNav = ({ text, actionText, onClick, onBack }: FooterNavProps) => (
-  <div className="mt-6 flex flex-col items-center gap-3">
-    {text && (
-      <div className="text-xs text-gray-500 font-mono">
-        {text} <button type="button" onClick={onClick} className="text-green-600 dark:text-green-400 font-bold hover:underline">{actionText}</button>
-      </div>
-    )}
-    {onBack && (
-      <button type="button" onClick={onBack} className="flex items-center gap-1 text-[10px] text-gray-400 hover:text-gray-600 transition-colors uppercase tracking-widest font-mono">
-        <ChevronLeft size={10} /> Abort_Sequence
-      </button>
-    )}
+const BackButton = ({ onClick }: { onClick: () => void }) => (
+  <div className="mt-8 flex justify-center">
+    <button onClick={onClick} className="p-2 text-zinc-400 hover:text-zinc-800 dark:hover:text-zinc-200 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-900/50 rounded-full">
+      <ChevronLeft size={16} />
+    </button>
   </div>
 );
 
 const animProps = {
-  initial: { opacity: 0, y: 10 },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: -10 },
-  transition: { duration: 0.2 }
+  initial: { opacity: 0, scale: 0.98 },
+  animate: { opacity: 1, scale: 1 },
+  exit: { opacity: 0, scale: 0.98 },
+  transition: { duration: 0.2, ease: "circOut" as const }
 };
