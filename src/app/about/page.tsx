@@ -38,8 +38,8 @@ export default function AboutPage() {
       
       <div className="relative z-20 max-w-3xl mx-auto py-20 px-6 w-full">
         
-        <header className="mb-16 border-b border-[#42CF8E] dark:border-gray-600/50 pb-10">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white-100 dark:bg-white-500/10 text-white-700 dark:text-white-700 text-xs font-mono mb-6 border border-[#42CF8E] dark:border-[#42CF8E]-500/20">
+        <header className="mb-16 border-b border-gray-600/50 dark:border-gray-600/50 pb-10">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white-100 dark:bg-white-500/10 text-white-700 dark:text-white-700 text-xs font-mono mb-6 border border-[#42CF8E] dark:border-white">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white-500 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[#42CF8E] dark:bg-white-500"></span>
