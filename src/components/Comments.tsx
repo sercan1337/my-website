@@ -29,7 +29,7 @@ export default function Comments({ slug }: CommentsProps) {
   const isLoading = !mounted || isPending;
 
   return (
-    <section className="w-full max-w-2xl mx-auto mt-12 mb-20 px-4">
+    <section className="w-full max-w-3xl mx-auto mt-12 mb-20 px-4">
       <div className="flex items-center gap-2 mb-8 border-b border-gray-200 dark:border-gray-800 pb-4">
         <span className="text-xl font-mono font-bold">~/comments</span>
         <span className="animate-pulse text-white-500">_</span>
