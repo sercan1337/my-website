@@ -236,7 +236,7 @@ export function generateExcerpt(content: string, maxLength: number = 160): strin
 }
 
 
-export function formatDate(dateString: string, locale: string = "tr-TR"): string {
+export function formatDate(dateString: string, locale: string = "en-EN"): string {
   try {
     const date = new Date(dateString);
     if (isNaN(date.getTime())) {
