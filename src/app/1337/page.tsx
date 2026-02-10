@@ -14,7 +14,7 @@ export default function Leet1337() {
           
           <div className="mb-6 flex justify-center">
             <div className="p-4 rounded-full">
-              <IconTerminal2 className="h-10 w-10 text-[#42CF8E] dark:text-[#42CF8E]" stroke={1.5} />
+              <IconTerminal2 className="h-10 w-10 text-[#42CF8E] dark:text-white" stroke={1.5} />
             </div>
           </div>
 
@@ -25,7 +25,7 @@ export default function Leet1337() {
           <p className="mt-6 text-lg leading-8 text-gray-600 dark:text-gray-400">
             You found the hidden layer. Welcome to the elite zone.
             <br />
-            <span className="text-sm opacity-70 font-mono text-[#42CF8E] dark:text-[#42CF8E]">
+            <span className="text-sm opacity-90 font-mono text-[#42CF8E] dark:text-white">
               (System status: Operational)
             </span>
           </p>
@@ -35,7 +35,7 @@ export default function Leet1337() {
             <Link href="/">
               <Button 
                 variant="outline" 
-                className="group h-9 px-6 text-sm font-medium border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/50 hover:border-[#42CF8E] hover:text-white-600 dark:hover:border-[#42CF8E] dark:hover:text-white-400 transition-colors duration-300"
+                className="group h-9 px-6 text-sm font-medium border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/50 hover:border-white hover:text-white-600 dark:hover:border-white dark:hover:text-white-400 transition-colors duration-300"
               >
                 Return Home
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 ease-in-out group-hover:-translate-x-1" />
@@ -45,7 +45,7 @@ export default function Leet1337() {
             <Link href="/blog">
               <Button 
                 variant="ghost" 
-                className="group h-9 px-6 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-[#42CF8E] dark:hover:text-[#42CF8E] transition-colors"
+                className="group h-9 px-6 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-[#42CF8E] dark:hover:text-white transition-colors"
               >
                 Read Blog
                 <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -55,13 +55,13 @@ export default function Leet1337() {
           </div>
 
             <div className="mt-10 flex items-center justify-center gap-x-6 text-gray-400">
-                <Link href="https://github.com/sercan1337" target="_blank" className="hover:text-[#42CF8E] dark:hover:text-[#42CF8E] transition-colors">
+                <Link href="https://github.com/sercan1337" target="_blank" className="hover:text-[#42CF8E] dark:hover:text-white transition-colors">
                   <IconBrandGithub size={20} stroke={1.5} />
                 </Link>
-                <Link href="https://x.com/sercan1337" target="_blank" className="hover:text-[#42CF8E] dark:hover:text-[#42CF8E] transition-colors">
+                <Link href="https://x.com/sercan1337" target="_blank" className="hover:text-[#42CF8E] dark:hover:text-white transition-colors">
                   <IconBrandX size={20} stroke={1.5} />
                 </Link>
-                <Link href="mailto:sercanduran40@hotmail.com" className="hover:text-[#42CF8E] dark:hover:text-[#42CF8E] transition-colors">     
+                <Link href="mailto:sercanduran40@hotmail.com" className="hover:text-[#42CF8E] dark:hover:text-white transition-colors">     
                   <IconMail size={20} stroke={1.5} />
                 </Link>
             </div>
