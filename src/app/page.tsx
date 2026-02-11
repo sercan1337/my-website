@@ -46,7 +46,7 @@ export default function Home() {
               </Link>
             </div>
 
-            <div className="flex items-center gap-x-5 text-gray-400">
+            <div className="flex items-center gap-x-6 text-gray-400">
             <a href="https://github.com/sercan1337" target="_blank" rel="noopener noreferrer" className="hover:text-black dark:hover:text-white transition-colors">
                   <IconBrandGithub size={20} stroke={1.5} />
                 </a>
