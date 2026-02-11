@@ -1,6 +1,6 @@
 ---
 title: "is minimalism in websites really a good thing?"
-date: "Dec 29, 2025"
+date: "dec 29, 2025"
 excerpt: "minimalism is a defining factor for everyone, but is minimalism really the best?"
 ---
 
