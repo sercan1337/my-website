@@ -1,6 +1,6 @@
 ---
 title: "being able to write code"
-date: "Nov 6, 2025"
+date: "nov 6, 2025"
 excerpt: "two years ago, coding was just a dream for me, but now things have changed."
 ---
 
