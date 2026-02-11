@@ -53,8 +53,8 @@ export default function AboutPage() {
           </h1>
             
           <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
-            High school student from Türkiye. I don't just write code; I try to understand how things work under the hood. 
-            Currently exploring the depths of Next.js and Typescript ecosystem.
+          I am a high school student.  I don't just write code; I try to understand how things work behind the scenes. 
+          I am currently exploring the depths of the Next.js and Typescript ecosystem.
           </p>
         </header>
 
