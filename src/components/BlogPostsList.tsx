@@ -56,13 +56,13 @@ export default function BlogList({ posts }: BlogListProps) {
                   )}
                   
                   <div className="flex items-center text-sm font-mono text-gray-400 dark:text-gray-500 space-x-2 pt-1">
-                    <time dateTime={post.date}>
+                  <time dateTime={post.date}>
                       {new Date(post.date).toLocaleDateString("en-US", {
                         year: "numeric",
                         month: "short",
                         day: "numeric",
-                      })}
-                    </time>
+                      }).toLowerCase()}
+                      </time>
                     <span>·</span>
                     <span>{readingTime}</span>
                   </div>
