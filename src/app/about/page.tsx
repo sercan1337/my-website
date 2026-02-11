@@ -14,7 +14,6 @@ export default function AboutPage() {
 
   const me = {
     education: "High School (9th Grade)",
-    location: "Turkey",
     stack: ["Next.js", "TypeScript", "Tailwind"],
     learning: ["Backend", "Algorithms"],
     contact: ["Github", "X", "Mail"]
