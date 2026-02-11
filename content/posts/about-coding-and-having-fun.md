@@ -1,6 +1,6 @@
 ---
 title: "about coding and having fun"
-date: "Nov 10, 2025"
+date: "nov 10, 2025"
 excerpt: "i have always been interested in coding, but I never had the opportunity to learn it. Now, I am able to write code and have fun with it."
 ---
 
