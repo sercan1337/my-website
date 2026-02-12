@@ -146,15 +146,14 @@ export default function MinimalDesignExample() {
           .minimal-card:nth-child(2) { animation-delay: 0.35s; }
           .minimal-card:nth-child(3) { animation-delay: 0.45s; }
 
-          /* BURADA DEĞİŞİKLİK YAPILDI: Hover çizgisi rengi */
           .minimal-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 4px; /* Biraz daha belirgin olması için 3px'den 4px'e çıkarıldı */
-            background: #42CF8E; /* İstenilen yeşil renk buraya eklendi */
+            height: 4px;
+            background: #42CF8E;
             transform: scaleX(0);
             transform-origin: left;
             transition: transform 0.3s ease;
