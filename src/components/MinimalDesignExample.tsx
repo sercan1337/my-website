@@ -48,7 +48,7 @@ export default function MinimalDesignExample() {
         <span className="flex items-center gap-3 text-base font-semibold text-gray-700 dark:text-gray-200 transition-colors duration-200">
           {showExample ? (
             <>
-              <EyeOff className="h-5 w-5 text-black-600 dark:text-white-400 transition-transform duration-300 group-hover:scale-110" />
+              <EyeOff className="h-5 w-5 text-gray-600 dark:text-gray-400 transition-transform duration-300 group-hover:scale-110" />
               Hide Example
             </>
           ) : (
