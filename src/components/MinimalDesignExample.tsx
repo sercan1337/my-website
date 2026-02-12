@@ -53,7 +53,7 @@ export default function MinimalDesignExample() {
             </>
           ) : (
             <>
-              <Eye className="h-5 w-5 text-black-600 dark:text-white-400 transition-transform duration-300 group-hover:scale-110" />
+              <Eye className="h-5 w-5 text-gray-600 dark:text-gray-400 transition-transform duration-300 group-hover:scale-110" />
               View Minimal Design Example
             </>
           )}
