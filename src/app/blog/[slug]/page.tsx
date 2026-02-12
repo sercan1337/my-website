@@ -16,6 +16,7 @@ import MinimalDesignExample from "@/components/MinimalDesignExample";
 import ClapButton from "@/components/ClapButton";
 import { getClaps } from "@/app/actions";
 
+// Bu fonksiyon, build sırasında tüm blog yazıları için sayfaları oluşturur (Static Site Generation)
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs();
   return slugs.map((slug) => ({
@@ -23,6 +24,7 @@ export async function generateStaticParams() {
   }));
 }
 
+// SEO için başlık ve açıklama üretir
 export async function generateMetadata({
   params,
 }: {
@@ -44,6 +46,7 @@ export async function generateMetadata({
   };
 }
 
+// Başlıklar için ID üretici (Table of Contents bağlantıları için)
 function generateHeadingId(text: string): string {
   return text
     .toString()
@@ -65,12 +68,14 @@ export default async function BlogPost({
   }
 
   const readingTime = calcReadTimeUtil(post.content);
-  const claps = await getClaps(resolvedParams.slug);
+  // Eğer veritabanı bağlantın yoksa burası hata verebilir, claps kısmını try-catch'e alabilir veya geçici olarak 0 verebilirsin.
+  const claps = await getClaps(resolvedParams.slug).catch(() => 0);
 
+  // Markdown bileşenleri için özel stiller
   const markdownComponents = {
     h2: ({ children }: any) => {
       const id = generateHeadingId(children?.toString() || "");
-      return <h2 id={id} className="mt-12 mb-6 scroll-mt-24 text-2xl font-bold text-gray-900 dark:text-white border-b border-600/50 pb-6 dark:border-gray-600/50">{children}</h2>;
+      return <h2 id={id} className="mt-12 mb-6 scroll-mt-24 text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-6">{children}</h2>;
     },
     h3: ({ children }: any) => {
       const id = generateHeadingId(children?.toString() || "");
@@ -106,7 +111,7 @@ export default async function BlogPost({
             </Link>
 
             <header className="mb-10 pb-6 border-b border-[#42CF8E] dark:border-gray-600/50">
-              <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 font-bold leading-tight">
+              <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
                 {post.title}
               </h1>
               
@@ -128,6 +133,9 @@ export default async function BlogPost({
               prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
               prose-code:text-green-600 dark:prose-code:text-green-400 prose-code:bg-gray-100 dark:prose-code:bg-gray-800/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
             ">
+                {/* Eğer Markdown içeriğinde <MinimalDesignExample /> metni varsa, 
+                  bunu gerçek React bileşeniyle değiştirir.
+                */}
                 {post.content.includes("<MinimalDesignExample />") ? (
                 post.content.split("<MinimalDesignExample />").map((part, index, array) => (
                   <div key={index}>
