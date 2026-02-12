@@ -44,7 +44,7 @@ export default function MinimalDesignExample() {
     <div className="my-8">
       <button
         onClick={() => setShowExample(!showExample)}
-        className="w-full flex items-center justify-between gap-3 px-6 py-4 bg-emerald-500/5 dark:bg-emerald-500/10 border border-emerald-500/20 dark:border-emerald-500/30 rounded-lg text-gray-800 dark:text-white hover:bg-emerald-500/10 dark:hover:bg-emerald-500/20 transition-all duration-300 shadow-sm hover:shadow-md group active:scale-[0.98]">
+        className="w-full flex items-center justify-between gap-3 px-6 py-4 bg-emerald-500/5 dark:bg-white/5 border border-emerald-500/20 dark:border-white/10 rounded-lg text-gray-800 dark:text-white hover:bg-emerald-500/10 dark:hover:bg-white/10 transition-all duration-300 shadow-sm hover:shadow-md group active:scale-[0.98]">
         <span className="flex items-center gap-3 text-base font-semibold text-gray-700 dark:text-gray-200 transition-colors duration-200">
           {showExample ? (
             <>
