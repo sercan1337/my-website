@@ -158,6 +158,11 @@ export default function MinimalDesignExample() {
             transform-origin: left;
             transition: transform 0.3s ease;
           }
+          
+          /* BURASI EKLENDİ: Dark modda o yeşil çizgi beyaz olacak */
+          .minimal-wrapper-dark .minimal-card::before {
+            background: #ffffff;
+          }
 
           .minimal-card:hover {
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
