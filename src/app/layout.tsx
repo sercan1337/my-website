@@ -19,6 +19,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://my-website-one-rho-66.vercel.app'),
   title: "Home | Sercan Duran",
   description: "Personal blog and portfolio website",
 };
