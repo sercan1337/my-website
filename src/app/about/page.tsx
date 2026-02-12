@@ -53,7 +53,7 @@ export default function AboutPage() {
                 href="https://github.com/sercan1337/sercan1337"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-[#42CF8E] dark:text-white hover:underline decoration-2 underline-offset-4"
+                className="text-[#42CF8E] dark:text-white hover:underline hover:underline-offset-4 cursor-pointer transition-all inline-block hover:-translate-y-0.5"
               >
                 readme.md
                 </a>
