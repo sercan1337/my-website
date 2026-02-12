@@ -49,9 +49,16 @@ export default function AboutPage() {
             
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-mono tracking-tight break-words">
               <span className="text-slate-900 dark:text-gray-500">~/sercan/</span>
-              <span className="text-[#42CF8E] dark:text-white">readme.md</span>
+              <a
+                href="https://github.com/sercan1337/sercan1337"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[#42CF8E] dark:text-white hover:underline decoration-2 underline-offset-4"
+              >
+                readme.md
+                </a>
           </h1>
-            
+           
           <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed max-w-2xl">
           I am a high school student.  I don't just write code; I try to understand how things work behind the scenes. 
           I am currently exploring the depths of the Next.js and Typescript ecosystem.
