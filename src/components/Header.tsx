@@ -200,8 +200,8 @@ export default function Header() {
               className={cn(
                 "font-mono text-5xl font-bold transition-colors",
                 pathname === link.href
-                  ? "text-gray-900 dark:text-white"
-                  : "text-gray-400 dark:text-gray-600"
+                ? "text-[#42CF8E] dark:text-white"
+                : "text-gray-400 dark:text-gray-600 hover:text-[#42CF8E] dark:hover:text-white"
               )}
             >
               {link.label}
@@ -209,7 +209,7 @@ export default function Header() {
           ))}
         </div>
 
-        <div className="pb-12 flex justify-center gap-8">
+        <div className="pb-12 flex justify-center gap-7">
           <a href="https://github.com/sercan1337">
             <IconBrandGithub size={25} />
           </a>
