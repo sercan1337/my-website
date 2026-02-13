@@ -30,7 +30,7 @@ export default function Home() {
                   variant="ghost" 
                   className="group h-9 px-6 text-sm font-medium border border-gray-200 dark:border-gray-800 hover:border-gray-900 dark:hover:border-white hover:bg-transparent transition-colors duration-300 rounded-full"
                 >
-                  Read Blog
+                  read blog
                   <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-150 ease-in-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Button>
               </Link>
@@ -40,7 +40,7 @@ export default function Home() {
                   variant="ghost" 
                   className="group h-9 px-4 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-transparent transition-colors"
                 >
-                  Learn more 
+                  learn more 
                   <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-150 ease-in-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </Button>
               </Link>
