@@ -94,7 +94,7 @@ export default function Header() {
             href="/"
             className="pl-4 pr-2 font-mono font-bold text-sm tracking-tight text-zinc-900 dark:text-gray-100"
           >
-            ~/sercan
+            ~/sercan1337
           </Link>
 
           <nav
