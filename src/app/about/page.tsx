@@ -129,7 +129,7 @@ export default function AboutPage() {
                 <div className="text-[#6B7280] dark:text-gray-400">{`};`}</div>
                 
                 <div className="text-[#626262] dark:text-gray-500 pt-2 opacity-70 italic">
-                  // TODO: Build something awesome
+                   // TODO: make new project
                 </div>
               </div>
             </div>
