@@ -1,18 +1,19 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun, Monitor, Check } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 export function ThemeToggle() {
   const { setTheme, theme } = useTheme();
   const [isOpen, setIsOpen] = React.useState(false);
-  const dropdownRef = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
 
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };
@@ -20,59 +21,92 @@ export function ThemeToggle() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const MenuItem = ({ 
-    value, 
-    icon: Icon, 
-    label 
-  }: { 
-    value: string, 
-    icon: any, 
-    label: string 
-  }) => (
-    <button
-      onClick={() => {
-        setTheme(value);
-        setIsOpen(false);
-      }}
-      className={cn(
-        "flex w-full items-center justify-between px-3 py-2 text-sm transition-all duration-200 rounded-md mx-1 my-0.5 w-[calc(100%-8px)]",
-        "hover:bg-gray-100 dark:hover:bg-gray-800",
-        theme === value 
-          ? "text-gray-950 dark:text-white font-medium bg-gray-100 dark:bg-gray-800" 
-          : "text-gray-500 dark:text-gray-400"
-      )}
-    >
-      <div className="flex items-center gap-2.5">
-        <Icon size={16} />
-        <span>{label}</span>
-      </div>
-      {theme === value && <Check size={14} className="text-gray-950 dark:text-white" />}
-    </button>
-  );
+  const transition = { type: "spring" as const, stiffness: 400, damping: 30 };
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
+    <div ref={containerRef} className="relative flex items-center justify-end">
+      {/* DÜZELTME: 'layout' prop'unu kaldırdık. 
+         Yerine 'animate' ile genişliği kontrol ediyoruz. 
+         Böylece scroll yaparken saçmalamaz.
+      */}
+      <motion.div
+        initial={false}
+        animate={{ width: isOpen ? 76 : 36 }} // Genişliği buradan yönetiyoruz
+        transition={transition}
+        onClick={() => !isOpen && setIsOpen(true)}
         className={cn(
-            "flex items-center justify-center w-10 h-10 rounded-full transition-all duration-300",
-            "bg-gray-100/50 dark:bg-gray-800/50 hover:bg-gray-200 dark:hover:bg-gray-700",
-            "text-gray-900 dark:text-white border border-gray-200/50 dark:border-gray-700/50",
-            isOpen && "ring-2 ring-gray-400/20 bg-gray-200 dark:bg-gray-700"
+          "flex items-center overflow-hidden rounded-full border shadow-sm cursor-pointer",
+          "border-gray-200 bg-white dark:border-zinc-800 dark:bg-[#09090b]/80 backdrop-blur-md", // Senin sevdiğin renk ayarı
+          isOpen ? "px-1" : "px-0"
         )}
-        aria-label="Toggle theme"
+        style={{ height: "36px" }} 
       >
-        <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-        <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-      </button>
+        <AnimatePresence mode="popLayout" initial={false}>
+          {!isOpen ? (
+            /* --- KAPALI HAL --- */
+            <motion.div
+              key="closed"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex h-full w-full items-center justify-center absolute inset-0" // absolute ile sabitledik
+            >
+              {theme === "dark" ? (
+                <Moon className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              ) : (
+                <Sun className="h-4 w-4 text-gray-600 dark:text-gray-400" />
+              )}
+            </motion.div>
+          ) : (
+            /* --- AÇIK HAL --- */
+            <motion.div
+              key="open"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="flex w-full items-center justify-between gap-1"
+            >
+              {/* Light Butonu */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTheme("light");
+                }}
+                className="relative flex h-7 w-8 items-center justify-center rounded-full transition-colors z-10"
+              >
+                {theme === "light" && (
+                  <motion.div
+                    layoutId="active-pill"
+                    className="absolute inset-0 rounded-full bg-[#42CF8E]"
+                    transition={transition}
+                  />
+                )}
+                <Sun className={cn("relative z-10 h-4 w-4 transition-colors", theme === "light" ? "text-white" : "text-gray-500")} />
+              </button>
 
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-40 origin-top-right rounded-xl border border-gray-200/60 dark:border-gray-800/60 bg-white/90 dark:bg-gray-950/90 shadow-xl backdrop-blur-xl ring-1 ring-black/5 focus:outline-none animate-in fade-in zoom-in-95 duration-200 z-50 py-1">
-          <MenuItem value="light" icon={Sun} label="Light" />
-          <MenuItem value="dark" icon={Moon} label="Dark" />
-          <MenuItem value="system" icon={Monitor} label="System" />
-        </div>
-      )}
+              {/* Dark Butonu */}
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setTheme("dark");
+                }}
+                className="relative flex h-7 w-8 items-center justify-center rounded-full transition-colors z-10"
+              >
+                {theme === "dark" && (
+                  <motion.div
+                    layoutId="active-pill"
+                    className="absolute inset-0 rounded-full bg-white"
+                    transition={transition}
+                  />
+                )}
+                <Moon className={cn("relative z-10 h-4 w-4 transition-colors", theme === "dark" ? "text-black" : "text-gray-500")} />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </motion.div>
     </div>
   );
 }
