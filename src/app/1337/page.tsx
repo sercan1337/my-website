@@ -37,7 +37,7 @@ export default function Leet1337() {
                 variant="outline" 
                 className="group h-9 px-6 text-sm font-medium border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/50 hover:border-white hover:text-white-600 dark:hover:border-white dark:hover:text-white-400 transition-colors duration-300"
               >
-                Return Home
+                return home
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 ease-in-out group-hover:-translate-x-1" />
               </Button>
             </Link>
@@ -47,7 +47,7 @@ export default function Leet1337() {
                 variant="ghost" 
                 className="group h-9 px-6 text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-[#42CF8E] dark:hover:text-white transition-colors"
               >
-                Read Blog
+                read blog
                 <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-300 ease-in-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </Button>
             </Link>
