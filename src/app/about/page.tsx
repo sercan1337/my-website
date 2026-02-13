@@ -13,10 +13,10 @@ import {
 export default function AboutPage() {
 
   const me = {
-    education: "High School (9th Grade)",
-    stack: ["Next.js", "TypeScript", "Tailwind"],
-    learning: ["Backend", "Algorithms"],
-    contact: ["Github", "X", "Mail"]
+    education: "high school (9th rade)",
+    stack: ["next.js", "typescript", "tailwind"],
+    learning: ["backend", "algorithms"],
+    contact: ["github", "x", "mail"]
   };
 
   const links: Record<string, string> = {
@@ -48,7 +48,7 @@ export default function AboutPage() {
           </div>
             
           <h1 className="text-2xl sm:text-3xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6 font-mono tracking-tight break-words">
-              <span className="text-slate-900 dark:text-gray-500">~/sercan/</span>
+              <span className="text-slate-900 dark:text-gray-500">~/sercan1337/</span>
               <a
                 href="https://github.com/sercan1337/sercan1337"
                 target="_blank"
