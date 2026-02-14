@@ -44,16 +44,16 @@ export default function MinimalDesignExample() {
     <div className="my-8">
       <button
         onClick={() => setShowExample(!showExample)}
-        className="w-full flex items-center justify-between gap-3 px-6 py-4 bg-emerald-500/5 dark:bg-white/5 border border-emerald-500/20 dark:border-white/10 rounded-lg text-gray-800 dark:text-white hover:bg-emerald-500/10 dark:hover:bg-white/10 transition-all duration-300 shadow-sm hover:shadow-md group active:scale-[0.98]">
+        className="w-full flex items-center justify-between gap-3 px-6 py-4 bg-emerald-500/5 dark:bg-black/25 border border-emerald-500/20 dark:border-white/10 rounded-lg text-gray-800 dark:text-white hover:bg-emerald-500/10 dark:hover:bg-white/3 transition-all duration-300 shadow-sm hover:shadow-md group active:scale-[0.98]">
         <span className="flex items-center gap-3 text-base font-semibold text-gray-700 dark:text-gray-200 transition-colors duration-200">
           {showExample ? (
             <>
-              <EyeOff className="h-5 w-5 text-gray-600 dark:text-gray-400 transition-transform duration-300 group-hover:scale-110" />
+              <EyeOff className="h-5 w-5 text-gray-600 dark:text-white transition-transform duration-300 group-hover:scale-110" />
               Hide Example
             </>
           ) : (
             <>
-              <Eye className="h-5 w-5 text-gray-600 dark:text-gray-400 transition-transform duration-300 group-hover:scale-110" />
+              <Eye className="h-5 w-5 text-gray-600 dark:text-white transition-transform duration-300 group-hover:scale-110" />
               View Minimal Design Example
             </>
           )}
@@ -340,12 +340,12 @@ export default function MinimalDesignExample() {
           target="_blank"
           rel="noopener noreferrer"
           className="
-            mt-4 w-full flex items-center justify-center gap-x-2 px-4 py-3 rounded-lg
+            mt-0 w-full flex items-center justify-center gap-x-2 px-4 py-3 rounded-lg
             text-sm font-medium
-            border border-gray-200 bg-gray-50 text-gray-700
-            hover:bg-gray-100 hover:text-gray-900 hover:border-gray-300
+            border border-gray-200 bg-gray-50 dark:bg-zinc-900 text-gray-700
+            hover:bg-gray-100 hover:text-gray-900 dark:hover:bg-zinc-900  hover:border-gray-300
             dark:border-gray-700 dark:bg-gray-800 dark:text-gray-300
-            dark:hover:bg-gray-700 dark:hover:text-white dark:hover:border-gray-600
+            dark:hover:bg-gray-700 dark:hover:text-white dark:hover:border-zinc-300
             transition-colors duration-200
             focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500
           "
