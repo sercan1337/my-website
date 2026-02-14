@@ -40,6 +40,9 @@ export default function CommentForm({ user, slug, onCommentPosted }: CommentForm
       toast.success("COMMENT POSTED", { description: "Your entry has been added to the stream." });
       onCommentPosted?.();
       router.refresh();
+
+    } catch (error) {
+      console.error(error);
       toast.error("ERROR", { description: "Failed to write to database." });
     } finally {
       setIsLoading(false);
@@ -79,7 +82,7 @@ export default function CommentForm({ user, slug, onCommentPosted }: CommentForm
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           placeholder="Execute write command..."
-          className="w-full min-h-[100px] bg-white dark:bg-black/50 border border-gray-200 dark:border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-1 focus:ring-green-500/50 resize-none font-mono"
+          className="w-full min-h-[100px] bg-white dark:bg-black/50 border border-gray-200 dark:border-gray-800 rounded-lg p-3 text-sm focus:outline-none focus:ring-1 focus:ring-green-500/50 dark:focus:ring-zinc-600/50 resize-none font-mono"
         />
 
         <div className="flex justify-end mt-2">
