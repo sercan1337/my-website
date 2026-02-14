@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { comment } from "@/lib/schema"
 import { redis } from "@/lib/redis"
-import { eq, desc, and } from "drizzle-orm" // 'and' operatörünü buraya ekledim
+import { eq, desc, and } from "drizzle-orm"
 
 const CACHE_TTL = 300
 
@@ -116,7 +116,6 @@ export async function GET(req: Request) {
   }
 }
 
-// --- YENİ EKLENEN DELETE METODU ---
 export async function DELETE(req: Request) {
   try {
     const session = await auth.api.getSession({
@@ -133,13 +132,12 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "ID and Slug required" }, { status: 400 })
     }
 
-    // Yorumu sil (Sadece yorumun sahibi silebilir)
     const deleted = await db
       .delete(comment)
       .where(
         and(
           eq(comment.id, id),
-          eq(comment.userId, session.user.id) // Güvenlik Kontrolü
+          eq(comment.userId, session.user.id)
         )
       )
       .returning()
@@ -148,7 +146,6 @@ export async function DELETE(req: Request) {
       return NextResponse.json({ error: "Comment not found or unauthorized" }, { status: 404 })
     }
 
-    // Cache'i temizle ki liste güncellensin
     await invalidateCache(slug)
 
     return NextResponse.json({ success: true })
