@@ -31,18 +31,10 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     name: "",
   });
 
-  // DÜZELTME:
-  // 1. '!bg-...' kullanarak Sonner'ın varsayılan şeffaflığını ezdik.
-  // 2. Dark modda 'dark:!bg-zinc-950' ile kesin siyah/koyu gri arka plan verdik.
-  // 3. Yeşil vurguları sadece Light modda bıraktık.
   const toastClass = `
     group flex items-center gap-3 p-4 rounded-lg shadow-xl border
     font-mono text-xs tracking-wide
-    
-    /* LIGHT MODE: Beyaz zemin, Yeşil detay yok */
     !bg-white text-zinc-900 border-zinc-200
-    
-    /* DARK MODE: Arka planı !important ile zorladık */
     dark:!bg-zinc-950 dark:text-zinc-200 dark:border-zinc-800
   `;
 
@@ -79,25 +71,42 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     if (!validateForm("LOGIN")) return;
 
     setIsLoading(true);
-    const promise = authClient.signIn.email({
-        email: formData.email,
-        password: formData.password,
-    });
-    
-    toast.promise(promise, {
-      loading: 'Authenticating...',
-      success: () => {
+    const toastId = toast.loading('Authenticating...', { className: toastClass });
+
+    try {
+      // toast.promise yerine direkt await kullanarak sonucu kontrol ediyoruz
+      const { data, error } = await authClient.signIn.email({
+          email: formData.email,
+          password: formData.password,
+      });
+
+      if (error) {
         setIsLoading(false);
-        onLoginSuccess?.();
-        router.refresh();
-        return "ACCESS GRANTED";
-      },
-      error: (err) => {
-        setIsLoading(false);
-        return `ERROR: ${err.error?.message || "Access Denied"}`;
-      },
-      className: toastClass,
-    });
+        // Şifre yanlışsa veya başka hata varsa burası çalışır
+        toast.error(`ERROR: ${error.message || "Access Denied"}`, { 
+          id: toastId,
+          className: toastClass 
+        });
+        return;
+      }
+
+      // Giriş başarılıysa
+      setIsLoading(false);
+      toast.success("ACCESS GRANTED", { 
+        id: toastId,
+        className: toastClass 
+      });
+      
+      router.refresh();
+      
+      setTimeout(() => {
+           onLoginSuccess?.();
+      }, 500);
+
+    } catch (err) {
+      setIsLoading(false);
+      toast.error("ERROR: System Failure", { id: toastId, className: toastClass });
+    }
   };
 
   const handleRegister = async (e: React.FormEvent) => {
@@ -105,25 +114,33 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     if (!validateForm("REGISTER")) return;
 
     setIsLoading(true);
-    const promise = authClient.signUp.email({
-        email: formData.email,
-        password: formData.password,
-        name: formData.name,
-    });
+    const toastId = toast.loading('Writing to database...', { className: toastClass });
 
-    toast.promise(promise, {
-      loading: 'Writing to database...',
-      success: () => {
+    try {
+      const { data, error } = await authClient.signUp.email({
+          email: formData.email,
+          password: formData.password,
+          name: formData.name,
+      });
+
+      if (error) {
         setIsLoading(false);
-        setView("LOGIN");
-        return "USER REGISTERED";
-      },
-      error: (err) => {
-        setIsLoading(false);
-        return `ERROR: ${err.error?.message || "Registration Failed"}`;
-      },
-      className: toastClass,
-    });
+        toast.error(`ERROR: ${error.message || "Registration Failed"}`, { 
+          id: toastId, 
+          className: toastClass 
+        });
+        return;
+      }
+
+      setIsLoading(false);
+      toast.success("USER REGISTERED", { id: toastId, className: toastClass });
+      router.refresh();
+      setView("LOGIN");
+
+    } catch (err) {
+      setIsLoading(false);
+      toast.error("ERROR: System Failure", { id: toastId, className: toastClass });
+    }
   };
 
   const handleDisabledFeature = () => {
@@ -260,7 +277,7 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
   );
 }
 
-// --- Components ---
+// --- Bileşenler aynı kalıyor ---
 
 interface InputGroupProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon: React.ReactNode;
