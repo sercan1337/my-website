@@ -88,7 +88,7 @@ export default function TableOfContents({
       <h2 className="mb-4 text-xs font-bold tracking-widest text-black-500 uppercase dark:text-black-400">
       Table Of Contents
       </h2>
-            <ul className="relative space-y-1 border-l border-gray-200 dark:border-gray-800">
+            <ul className="relative space-y-1 border-l border-gray-200 dark:border-zinc-800">
         {headings.map((heading) => {
           const isActive = activeId === heading.id;
           
