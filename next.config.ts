@@ -14,9 +14,12 @@ const nextConfig: NextConfig = {
   // Compression
   compress: true,
 
-  // Experimental features
+  // Experimental features (BURASI GÜNCELLENDİ)
   experimental: {
     optimizePackageImports: ["lucide-react", "@tabler/icons-react"],
+    serverActions: {
+      allowedOrigins: ["localhost:3000", "127.0.0.1:3000"],
+    },
   },
 
   // Headers for caching and security
