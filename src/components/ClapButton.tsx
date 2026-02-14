@@ -33,22 +33,22 @@ export default function ClapButton({ slug, initialClaps }: ClapButtonProps) {
       disabled={isPending}
       className={cn(
         "group flex items-center gap-2 px-4 py-1.5 rounded-full transition-all duration-300",
-        "bg-gray-100 dark:bg-gray-900",
+        "bg-gray-100 dark:bg-zinc-900/50",
         "border border-gray-200 dark:border-gray-800",
-        "hover:border-yellow-500/50 hover:bg-yellow-500/5",
+        "hover:border-zinc-500/50 hover:bg-white",
         "active:scale-95"
       )}
     >
       <Zap 
         size={16} 
         className={cn(
-          "transition-all duration-300 text-gray-400 group-hover:text-yellow-500",
+          "transition-all duration-300 text-gray-400 group-hover:text-[#42CF8E] dark:group-hover:text-white",
           isClicked && "fill-yellow-500 text-yellow-500 scale-125 drop-shadow-[0_0_8px_rgba(234,179,8,0.8)]"
         )} 
       />
       <span className={cn(
         "font-mono text-sm font-medium text-gray-600 dark:text-gray-400 tabular-nums transition-colors",
-        "group-hover:text-gray-900 dark:group-hover:text-gray-100"
+        "group-hover:text-gray-900 dark:group-hover:text-zinc-100"
       )}>
         {optimisticClaps}
       </span>
