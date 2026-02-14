@@ -79,23 +79,23 @@
 }
 
 .dark {
-  --background: 240 10% 3.9%;
+  --background: oklch(0 0 0) !important;
   --foreground: 0 0% 98%;
-  --card: 240 10% 3.9%;
+  --card: 0 0% 0%;       /* Kartları da siyah yaptık */
   --card-foreground: 0 0% 98%;
-  --popover: 240 10% 3.9%;
+  --popover: 0 0% 0%;    /* Popover'ları da siyah yaptık */
   --popover-foreground: 0 0% 98%;
   --primary: 0 0% 98%;
   --primary-foreground: 240 5.9% 10%;
   --secondary: 240 3.7% 15.9%;
   --secondary-foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
+  --muted: 240 5% 50%;
   --muted-foreground: 240 5% 64.9%;
   --accent: 240 3.7% 15.9%;
   --accent-foreground: 0 0% 98%;
   --destructive: 0 62.8% 30.6%;
   --destructive-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
+  --border: 240 5% 40%;
   --input: 240 3.7% 15.9%;
   --ring: 240 4.9% 83.9%;
   --chart-1: 220 70% 50%;
@@ -114,43 +114,19 @@
 }
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
+  :root {
+    /* Light mode ayarları buradadır */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
   }
-  html {
-    transition: background-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-  body {
-    @apply text-foreground;
-    background-color: var(--background);
-    transition: background-color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
-                color 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    position: relative;
-  }
-  
-  main {
-    position: relative;
-    z-index: 1;
-  }
-  
-  /* Ensure content appears above background pattern */
-  main > * {
-    position: relative;
-    z-index: 1;
-  }
-  /* Smooth transitions for all theme-aware elements - exclude media elements */
-  *:not(img):not(video):not(iframe):not(canvas):not(svg):not(path):not(g):not(use):not(animate):not(animateTransform) {
-    transition-property: background-color, 
-                         color, 
-                         border-color, 
-                         fill, 
-                         stroke, 
-                         box-shadow,
-                         text-decoration-color,
-                         outline-color;
-    transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transition-duration: 0.6s;
+
+  .dark {
+    /* İŞTE BURASI: Mevcut değer muhtemelen 220'li (mavi) bir değerdir */
+    --background: 0 0% 0%; /* Tam siyah için 0 0% 0% yapıyoruz */
+    --foreground: 0 0% 98%;
+    
+    /* İsteğe bağlı: Grid çizgilerini ve sınırları biraz daha belirgin yapabilirsin */
+    --border: 240 5% 15%; 
   }
 }
 
