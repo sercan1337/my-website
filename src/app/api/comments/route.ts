@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth"
 import { db } from "@/lib/db"
 import { comment } from "@/lib/schema"
 import { redis } from "@/lib/redis"
-import { eq, desc } from "drizzle-orm"
+import { eq, desc, and } from "drizzle-orm" // 'and' operatörünü buraya ekledim
 
 const CACHE_TTL = 300
 
@@ -113,5 +113,48 @@ export async function GET(req: Request) {
   } catch (error) {
     console.error("Fetch comments error:", error)
     return NextResponse.json({ error: "Failed to load comments" }, { status: 500 })
+  }
+}
+
+// --- YENİ EKLENEN DELETE METODU ---
+export async function DELETE(req: Request) {
+  try {
+    const session = await auth.api.getSession({
+      headers: req.headers,
+    })
+
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const { id, slug } = await req.json()
+
+    if (!id || !slug) {
+      return NextResponse.json({ error: "ID and Slug required" }, { status: 400 })
+    }
+
+    // Yorumu sil (Sadece yorumun sahibi silebilir)
+    const deleted = await db
+      .delete(comment)
+      .where(
+        and(
+          eq(comment.id, id),
+          eq(comment.userId, session.user.id) // Güvenlik Kontrolü
+        )
+      )
+      .returning()
+
+    if (deleted.length === 0) {
+      return NextResponse.json({ error: "Comment not found or unauthorized" }, { status: 404 })
+    }
+
+    // Cache'i temizle ki liste güncellensin
+    await invalidateCache(slug)
+
+    return NextResponse.json({ success: true })
+
+  } catch (error) {
+    console.error("Delete error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }
