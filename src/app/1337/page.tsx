@@ -35,7 +35,7 @@ export default function Leet1337() {
             <Link href="/">
               <Button 
                 variant="outline" 
-                className="group h-9 px-6 text-sm font-medium border-gray-200 dark:border-gray-800 bg-white/50 dark:bg-black/50 hover:border-white hover:text-white-600 dark:hover:border-white dark:hover:text-white-400 transition-colors duration-300"
+                className="group h-9 px-6 text-sm font-medium border-2 border-gray-200 dark:border-zinc-900/50 bg-white/50 dark:bg-black/50 hover:border-[#42CF8E] hover:text-white-600 dark:hover:border-zinc-300 dark:hover:text-white-400 transition-colors duration-300"
               >
                 return home
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform duration-300 ease-in-out group-hover:-translate-x-1" />
