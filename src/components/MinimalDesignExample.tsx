@@ -159,7 +159,6 @@ export default function MinimalDesignExample() {
             transition: transform 0.3s ease;
           }
           
-          /* BURASI EKLENDİ: Dark modda o yeşil çizgi beyaz olacak */
           .minimal-wrapper-dark .minimal-card::before {
             background: #ffffff;
           }
