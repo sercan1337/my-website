@@ -74,7 +74,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
     const toastId = toast.loading('Authenticating...', { className: toastClass });
 
     try {
-      // toast.promise yerine direkt await kullanarak sonucu kontrol ediyoruz
       const { data, error } = await authClient.signIn.email({
           email: formData.email,
           password: formData.password,
@@ -82,7 +81,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
 
       if (error) {
         setIsLoading(false);
-        // Şifre yanlışsa veya başka hata varsa burası çalışır
         toast.error(`ERROR: ${error.message || "Access Denied"}`, { 
           id: toastId,
           className: toastClass 
@@ -90,7 +88,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
         return;
       }
 
-      // Giriş başarılıysa
       setIsLoading(false);
       toast.success("ACCESS GRANTED", { 
         id: toastId,
@@ -158,7 +155,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
       <div className="relative flex flex-col items-center justify-center min-h-[320px]">
         <AnimatePresence mode="wait">
           
-          {/* --- INTRO VIEW --- */}
           {view === "INTRO" && (
             <motion.div key="intro" {...animProps} className="flex flex-col items-center justify-center w-full space-y-8">
               <div className="flex items-center gap-3 text-zinc-500 select-none">
@@ -183,7 +179,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
             </motion.div>
           )}
 
-          {/* --- LOGIN VIEW --- */}
           {view === "LOGIN" && (
             <motion.div key="login" {...animProps} className="w-full">
               <HeaderTitle title="login" />
@@ -224,7 +219,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
             </motion.div>
           )}
 
-          {/* --- REGISTER VIEW --- */}
           {view === "REGISTER" && (
             <motion.div key="register" {...animProps} className="w-full">
               <HeaderTitle title="register" />
@@ -277,7 +271,6 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
   );
 }
 
-// --- Bileşenler aynı kalıyor ---
 
 interface InputGroupProps extends React.InputHTMLAttributes<HTMLInputElement> {
   icon: React.ReactNode;
