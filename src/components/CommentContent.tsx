@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useState, useCallback, useImperativeHandle, forwardRef } from "react";
-import { Terminal, Trash2, AlertTriangle, X } from "lucide-react"; // Yeni ikonlar ekledik
+import { createPortal } from "react-dom";
+import { Terminal, Trash2, AlertTriangle, X } from "lucide-react";
 import Avvvatars from "avvvatars-react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
-import { motion, AnimatePresence } from "framer-motion"; // Animasyon için gerekli
+import { motion, AnimatePresence } from "framer-motion";
 
 interface Comment {
   id: string;
@@ -26,7 +27,6 @@ export interface CommentContentRef {
 const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slug }, ref) => {
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(true);
-  // YENİ: Hangi yorumun silineceğini tutan state. Boşsa modal kapalıdır.
   const [deletingCommentId, setDeletingCommentId] = useState<string | null>(null);
   
   const { data: session } = authClient.useSession(); 
@@ -46,9 +46,8 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
     }
   }, [slug]);
 
-  // --- SİLME FONKSİYONU (Artık confirm yok, direkt siliyor) ---
   const confirmDelete = async () => {
-    if (!deletingCommentId) return; // ID yoksa işlem yapma
+    if (!deletingCommentId) return;
 
     const toastId = toast.loading("Executing delete command...");
     
@@ -65,14 +64,13 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
       }
 
       toast.success("Comment deleted successfully.", { id: toastId });
-      fetchComments(); // Listeyi güncelle
+      fetchComments(); 
 
     } catch (error) {
       console.error(error);
       toast.error(error instanceof Error ? error.message : "Error deleting comment", { id: toastId });
     } finally {
-      // İşlem bitince modalı kapat
-      setDeletingCommentId(null);
+      setDeletingCommentId(null); 
     }
   };
 
@@ -148,10 +146,8 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
                           </div>
                       </div>
 
-                      {/* --- SİLME BUTONU (Artık modalı tetikliyor) --- */}
                       {isMyComment && (
                         <button
-                          // YENİ: Tıklandığında silinecek ID'yi state'e atıyoruz.
                           onClick={() => setDeletingCommentId(comment.id)}
                           className="
                             opacity-0 group-hover:opacity-100 transition-all duration-200
@@ -181,11 +177,10 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
         })}
       </div>
       
-      {/* --- YENİ: ÖZEL SİLME MODALI --- */}
       <DeleteModal 
-        isOpen={!!deletingCommentId} // ID varsa modal açık
-        onClose={() => setDeletingCommentId(null)} // Kapatınca ID'yi sıfırla
-        onConfirm={confirmDelete} // Onaylayınca silme fonksiyonunu çağır
+        isOpen={!!deletingCommentId}
+        onClose={() => setDeletingCommentId(null)}
+        onConfirm={confirmDelete}
       />
     </>
   );
@@ -193,7 +188,6 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
 
 CommentContent.displayName = "CommentContent";
 
-// --- YENİ: MODAL BİLEŞENİ (Aynı dosyanın en altına ekle) ---
 interface DeleteModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -201,7 +195,12 @@ interface DeleteModalProps {
 }
 
 const DeleteModal = ({ isOpen, onClose, onConfirm }: DeleteModalProps) => {
-  // Modal açıkken arka planın kaymasını engelle
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -211,35 +210,35 @@ const DeleteModal = ({ isOpen, onClose, onConfirm }: DeleteModalProps) => {
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
-  return (
+  if (!mounted || !isOpen) return null;
+
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Arka Plan Karartması (Backdrop) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[9998]"
+            className="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-[9998]"
           />
           
-          {/* Modalın Kendisi */}
-          <div className="fixed inset-0 flex items-center justify-center z-[9999] p-4">
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none p-4">
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
               className="
-                w-full max-w-sm bg-white dark:bg-zinc-900 
+                pointer-events-auto w-full max-w-sm 
+                bg-white dark:bg-zinc-950
                 border border-zinc-200 dark:border-zinc-800 
                 rounded-xl shadow-2xl overflow-hidden font-mono
               "
             >
-              {/* Modal Başlığı ve İkon */}
               <div className="p-6 flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4 text-red-600 dark:text-red-500">
+                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4 text-red-600 dark:text-red-500">
                   <AlertTriangle size={24} />
                 </div>
                 <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">
@@ -250,13 +249,15 @@ const DeleteModal = ({ isOpen, onClose, onConfirm }: DeleteModalProps) => {
                 </p>
               </div>
 
-              {/* Butonlar */}
-              <div className="flex border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/50">
+              <div className="flex border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30">
                 <button
                   onClick={onClose}
                   className="
-                    flex-1 py-4 text-sm font-bold text-zinc-600 dark:text-zinc-400 
-                    hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors
+                    flex-1 py-4 text-sm font-bold 
+                    text-zinc-600 dark:text-zinc-400  
+                    hover:bg-[#42CF8E] hover:text-white
+                    dark:hover:bg-zinc-900 dark:hover:text-zinc-300
+                    transition-colors duration-200
                     border-r border-zinc-200 dark:border-zinc-800
                   "
                 >
@@ -275,7 +276,6 @@ const DeleteModal = ({ isOpen, onClose, onConfirm }: DeleteModalProps) => {
                 </button>
               </div>
               
-              {/* Kapatma Butonu (X) */}
               <button 
                 onClick={onClose}
                 className="absolute top-3 right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
@@ -286,7 +286,8 @@ const DeleteModal = ({ isOpen, onClose, onConfirm }: DeleteModalProps) => {
           </div>
         </>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body 
   );
 };
 
