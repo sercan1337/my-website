@@ -37,7 +37,7 @@ export default function RootLayout({
         <Providers>
           
             <div className="fixed inset-0 -z-50 h-full w-full bg-background transition-colors duration-300">
-            <div className="absolute inset-0 h-full w-full bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+            <div className="absolute inset-0 h-full w-full bg-[linear-gradient(to_right,#80808020_1px,transparent_1px),linear-gradient(to_bottom,#80808020_1px,transparent_1px)] bg-[size:24px_24px]"></div>
             <div className="absolute inset-0 bg-white/30 dark:bg-gray-950/30 [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
           </div>
 
