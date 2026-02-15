@@ -81,9 +81,9 @@
 .dark {
   --background: oklch(0 0 0) !important;
   --foreground: 0 0% 98%;
-  --card: 0 0% 0%;       /* Kartları da siyah yaptık */
+  --card: 0 0% 0%;
   --card-foreground: 0 0% 98%;
-  --popover: 0 0% 0%;    /* Popover'ları da siyah yaptık */
+  --popover: 0 0% 0%;
   --popover-foreground: 0 0% 98%;
   --primary: 0 0% 98%;
   --primary-foreground: 240 5.9% 10%;
@@ -115,22 +115,17 @@
 
 @layer base {
   :root {
-    /* Light mode ayarları buradadır */
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
   }
 
   .dark {
-    /* İŞTE BURASI: Mevcut değer muhtemelen 220'li (mavi) bir değerdir */
-    --background: 0 0% 0%; /* Tam siyah için 0 0% 0% yapıyoruz */
+    --background: 0 0% 0%;
     --foreground: 0 0% 98%;
-    
-    /* İsteğe bağlı: Grid çizgilerini ve sınırları biraz daha belirgin yapabilirsin */
     --border: 240 5% 15%; 
   }
 }
 
-/* Hover Card Animations */
 @keyframes hover-card-close {
   0% {
     transform: scale(1) translateY(0);
@@ -165,7 +160,6 @@
   animation: hover-card-close 0.2s cubic-bezier(0.4, 0, 1, 1) forwards;
 }
 
-/* Theme toggle click animation */
 @keyframes ripple {
   0% {
     transform: scale(0);
@@ -204,7 +198,6 @@
   pointer-events: none;
 }
 
-/* Marker Pen Underline Effect */
 .marker-underline {
   position: relative;
   display: inline-block;
@@ -231,7 +224,6 @@
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* 1337 Page Animations */
 @keyframes glitch {
   0%, 100% {
     transform: translate(0);
@@ -293,7 +285,6 @@
   transform: scale(1.05);
 }
 
-/* Shimmer/Shine Effect */
 @keyframes shimmer {
   0% {
     background-position: -200% center;
@@ -320,7 +311,6 @@
   transform: scale(1.05);
 }
 
-/* Border Glow Effect */
 @keyframes border-glow {
   0%, 100% {
     border-color: rgba(0, 0, 0, 0.2);
@@ -356,7 +346,6 @@
   animation: border-glow-dark 1.5s ease-in-out infinite;
 }
 
-/* Lift Shadow Effect */
 .button-lift:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15),
@@ -364,7 +353,6 @@
   transition: all 0.3s ease;
 }
 
-/* Gradient Shift Effect */
 @keyframes gradient-shift {
   0%, 100% {
     background-position: 0% 50%;
@@ -386,7 +374,6 @@
   transform: scale(1.05);
 }
 
-/* Ensure consistent transitions for headings and text */
 [class*="transition-colors"] {
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
@@ -395,7 +382,6 @@
   transition-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
 }
 
-/* Post Card Hover Effect - Tilt & Scale */
 .post-card-hover {
   transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) !important;
   transform-style: preserve-3d;
@@ -416,28 +402,6 @@
   border-color: rgba(255, 255, 255, 0.8);
 }
 
-/* YouTube Red Hover Effect */
-.youtube-hover:hover {
-  background-color: #FF0000 !important;
-  color: white !important;
-  border-color: #FF0000 !important;
-}
-
-.youtube-hover:hover svg {
-  fill: white !important;
-}
-
-.dark .youtube-hover:hover {
-  background-color: #FF0000 !important;
-  color: white !important;
-  border-color: #FF0000 !important;
-}
-
-.dark .youtube-hover:hover svg {
-  fill: white !important;
-}
-
-/* GitHub and X Black Hover Effect for Light Theme */
 .github-hover:hover {
   background-color: #000000 !important;
   color: white !important;
@@ -458,7 +422,6 @@
   fill: white !important;
 }
 
-/* Keep original dark theme behavior */
 .dark .github-hover:hover {
   background-color: white !important;
   color: #000000 !important;
@@ -479,7 +442,6 @@
   fill: #000000 !important;
 }
 
-/* Back to Blog Button Effect */
 .back-to-blog-button {
   position: relative;
   overflow: hidden;
@@ -524,12 +486,10 @@
   transform: translateX(-2px);
 }
 
-/* Add perspective to grid container */
 .grid {
   perspective: 1000px;
 }
 
-/* Matrix Falling Effect */
 @keyframes matrix-fall {
   0% {
     transform: translateY(-100vh);
@@ -583,7 +543,6 @@
   display: none;
 }
 
-/* Background transition for 1337 hover */
 .matrix-bg {
   transition: background-color 0.5s ease;
 }
@@ -592,7 +551,6 @@
   background-color: #000000 !important;
 }
 
-/* Popover slide-in animation from right with fade and scale */
 @keyframes slide-in-from-right {
   0% {
     transform: translateX(20px) scale(0.96);
@@ -608,7 +566,6 @@
   animation: slide-in-from-right 0.25s cubic-bezier(0.34, 1.56, 0.64, 1) forwards !important;
 }
 
-/* Topography Background Styles */
 .viewport {
   position: absolute;
   width: 100%;
@@ -638,3 +595,39 @@
   text-align: right;
   color: rgba(255, 255, 255, 0.3);
 }
+
+@layer utilities {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+
+  .dark * {
+    scrollbar-color: #333 transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background-color: #9ca3af;
+  }
+
+  .dark ::-webkit-scrollbar-thumb {
+    background-color: #333;
+  }
+
+  .dark ::-webkit-scrollbar-thumb:hover {
+    background-color: #555;
+  }
+}}
