@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Image optimization
   images: {
     formats: ["image/avif", "image/webp"],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
@@ -11,10 +10,8 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
 
-  // Compression
   compress: true,
 
-  // Experimental features (BURASI GÜNCELLENDİ)
   experimental: {
     optimizePackageImports: ["lucide-react", "@tabler/icons-react"],
     serverActions: {
@@ -22,7 +19,6 @@ const nextConfig: NextConfig = {
     },
   },
 
-  // Headers for caching and security
   async headers() {
     return [
       {
