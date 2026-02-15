@@ -28,7 +28,7 @@ export default function Home() {
               <Link href="/blog">
                 <Button 
                   variant="ghost" 
-                  className="group h-9 px-6 text-sm font-medium border border-gray-200 dark:border-gray-800 hover:border-gray-900 dark:hover:border-white hover:bg-transparent transition-colors duration-300 rounded-full"
+                  className="group h-9 px-6 text-sm font-medium border-2 border-gray-200 dark:border-zinc-900/50 hover:border-[#42CF8E] dark:hover:border-zinc-300 hover:bg-transparent transition-colors duration-300 rounded-full"
                 >
                   read blog
                   <ArrowUpRight className="ml-2 h-4 w-4 transition-transform duration-150 ease-in-out group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
