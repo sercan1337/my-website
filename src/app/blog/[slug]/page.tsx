@@ -16,7 +16,11 @@ import MinimalDesignExample from "@/components/MinimalDesignExample";
 import ClapButton from "@/components/ClapButton";
 import { getClaps } from "@/app/actions";
 
-// Bu fonksiyon, build sırasında tüm blog yazıları için sayfaları oluşturur (Static Site Generation)
+// Bu satır, generateStaticParams içinde tanımlanmayan URL'lerin
+// sunucu tarafında render edilmeye çalışılmasını engeller (Direkt 404 verir).
+// Tam statik bloglar için önerilir.
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const slugs = getAllPostSlugs();
   return slugs.map((slug) => ({
@@ -24,7 +28,6 @@ export async function generateStaticParams() {
   }));
 }
 
-// SEO için başlık ve açıklama üretir
 export async function generateMetadata({
   params,
 }: {
@@ -46,7 +49,6 @@ export async function generateMetadata({
   };
 }
 
-// Başlıklar için ID üretici (Table of Contents bağlantıları için)
 function generateHeadingId(text: string): string {
   return text
     .toString()
@@ -68,10 +70,9 @@ export default async function BlogPost({
   }
 
   const readingTime = calcReadTimeUtil(post.content);
-  // Eğer veritabanı bağlantın yoksa burası hata verebilir, claps kısmını try-catch'e alabilir veya geçici olarak 0 verebilirsin.
+  // Hata durumunda claps 0 dönsün ki sayfa kırılmasın
   const claps = await getClaps(resolvedParams.slug).catch(() => 0);
 
-  // Markdown bileşenleri için özel stiller
   const markdownComponents = {
     h2: ({ children }: any) => {
       const id = generateHeadingId(children?.toString() || "");
@@ -133,9 +134,6 @@ export default async function BlogPost({
               prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
               prose-code:text-green-600 dark:prose-code:text-green-400 prose-code:bg-gray-100 dark:prose-code:bg-gray-800/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
             ">
-                {/* Eğer Markdown içeriğinde <MinimalDesignExample /> metni varsa, 
-                  bunu gerçek React bileşeniyle değiştirir.
-                */}
                 {post.content.includes("<MinimalDesignExample />") ? (
                 post.content.split("<MinimalDesignExample />").map((part, index, array) => (
                   <div key={index}>
