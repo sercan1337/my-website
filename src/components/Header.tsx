@@ -173,7 +173,7 @@ export default function Header() {
 
       <div
         className={cn(
-          "fixed inset-0 z-[60] bg-white dark:bg-gray-950 flex flex-col transition-all duration-500 md:hidden",
+          "fixed inset-0 z-[60] bg-white dark:bg-black flex flex-col transition-all duration-500 md:hidden",
           isOpen
             ? "opacity-100 translate-y-0"
             : "opacity-0 -translate-y-full pointer-events-none"
@@ -200,8 +200,8 @@ export default function Header() {
               className={cn(
                 "font-mono text-5xl font-bold transition-colors",
                 pathname === link.href
-                ? "text-[#42CF8E] dark:text-white"
-                : "text-gray-400 dark:text-gray-600 hover:text-[#42CF8E] dark:hover:text-white"
+                  ? "text-[#42CF8E]/90 dark:text-white"
+                  : "text-zinc-700/60 dark:text-zinc-600 hover:text-[#42CF8E] dark:hover:text-white"
               )}
             >
               {link.label}
@@ -211,13 +211,13 @@ export default function Header() {
 
         <div className="pb-12 flex justify-center gap-7">
           <a href="https://github.com/sercan1337">
-            <IconBrandGithub size={25} />
+            <IconBrandGithub size={25} stroke={1.5} />
           </a>
           <a href="https://x.com/sercan1337">
-            <IconBrandX size={25} />
+            <IconBrandX size={25} stroke={1.5} />
           </a>
           <a href="mailto:sercanduran40@hotmail.com">
-            <IconMail size={25} />
+            <IconMail size={25} stroke={1.5} />
           </a>
         </div>
       </div>
