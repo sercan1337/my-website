@@ -1,5 +1,3 @@
-// Dosya Yolu: app/blog/page.tsx
-
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/posts";
 import BlogList from "@/components/BlogPostsList";
