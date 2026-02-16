@@ -16,9 +16,6 @@ import MinimalDesignExample from "@/components/MinimalDesignExample";
 import ClapButton from "@/components/ClapButton";
 import { getClaps } from "@/app/actions";
 
-// Bu satır, generateStaticParams içinde tanımlanmayan URL'lerin
-// sunucu tarafında render edilmeye çalışılmasını engeller (Direkt 404 verir).
-// Tam statik bloglar için önerilir.
 export const dynamicParams = false;
 
 export async function generateStaticParams() {
@@ -70,13 +67,19 @@ export default async function BlogPost({
   }
 
   const readingTime = calcReadTimeUtil(post.content);
-  // Hata durumunda claps 0 dönsün ki sayfa kırılmasın
   const claps = await getClaps(resolvedParams.slug).catch(() => 0);
 
   const markdownComponents = {
     h2: ({ children }: any) => {
       const id = generateHeadingId(children?.toString() || "");
-      return <h2 id={id} className="mt-12 mb-6 scroll-mt-24 text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-800 pb-6">{children}</h2>;
+      return (
+        <h2 
+          id={id} 
+          className="mt-12 mb-6 scroll-mt-24 text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-300 dark:border-gray-700 pb-6"
+        >
+          {children}
+        </h2>
+      );
     },
     h3: ({ children }: any) => {
       const id = generateHeadingId(children?.toString() || "");
@@ -150,17 +153,13 @@ export default async function BlogPost({
               )}
             </div>
 
-            <div className="mt-16 pt-8 border-t border-gray-100 dark:border-gray-800">
+            <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
               <div className="mb-10 flex justify-center md:justify-start">
                 <ClapButton slug={resolvedParams.slug} initialClaps={claps} />
               </div>
               
-              <div className="mb-12">
-                 <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-6 font-mono">
-                   Comments
-                 </h3>
-                 <Comments slug={resolvedParams.slug} />
-              </div>
+              {/* Comments başlığı kaldırıldı, doğrudan bileşen çağrılıyor */}
+              <Comments slug={resolvedParams.slug} />
             </div>
           </div>
 
