@@ -37,13 +37,13 @@ export default function CommentForm({ user, slug, onCommentPosted }: CommentForm
       if (!res.ok) throw new Error("Failed to post");
 
       setComment("");
-      toast.success("COMMENT POSTED", { description: "Your entry has been added to the stream." });
+      toast.success("ENTRY ADDED", { description: "Write operation successful." });
       onCommentPosted?.();
       router.refresh();
 
     } catch (error) {
       console.error(error);
-      toast.error("ERROR", { description: "Failed to write to database." });
+      toast.error("EXECUTION FAILED", { description: "Could not write to stream." });
     } finally {
       setIsLoading(false);
     }
@@ -55,18 +55,26 @@ export default function CommentForm({ user, slug, onCommentPosted }: CommentForm
   };
 
   return (
-    <div className="w-full mb-10">
+    <div className="w-full mb-12 font-mono">
       
-      <div className="flex justify-between items-end mb-4 px-1">
+      <div className="mb-8">
+        <h3 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 flex items-center gap-2">
+          ~/comments 
+          <span className="text-zinc-400 dark:text-white">_</span>
+        </h3>
+        <div className="h-px w-full bg-zinc-200 dark:bg-zinc-800 mt-4" />
+      </div>
+
+      <div className="flex justify-between items-center mb-6 px-1">
         <div className="flex items-center gap-3">
-          <div className="ring-1 ring-gray-200 dark:ring-gray-700 rounded-full p-0.5">
-            <Avvvatars value={user.email || user.name || "user"} style="shape" size={28} />
+          <div className="opacity-90 grayscale hover:grayscale-0 transition-all duration-300">
+            <Avvvatars value={user.email || user.name || "user"} style="shape" size={24} />
           </div>
           <div className="flex flex-col">
-            <span className="text-sm font-bold font-mono text-gray-900 dark:text-gray-200 leading-none">
+            <span className="text-sm font-bold text-zinc-900 dark:text-zinc-200 leading-none">
               {user.name || "Anonymous"}
             </span>
-            <span className="text-[10px] text-gray-500 dark:text-gray-500 font-mono mt-1">
+            <span className="text-[10px] text-zinc-500 dark:text-zinc-500 mt-1.5 tracking-wide">
               Writing as authenticated user
             </span>
           </div>
@@ -74,41 +82,46 @@ export default function CommentForm({ user, slug, onCommentPosted }: CommentForm
 
         <button
           onClick={handleLogout}
-          className="text-[10px] uppercase tracking-wider flex items-center gap-1.5 text-red-500 hover:text-red-600 dark:text-red-500/80 dark:hover:text-red-400 transition-all font-mono hover:-translate-y-0.5 py-1 px-2 rounded-md hover:bg-red-50 dark:hover:bg-red-900/10"
+          className="group flex items-center gap-2 text-[10px] font-bold text-red-500 hover:text-red-600 transition-colors"
         >
-          <LogOut size={10} /> Logout
+          <LogOut size={12} className="group-hover:-translate-x-0.5 transition-transform" /> 
+          LOGOUT
         </button>
       </div>
 
-      <form onSubmit={handleSubmit} className="relative group">
-        
-        <textarea
-          value={comment}
-          onChange={(e) => setComment(e.target.value)}
-          placeholder="Execute write command..."
-          className="
-            w-full min-h-[100px]
-            bg-white
-            dark:bg-[#09090b]
-            border border-gray-200 
-            dark:border-gray-700/80
-            rounded-xl p-4 text-sm 
-            focus:outline-none 
-            focus:ring-0
-            focus:border-[#42CF8E] dark:focus:border-gray-500
-            resize-none font-mono 
-            text-gray-900 dark:text-gray-300 
-            placeholder:text-gray-400 dark:placeholder:text-gray-600 
-            transition-all shadow-sm
-            hover:border-gray-600/50 dark:hover:border-gray-600
-          "
-        />
+      <form onSubmit={handleSubmit} className="relative">
+        <div className="relative group">
+          <textarea
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="Execute write command..."
+            className="
+              w-full min-h-[140px]
+              bg-zinc-50 dark:bg-black
+              border border-zinc-300 dark:border-zinc-800
+              rounded-xl p-5 text-sm 
+              focus:outline-none 
+              focus:border-[#42CF8E] dark:focus:border-zinc-700
+              resize-none 
+              text-zinc-800 dark:text-zinc-300 
+              placeholder:text-zinc-400 dark:placeholder:text-zinc-600 
+              transition-all duration-300
+            "
+          />
+        </div>
 
-        <div className="flex justify-end mt-3">
+        <div className="flex justify-end mt-4">
           <button
             type="submit"
             disabled={isLoading || !comment.trim()}
-            className="flex items-center gap-2 px-4 py-2 bg-gray-900/50 dark:bg-white/80 text-white dark:text-black rounded-lg text-xs font-bold font-mono hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed transition-all hover:-translate-y-0.5 shadow-sm"
+            className="
+              flex items-center gap-2 px-5 py-2.5 
+              text-zinc-900 dark:text-zinc-300 
+              rounded-lg text-xs font-bold tracking-wider
+              hover:bg-zinc-300/25 dark:hover:bg-zinc-700/30 hover:text-black dark:hover:text-white
+              disabled:opacity-50 disabled:cursor-not-allowed 
+              transition-all duration-200
+            "
           >
             {isLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Send className="w-3 h-3" />}
             POST_ENTRY
