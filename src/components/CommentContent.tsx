@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback, useImperativeHandle, forwardRef } from "react";
 import { createPortal } from "react-dom";
-import { Terminal, Trash2, AlertTriangle, X } from "lucide-react";
+import { Trash2, AlertTriangle, X } from "lucide-react";
 import Avvvatars from "avvvatars-react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
@@ -22,6 +22,12 @@ interface CommentContentProps {
 
 export interface CommentContentRef {
   refresh: () => void;
+}
+
+interface DeleteModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
 }
 
 const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slug }, ref) => {
@@ -48,7 +54,6 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
 
   const confirmDelete = async () => {
     if (!deletingCommentId) return;
-
     const toastId = toast.loading("Executing delete command...");
     
     try {
@@ -63,12 +68,11 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
         throw new Error(errData.error || "Failed to delete");
       }
 
-      toast.success("Comment deleted successfully.", { id: toastId });
+      toast.success("Entry deleted.", { id: toastId });
       fetchComments(); 
-
     } catch (error) {
       console.error(error);
-      toast.error(error instanceof Error ? error.message : "Error deleting comment", { id: toastId });
+      toast.error("Error deleting entry", { id: toastId });
     } finally {
       setDeletingCommentId(null); 
     }
@@ -86,90 +90,79 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
 
   if (loading) {
     return (
-      <div className="mt-8 space-y-4 font-mono">
-        {[1, 2, 3].map((i) => (
-          <div key={i} className="flex gap-4 items-start animate-pulse">
-            <div className="w-8 h-8 bg-zinc-200 dark:bg-zinc-800 rounded mt-1" />
-            <div className="space-y-2 flex-1">
-              <div className="h-3 bg-zinc-300 dark:bg-zinc-900 rounded w-1/4" />
-              <div className="h-10 bg-zinc-100 dark:bg-zinc-900/50 rounded w-full border border-zinc-200 dark:border-zinc-900" />
-            </div>
-          </div>
-        ))}
+      <div className="mt-8 space-y-8 font-mono opacity-50">
+         <div className="text-xs text-zinc-500 animate-pulse"> Loading data stream...</div>
       </div>
     );
   }
 
   if (comments.length === 0) {
     return (
-      <div className="mt-12 text-center text-zinc-500 dark:text-zinc-400 font-mono text-xs border border-dashed border-zinc-300 dark:border-zinc-800 p-8 rounded bg-zinc-50 dark:bg-zinc-950/30">
-        <Terminal className="w-6 h-6 mx-auto mb-3 opacity-30" />
-        <p>[LOG_EMPTY]: No comments found.</p>
-        <p className="mt-1 opacity-50">Be the first to execute a write operation.</p>
+      <div className="mt-8 font-mono text-xs text-zinc-500 border-l border-zinc-800 pl-4 py-2">
+        <p> No entries found.</p>
       </div>
     );
   }
 
   return (
     <>
-      <div className="mt-8 space-y-8 font-mono relative">
-        {comments.map((comment) => {
+      <div className="mt-8 flex flex-col font-mono relative">
+        <div className="absolute inset-0 pointer-events-none opacity-[0.02] dark:opacity-[0.03]" 
+             style={{ backgroundImage: 'linear-gradient(#888 1px, transparent 1px), linear-gradient(90deg, #888 1px, transparent 1px)', backgroundSize: '20px 20px' }}>
+        </div>
+
+        {comments.map((comment, index) => {
           const userName = comment.userName || "anonymous";
           const date = new Date(comment.createdAt);
-          const timeString = date.toLocaleTimeString("en-EN", { hour: "2-digit", minute: "2-digit" });
-          const dateString = date.toLocaleDateString("en-EN", { day: "numeric", month: "short" });
+          
+          const month = date.toLocaleDateString("en-US", { month: "short" }).toLowerCase();
+          const day = date.toLocaleDateString("en-US", { day: "numeric" });
+          const timeString = date.toLocaleTimeString("en-US", { hour: "2-digit", minute: "2-digit" }).toLowerCase();
           
           const isMyComment = session?.user?.id === comment.userId;
+          const isLast = index === comments.length - 1;
 
           return (
-            <div key={comment.id} className="group relative pl-6 border-l border-zinc-300 dark:border-zinc-800 transition-colors">
+            <div key={comment.id} className="group relative pl-6 pb-6">
+              {!isLast && (
+                 <div className="absolute left-0 top-2 bottom-0 w-px bg-zinc-200 dark:bg-zinc-800" />
+              )}
               
-              <div className="
-                absolute -left-[5px] top-2 w-2.5 h-2.5 rounded-full transition-all duration-300
-                bg-white border border-white shadow-[0_0_8px_rgba(66,207,142,0.4)]
-                group-hover:scale-125 group-hover:shadow-[0_0_12px_rgba(66,207,142,0.6)]
-              " />
-
-              <div className="flex flex-col gap-2 relative">
-                  <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                          <div className="opacity-90 group-hover:opacity-100 transition-opacity filter drop-shadow-sm">
-                              <Avvvatars value={userName} style="shape" size={28} />
-                          </div>
-                          <div className="flex flex-col">
-                              <span className="text-sm font-bold text-zinc-900 dark:text-zinc-200 group-hover:text-[#42CF8E] dark:group-hover:text-white-800 transition-colors duration-300 leading-none tracking-tight">
-                                  {userName}
-                              </span>
-                              <span className="text-[10px] text-zinc-500 dark:text-zinc-400 font-medium mt-1">
-                                  {dateString} <span className="opacity-40 mx-1">|</span> {timeString}
-                              </span>
-                          </div>
+              <div className="flex flex-col gap-1.5">
+                  <div className="flex items-center gap-2.5">
+                      <div className="w-5 h-5 rounded overflow-hidden opacity-70 grayscale group-hover:grayscale-0 transition-all">
+                          <Avvvatars value={userName} style="shape" size={20} />
+                      </div>
+                      
+                      <div className="flex items-baseline gap-2">
+                          <span className="text-sm font-bold text-zinc-800 dark:text-zinc-300">
+                              {userName}
+                          </span>
+                          <span className="text-[10px] text-zinc-500 dark:text-zinc-600 font-medium tracking-wider">
+                              {month} {day} <span className="text-zinc-300 dark:text-zinc-700">|</span> {timeString}
+                          </span>
                       </div>
 
                       {isMyComment && (
                         <button
                           onClick={() => setDeletingCommentId(comment.id)}
-                          className="
-                            opacity-0 group-hover:opacity-100 transition-all duration-200
-                            text-zinc-400 hover:text-red-500 p-1.5 rounded-md
-                            hover:bg-red-50 dark:hover:bg-red-900/20
-                          "
-                          title="Delete comment"
+                          className="ml-auto opacity-0 group-hover:opacity-100 text-zinc-500 hover:text-red-500 transition-all p-1"
+                          title="Delete entry"
                         >
-                          <Trash2 size={14} />
+                          <Trash2 size={12} />
                         </button>
                       )}
                   </div>
 
-                  <div className="
-                    mt-1 p-4 rounded-lg text-sm leading-relaxed transition-all duration-300
-                    bg-white border border-zinc-200 shadow-sm text-zinc-700 
-                    hover:border-[#42CF8E]/50 dark:hover:border-zinc-700   hover:shadow-md
-                    
-                    dark:bg-zinc-900/30 dark:border-zinc-800/50 dark:text-zinc-400 
-                    dark:shadow-none dark:hover:border-[#42CF8E]/40
-                  ">
-                      <p className="whitespace-pre-wrap break-words">{comment.text}</p>
+                  <div className="mt-0.5 relative">
+                      <div className="
+                        text-sm leading-relaxed text-zinc-700 dark:text-zinc-400
+                        bg-zinc-50/50 dark:bg-zinc-900/30
+                        border border-zinc-100 dark:border-zinc-800/50
+                        rounded-sm px-3 py-2
+                      ">
+                          <p className="whitespace-pre-wrap break-words">{comment.text}</p>
+                      </div>
                   </div>
               </div>
             </div>
@@ -188,25 +181,15 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
 
 CommentContent.displayName = "CommentContent";
 
-interface DeleteModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-}
+// --- Delete Modal (Minimal Version - Unchanged) ---
 
 const DeleteModal = ({ isOpen, onClose, onConfirm }: DeleteModalProps) => {
   const [mounted, setMounted] = useState(false);
 
+  useEffect(() => { setMounted(true); }, []);
   useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
+    if (isOpen) document.body.style.overflow = 'hidden';
+    else document.body.style.overflow = 'unset';
     return () => { document.body.style.overflow = 'unset'; };
   }, [isOpen]);
 
@@ -215,76 +198,45 @@ const DeleteModal = ({ isOpen, onClose, onConfirm }: DeleteModalProps) => {
   return createPortal(
     <AnimatePresence>
       {isOpen && (
-        <>
-          <motion.div
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 font-mono">
+           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 backdrop-blur-[2px] z-[9998]"
+            className="absolute inset-0 bg-zinc-950/80 backdrop-blur-[1px]"
           />
           
-          <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none p-4">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 10 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              transition={{ duration: 0.2, ease: "easeOut" }}
-              className="
-                pointer-events-auto w-full max-w-sm 
-                bg-white dark:bg-zinc-950
-                border border-zinc-200 dark:border-zinc-800 
-                rounded-xl shadow-2xl overflow-hidden font-mono
-              "
-            >
-              <div className="p-6 flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-red-100 dark:bg-red-900/20 rounded-full flex items-center justify-center mb-4 text-red-600 dark:text-red-500">
-                  <AlertTriangle size={24} />
-                </div>
-                <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-2">
-                  CONFIRM_DELETION
-                </h3>
-                <p className="text-sm text-zinc-500 dark:text-zinc-400">
-                  Are you sure you want to execute this action? This process cannot be undone.
-                </p>
-              </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="relative w-full max-w-sm bg-black border border-zinc-800 shadow-2xl p-6"
+          >
+            <div className="flex items-start gap-4 mb-6">
+               <div className="text-red-500 mt-1"><AlertTriangle size={20} /></div>
+               <div>
+                  <h3 className="text-zinc-100 font-bold mb-1">CONFIRM_DELETION</h3>
+                  <p className="text-xs text-zinc-500">Irreversible action. Proceed?</p>
+               </div>
+            </div>
 
-              <div className="flex border-t border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30">
+            <div className="flex gap-3 justify-end">
                 <button
                   onClick={onClose}
-                  className="
-                    flex-1 py-4 text-sm font-bold 
-                    text-zinc-600 dark:text-zinc-400  
-                    hover:bg-[#42CF8E] hover:text-white
-                    dark:hover:bg-zinc-900 dark:hover:text-zinc-300
-                    transition-colors duration-200
-                    border-r border-zinc-200 dark:border-zinc-800
-                  "
+                  className="px-4 py-2 text-xs font-bold text-zinc-400 hover:text-white border border-zinc-800 hover:border-zinc-600 transition-colors"
                 >
                   CANCEL
                 </button>
                 <button
                   onClick={onConfirm}
-                  className="
-                    flex-1 py-4 text-sm font-bold text-red-600 dark:text-red-500 
-                    hover:bg-red-50 dark:hover:bg-red-900/20 transition-colors
-                    flex items-center justify-center gap-2
-                  "
+                  className="px-4 py-2 text-xs font-bold text-black bg-white hover:bg-zinc-200 transition-colors"
                 >
-                  <Trash2 size={16} />
-                  DELETE_ENTRY
+                  DELETE
                 </button>
-              </div>
-              
-              <button 
-                onClick={onClose}
-                className="absolute top-3 right-3 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-200 transition-colors"
-              >
-                <X size={18} />
-              </button>
-            </motion.div>
-          </div>
-        </>
+            </div>
+          </motion.div>
+        </div>
       )}
     </AnimatePresence>,
     document.body 
