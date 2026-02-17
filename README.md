@@ -3,21 +3,31 @@
 </p>
 
 # My Website
-Welcome! This is my personal portfolio and blog project, 
-built with a focus on modern web standards, performance, and clean design.
+
+![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+![Drizzle ORM](https://img.shields.io/badge/Drizzle_ORM-C5F74F?style=for-the-badge&logo=drizzle&logoColor=black)
+
+#
+
+![Last Commit](https://img.shields.io/github/last-commit/sercan1337/my-website)
+![Stars Count](https://img.shields.io/github/stars/sercan1337/my-website)
+
 
 ## Tech Stack
 
-- **Framework:** [Next.js](https://nextjs.org/) (App Router)
+- **Framework:** [Next.js 14](https://nextjs.org/) (App Router & Server Components)
 - **Language:** [TypeScript](https://www.typescriptlang.org/)
 - **Styling:** [Tailwind CSS](https://tailwindcss.com/) & [shadcn/ui](https://ui.shadcn.com/)
-- **Database:** [PostgreSQL](https://www.postgresql.org/)
-- **Database Hosting:** [Neon](https://neon.tech/)
+- **Database:** [PostgreSQL](https://www.postgresql.org/) (hosted on [Neon](https://neon.tech/))
 - **ORM:** [Drizzle ORM](https://orm.drizzle.team/)
 - **Icons:** [Lucide React](https://lucide.dev/)
-- **Syntax Highlighter:** [Shiki](https://shiki.style/)
+- **Syntax Highlighting:** [Shiki](https://shiki.style/)
+- **Typography:** [Geist](https://vercel.com/font)
 - **Deployment:** [Vercel](https://vercel.com/)
-- **Typography:** [Geist](https://fonts.google.com/specimen/Geist)
+
 ## Getting Started
 
 First, run the development server:
