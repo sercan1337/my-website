@@ -35,9 +35,11 @@ export default function Header() {
   const [indicator, setIndicator] = useState<Indicator>(null);
   const [mode, setMode] = useState<Mode>("underline");
 
+  // GÜNCELLEME: Timeline linki buraya eklendi
   const links = [
     { href: "/", label: "Home" },
     { href: "/blog", label: "Blog" },
+    { href: "/timeline", label: "Timeline" },
     { href: "/about", label: "About" },
   ];
 
