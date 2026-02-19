@@ -6,15 +6,19 @@ import {
   getAllPostSlugs,
 } from "@/lib/posts";
 import { calculateReadingTime as calcReadTimeUtil } from "@/lib/utils";
-import ReactMarkdown from "react-markdown";
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import TableOfContents from "@/components/TableOfContents";
 import Comments from "@/components/Comments";
 import { Clock, ArrowLeft, Calendar } from "lucide-react";
-import MinimalDesignExample from "@/components/MinimalDesignExample";
 import ClapButton from "@/components/ClapButton";
 import { getClaps } from "@/app/actions";
+import Spoiler from "@/components/Spoiler";
+
+// --- YENİ EKLENEN İMPORTLAR ---
+import { MDXRemote } from "next-mdx-remote/rsc";
+import MinimalDesignExample from "@/components/MinimalDesignExample";
+import BeforeAfter from "@/components/BeforeAfter"; // Kendi yoluna göre düzelt
 
 export const dynamicParams = false;
 
@@ -69,7 +73,8 @@ export default async function BlogPost({
   const readingTime = calcReadTimeUtil(post.content);
   const claps = await getClaps(resolvedParams.slug).catch(() => 0);
 
-  const markdownComponents = {
+  // --- MDX BİLEŞENLERİ (Hem HTML etiketleri hem de React bileşenlerin) ---
+  const mdxComponents = {
     h2: ({ children }: any) => {
       const id = generateHeadingId(children?.toString() || "");
       return (
@@ -94,6 +99,11 @@ export default async function BlogPost({
     pre: ({ children }: any) => <pre className="mb-8 overflow-x-auto rounded-xl bg-gray-900 p-4 border border-gray-800 shadow-lg">{children}</pre>,
     blockquote: ({ children }: any) => <blockquote className="my-8 border-l-4 border-green-500 pl-6 italic text-gray-700 dark:border-green-500 dark:text-gray-300 bg-green-50 dark:bg-green-900/10 py-4 rounded-r-lg">{children}</blockquote>,
     a: ({ href, children }: any) => <a href={href} className="text-green-600 font-medium hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 underline decoration-green-500/30 hover:decoration-green-500 transition-all">{children}</a>,
+    
+    // MDX İÇİNDE KULLANACAĞIN ÖZEL REACT BİLEŞENLERİ:
+    MinimalDesignExample,
+    BeforeAfter, 
+    Spoiler,
   };
 
   return (
@@ -137,20 +147,8 @@ export default async function BlogPost({
               prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
               prose-code:text-green-600 dark:prose-code:text-green-400 prose-code:bg-gray-100 dark:prose-code:bg-gray-800/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
             ">
-                {post.content.includes("<MinimalDesignExample />") ? (
-                post.content.split("<MinimalDesignExample />").map((part, index, array) => (
-                  <div key={index}>
-                    <ReactMarkdown components={markdownComponents}>
-                      {part}
-                    </ReactMarkdown>
-                    {index < array.length - 1 && <MinimalDesignExample />}
-                  </div>
-                ))
-              ) : (
-                <ReactMarkdown components={markdownComponents}>
-                  {post.content}
-                </ReactMarkdown>
-              )}
+                {/* --- YENİ EKLENEN MDXRemote --- */}
+                <MDXRemote source={post.content} components={mdxComponents} />
             </div>
 
             <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
@@ -158,7 +156,6 @@ export default async function BlogPost({
                 <ClapButton slug={resolvedParams.slug} initialClaps={claps} />
               </div>
               
-              {/* Comments başlığı kaldırıldı, doğrudan bileşen çağrılıyor */}
               <Comments slug={resolvedParams.slug} />
             </div>
           </div>
