@@ -16,9 +16,9 @@ interface BlogListProps {
 }
 
 export default function BlogList({ posts }: BlogListProps) {
-  const sortedPosts = [...posts].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  const sortedPosts = [...posts].sort((a, b) => {
+    return new Date(a.date).getTime() - new Date(b.date).getTime();
+  });
 
   return (
     <div className="min-h-screen w-full relative">
