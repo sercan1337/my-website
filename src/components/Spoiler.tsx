@@ -6,15 +6,15 @@ export default function Spoiler({ title, children }: { title: string; children: 
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="border border-gray-200 dark:border-white/10 rounded-xl mb-6 overflow-hidden bg-white dark:bg-black/20 transition-colors">
+    <div className="mb-6 overflow-hidden border border-white/35 bg-[#0500a8]/45 transition-colors">
       
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="group w-full flex justify-between items-center font-medium cursor-pointer p-5 text-gray-900 dark:text-gray-100 hover:bg-gray-50 dark:hover:bg-white/5 transition-colors"
+        className="group flex w-full cursor-pointer items-center justify-between border-b border-white/20 bg-[#0500a8]/55 p-5 font-medium text-white transition-colors hover:bg-[#0b08d0]/60"
       >
         <span className="text-lg">{title}</span>
         
-        <span className={`transition-transform duration-500 text-gray-500 dark:text-gray-400 group-hover:text-gray-700 dark:group-hover:text-gray-200 ${isOpen ? "rotate-180" : ""}`}>
+        <span className={`text-white/70 transition-transform duration-500 group-hover:text-white ${isOpen ? "rotate-180" : ""}`}>
           <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24">
             <path d="M6 9l6 6 6-6"></path>
           </svg>
@@ -27,7 +27,7 @@ export default function Spoiler({ title, children }: { title: string; children: 
         }`}
       >
         <div className="overflow-hidden">
-          <div className="p-5 border-t border-gray-200 dark:border-white/10 bg-gray-50 dark:bg-[#0a0a0a]">
+          <div className="border-t border-white/20 bg-transparent p-0">
             {children}
           </div>
         </div>

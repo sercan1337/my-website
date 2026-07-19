@@ -98,8 +98,8 @@ const CommentContent = forwardRef<CommentContentRef, CommentContentProps>(({ slu
 
   if (comments.length === 0) {
     return (
-      <div className="mt-8 font-mono text-xs text-zinc-500 border-l border-zinc-800 pl-4 py-2">
-        <p> No entries found.</p>
+      <div className="comment-empty-log">
+        <p>No log entries found.</p>
       </div>
     );
   }

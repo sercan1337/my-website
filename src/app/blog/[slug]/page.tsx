@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import type { ReactNode } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
@@ -15,10 +16,9 @@ import ClapButton from "@/components/ClapButton";
 import { getClaps } from "@/app/actions";
 import Spoiler from "@/components/Spoiler";
 
-// --- YENİ EKLENEN İMPORTLAR ---
 import { MDXRemote } from "next-mdx-remote/rsc";
 import MinimalDesignExample from "@/components/MinimalDesignExample";
-import BeforeAfter from "@/components/BeforeAfter"; // Kendi yoluna göre düzelt
+import BeforeAfter from "@/components/BeforeAfter"; 
 
 export const dynamicParams = false;
 
@@ -58,6 +58,11 @@ function generateHeadingId(text: string): string {
     .replace(/\s+/g, "-");
 }
 
+type MdxComponentProps = {
+  children?: ReactNode;
+  href?: string;
+};
+
 export default async function BlogPost({
   params,
 }: {
@@ -72,44 +77,49 @@ export default async function BlogPost({
 
   const readingTime = calcReadTimeUtil(post.content);
   const claps = await getClaps(resolvedParams.slug).catch(() => 0);
+  const wordCount = post.content.trim().split(/\s+/).filter(Boolean).length;
+  const fileName = `${resolvedParams.slug}.md`;
 
-  // --- MDX BİLEŞENLERİ (Hem HTML etiketleri hem de React bileşenlerin) ---
   const mdxComponents = {
-    h2: ({ children }: any) => {
+    h2: ({ children }: MdxComponentProps) => {
       const id = generateHeadingId(children?.toString() || "");
       return (
         <h2 
           id={id} 
-          className="mt-12 mb-6 scroll-mt-24 text-2xl font-bold text-gray-900 dark:text-white border-b border-gray-300 dark:border-gray-700 pb-6"
+          className="mt-12 mb-6 scroll-mt-24 text-2xl font-bold text-gray-900 dark:text-white border-b border-[#8b5cf6]/30 dark:border-[#8b5cf6]/30 pb-6"
         >
           {children}
         </h2>
       );
     },
-    h3: ({ children }: any) => {
+    h3: ({ children }: MdxComponentProps) => {
       const id = generateHeadingId(children?.toString() || "");
       return <h3 id={id} className="mt-10 mb-4 scroll-mt-24 text-xl font-semibold text-gray-900 dark:text-white">{children}</h3>;
     },
-    p: ({ children }: any) => <p className="mb-6 text-base leading-relaxed text-gray-600 dark:text-gray-400">{children}</p>,
-    ul: ({ children }: any) => <ul className="mb-6 ml-6 list-disc space-y-2 text-gray-600 dark:text-gray-400 marker:text-green-500">{children}</ul>,
-    ol: ({ children }: any) => <ol className="mb-6 ml-6 list-decimal space-y-2 text-gray-600 dark:text-gray-400 marker:text-green-500">{children}</ol>,
-    li: ({ children }: any) => <li className="pl-2">{children}</li>,
-    strong: ({ children }: any) => <strong className="font-semibold text-gray-900 dark:text-white">{children}</strong>,
-    code: ({ children }: any) => <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-green-600 dark:bg-gray-900 dark:text-green-400 border border-gray-200 dark:border-gray-800">{children}</code>,
-    pre: ({ children }: any) => <pre className="mb-8 overflow-x-auto rounded-xl bg-gray-900 p-4 border border-gray-800 shadow-lg">{children}</pre>,
-    blockquote: ({ children }: any) => <blockquote className="my-8 border-l-4 border-green-500 pl-6 italic text-gray-700 dark:border-green-500 dark:text-gray-300 bg-green-50 dark:bg-green-900/10 py-4 rounded-r-lg">{children}</blockquote>,
-    a: ({ href, children }: any) => <a href={href} className="text-green-600 font-medium hover:text-green-700 dark:text-green-400 dark:hover:text-green-300 underline decoration-green-500/30 hover:decoration-green-500 transition-all">{children}</a>,
+    p: ({ children }: MdxComponentProps) => <p className="mb-6 text-base leading-relaxed text-gray-600 dark:text-gray-400">{children}</p>,
+    ul: ({ children }: MdxComponentProps) => <ul className="mb-6 ml-6 list-disc space-y-2 text-gray-600 dark:text-gray-400 marker:text-[#9c7cff]">{children}</ul>,
+    ol: ({ children }: MdxComponentProps) => <ol className="mb-6 ml-6 list-decimal space-y-2 text-gray-600 dark:text-gray-400 marker:text-[#9c7cff]">{children}</ol>,
+    li: ({ children }: MdxComponentProps) => <li className="pl-2">{children}</li>,
+    strong: ({ children }: MdxComponentProps) => <strong className="font-semibold text-gray-900 dark:text-white">{children}</strong>,
+    code: ({ children }: MdxComponentProps) => <code className="rounded bg-gray-100 px-1.5 py-0.5 font-mono text-sm text-[#9c7cff] dark:bg-gray-900 dark:text-[#b7a6ff] border border-gray-200 dark:border-gray-800">{children}</code>,
+    pre: ({ children }: MdxComponentProps) => <pre className="mb-8 overflow-x-auto rounded-xl bg-gray-900 p-4 border border-gray-800 shadow-lg">{children}</pre>,
+    blockquote: ({ children }: MdxComponentProps) => <blockquote className="my-8 border-l-4 border-[#9c7cff] pl-6 italic text-gray-700 dark:border-[#9c7cff] dark:text-gray-300 bg-indigo-50 dark:bg-indigo-950/20 py-4 rounded-r-lg">{children}</blockquote>,
+    a: ({ href, children }: MdxComponentProps) => <a href={href} className="text-[#9c7cff] font-medium hover:text-[#c7bbff] underline decoration-[#9c7cff]/40 hover:decoration-[#9c7cff] transition-all">{children}</a>,
     
-    // MDX İÇİNDE KULLANACAĞIN ÖZEL REACT BİLEŞENLERİ:
     MinimalDesignExample,
     BeforeAfter, 
     Spoiler,
   };
 
   return (
-    <div className="min-h-screen relative transition-colors duration-500 animate-in fade-in zoom-in-95 duration-700">
+    <div className="min-h-screen relative transition-colors duration-500 animate-in fade-in zoom-in-95 duration-700 pb-20">
       
-      <article className="relative z-10 mx-auto max-w-[90rem] px-4 py-8 sm:px-6 lg:px-8">
+      <article className="system-window relative z-10 mx-auto max-w-[90rem]">
+        <div className="system-titlebar">
+          <span>{`OPEN DOCUMENT - /posts/${fileName}`}</span>
+          <span>{readingTime} MIN READ</span>
+        </div>
+        <div className="system-content">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_250px]">
           
           <div className="mx-auto w-full min-w-0">
@@ -118,18 +128,24 @@ export default async function BlogPost({
               href="/blog"
               className={cn(
                 buttonVariants({ variant: "ghost", size: "sm" }),
-                "mb-8 inline-flex items-center gap-2 text-gray-500 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white group transition-colors pl-0 hover:bg-transparent"
+                "retro-command mb-8 inline-flex items-center gap-2 p-2 text-sm"
               )}
+              data-sound-click="nav"
+              data-sound-hover="tick"
             >
               <ArrowLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" /> Back to Blog
             </Link>
 
-            <header className="mb-10 pb-6 border-b border-[#42CF8E] dark:border-gray-600/50">
-              <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-gray-900 dark:text-white mb-6 leading-tight">
+            <header className="document-header mb-10 border-b border-white/35 pb-6">
+              <div className="document-path">
+                <span>-rw-r--r--</span>
+                <span>{fileName}</span>
+              </div>
+              <h1 className="text-3xl md:text-5xl font-bold tracking-tight text-white mb-6 leading-tight">
                 {post.title}
               </h1>
               
-              <div className="flex items-center gap-6 text-sm font-mono text-gray-500 dark:text-gray-400">
+              <div className="flex flex-wrap items-center gap-6 text-sm font-mono text-white/64">
                   <span className="flex items-center gap-2">
                       <Calendar className="h-4 w-4" />
                       {post.date}
@@ -139,19 +155,41 @@ export default async function BlogPost({
                     {readingTime} min read
                   </span>
               </div>
+
+              <dl className="document-status-grid">
+  {[
+    ["PATH", `/posts/${fileName}`],
+    ["MODE", "READ ONLY"],
+    ["TYPE", "MARKDOWN"],
+    ["WORDS", String(wordCount)],
+  ].map(([label, value]) => (
+    <div key={label}>
+      <dt>{label}</dt>
+      <dd>{value}</dd>
+    </div>
+  ))}
+</dl>
             </header>
 
-            <div className="markdown-content prose prose-lg prose-gray dark:prose-invert max-w-none
+            <div className="document-buffer markdown-content prose prose-lg prose-invert max-w-none
               prose-headings:font-bold prose-headings:tracking-tight
-              prose-a:text-green-600 dark:prose-a:text-green-400 prose-a:no-underline hover:prose-a:underline
+              prose-a:text-[#9c7cff] dark:prose-a:text-[#b7a6ff] prose-a:no-underline hover:prose-a:underline
               prose-pre:bg-gray-900 prose-pre:border prose-pre:border-gray-800
-              prose-code:text-green-600 dark:prose-code:text-green-400 prose-code:bg-gray-100 dark:prose-code:bg-gray-800/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
+              prose-code:text-[#9c7cff] dark:prose-code:text-[#b7a6ff] prose-code:bg-gray-100 dark:prose-code:bg-gray-800/50 prose-code:px-1 prose-code:py-0.5 prose-code:rounded-md prose-code:before:content-none prose-code:after:content-none
             ">
-                {/* --- YENİ EKLENEN MDXRemote --- */}
                 <MDXRemote source={post.content} components={mdxComponents} />
             </div>
 
-            <div className="mt-16 pt-8 border-t border-gray-200 dark:border-gray-800">
+            <div className="document-eof" aria-label="End of file metadata">
+              <p>EOF</p>
+              <p>END OF FILE</p>
+              <p>checksum: ok</p>
+              <Link href="/blog" data-sound-click="nav" data-sound-hover="tick">
+                return: /posts
+              </Link>
+            </div>
+
+            <div className="mt-16 pt-8 border-t border-[#8b5cf6]/30 dark:border-[#8b5cf6]/30">
               <div className="mb-10 flex justify-center md:justify-start">
                 <ClapButton slug={resolvedParams.slug} initialClaps={claps} />
               </div>
@@ -165,6 +203,7 @@ export default async function BlogPost({
               <TableOfContents content={post.content} />
             </div>
           </aside>
+        </div>
         </div>
       </article>
     </div>

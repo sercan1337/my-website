@@ -29,22 +29,22 @@ export default function Comments({ slug }: CommentsProps) {
   const isLoading = !mounted || isPending;
 
   return (
-    <section className="w-full max-w-3xl mx-auto mt-12 mb-20 px-4">
+    <section className="comments-sys w-full max-w-3xl mx-auto mt-12 mb-20">
 
       {isLoading && (
-        <div className="flex justify-center py-10">
+        <div className="comments-sys-loading">
           <Loader2 className="w-8 h-8 animate-spin text-gray-400" />
         </div>
       )}
 
       {!isLoading && !session && (
-        <div className="mb-10">
+        <div className="mb-5">
           <CommentLogin onLoginSuccess={handleLoginSuccess} />
         </div>
       )}
 
       {!isLoading && session && (
-        <div className="mb-10">
+        <div className="mb-5">
           <CommentForm user={session.user} slug={slug} onCommentPosted={handleCommentPosted} />
         </div>
       )}

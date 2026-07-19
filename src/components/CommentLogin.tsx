@@ -151,30 +151,34 @@ export default function CommentLogin({ onLoginSuccess }: CommentLoginProps) {
   if (!mounted) return null;
 
   return (
-    <div className="w-full max-w-[360px] mx-auto my-12 font-mono text-zinc-300 antialiased">
-      <div className="relative flex flex-col items-center justify-center min-h-[320px]">
+    <div className="comment-auth-module font-mono antialiased">
+      <div className="comment-auth-titlebar">
+        <span>COMMENTS.SYS</span>
+        <span>LOCKED</span>
+      </div>
+      <div className="comment-auth-body">
+        <div className="comment-auth-status" aria-label="Comment authentication status">
+          <p><span>status:</span> locked</p>
+          <p><span>guest access:</span> read only</p>
+          <p><span>entries:</span> pending scan</p>
+        </div>
         <AnimatePresence mode="wait">
           
           {view === "INTRO" && (
-            <motion.div key="intro" {...animProps} className="flex flex-col items-center justify-center w-full space-y-8">
-              <div className="flex items-center gap-3 text-zinc-500 select-none">
-                <Terminal size={20} className="text-[#42CF8E] dark:text-zinc-500" />
-                <span className="text-sm font-medium">guest@system:~ $</span>
-                <span className="w-2 h-4 bg-[#42CF8E] dark:bg-zinc-500 animate-pulse block shadow-[0_0_8px_rgba(66,207,142,0.5)] dark:shadow-none"></span>
+            <motion.div key="intro" {...animProps} className="comment-auth-intro">
+              <div className="comment-auth-prompt select-none">
+                <Terminal size={16} />
+                <span>guest@system:~$</span>
               </div>
               
               <button
                 onClick={() => setView("LOGIN")}
-                className="
-                  group flex items-center gap-3 px-8 py-3 rounded-lg border transition-all duration-300 active:scale-95
-                  bg-white border-zinc-200 text-zinc-600 shadow-sm
-                  hover:border-[#42CF8E] hover:text-[#42CF8E] hover:shadow-md
-                  dark:bg-zinc-900 dark:border-zinc-800 dark:text-zinc-400 
-                  dark:hover:bg-zinc-800 dark:hover:border-zinc-600 dark:hover:text-zinc-200
-                "
+                className="comment-auth-command"
+                data-sound-click="nav"
+                data-sound-hover="tick"
               >
-                <span className="text-sm font-bold tracking-wide">INITIALIZE_LOGIN</span>
-                <ArrowRight size={14} className="transition-transform duration-300 group-hover:translate-x-1 opacity-50 group-hover:opacity-100 group-hover:text-[#42CF8E] dark:group-hover:text-zinc-200" />
+                <span>[ INITIALIZE LOGIN ]</span>
+                <ArrowRight size={14} />
               </button>
             </motion.div>
           )}

@@ -1,34 +1,51 @@
-import Timeline from "@/components/Timeline";
 import Link from "next/link";
-import { FaArrowLeft } from "react-icons/fa";
+import { timelineData } from "@/data/timeline";
 
 export const metadata = {
   title: "Timeline | Sercan Duran",
-  description: "My journey.",
+  description: "Boot log archive.",
 };
 
 export default function TimelinePage() {
   return (
-    <main className="min-h-screen w-full text-zinc-900 dark:text-white px-6 py-9 transition-colors duration-300">
-      
-      <div className="max-w-3xl mx-auto mb-16">
-        <Link 
-          href="/" 
-          className="inline-flex items-center text-zinc-400 hover:text-zinc-900 dark:hover:text-white transition-colors mb-6 text-sm group"
-        >
-          <FaArrowLeft className="mr-2 group-hover:-translate-x-1 transition-transform" />
-          Back
-        </Link>
-        
-        <h1 className="text-4xl font-bold tracking-tight mb-2">
-          Timeline
-        </h1>
-        <p className="text-zinc-500 dark:text-zinc-400">
-          Step by step progress.
-        </p>
-      </div>
+    <div className="grid gap-6 pb-20">
+      <section className="system-window">
+        <div className="system-titlebar">
+          <span>BOOTLOG ARCHIVE</span>
+          <span>LEGACY ROUTE</span>
+        </div>
+        <div className="system-content">
+          <h1 className="text-3xl font-bold sm:text-5xl">Timeline log</h1>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/72">
+            This route remains available as an archive. The same information is
+            mounted inside the About system screen.
+          </p>
+        </div>
+      </section>
 
-      <Timeline />
-    </main>
+      <section className="system-window">
+        <div className="system-titlebar">
+          <span>events.log</span>
+          <span>{timelineData.length} records</span>
+        </div>
+        <div className="system-content">
+          <ol className="directory-tree">
+            {timelineData.map((item) => (
+              <li key={`${item.year}-${item.title}`}>
+                <span className="text-[#9c7cff]">{item.year}</span>
+                <strong className="ml-3">{item.title}</strong>
+                <p className="mt-1 max-w-3xl text-sm leading-6 text-white/68">
+                  {item.description}
+                </p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      <Link href="/about" className="retro-command w-fit p-3">
+        run sysinfo
+      </Link>
+    </div>
   );
 }
